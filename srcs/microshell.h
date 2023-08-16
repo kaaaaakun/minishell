@@ -4,7 +4,8 @@
 
 # include "libft.h"
 
-void	check_line(char *line);
+void	check_line(char *line, char **env);
 void	ex_exit();
+int		main(int argc, char *argv[], char **env);
 
 #endif
