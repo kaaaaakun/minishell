@@ -6,25 +6,27 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:55:42 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/07/13 17:11:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:49:55 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
+#include <stdio.h>     // For printf
+#include <stdlib.h>    // For calloc, exit
+#include <string.h>    // For memset
+#include <limits.h>    // For INT_MAX
 
 int main ()
 {
 	char	*str;
-//	int		*number;
 
-//	*number = 100;
 	str = "Hello, world!";
-	ft_printf("aaaa%c %c %c %c\n", 'A', 'B', 'C', 'D');
+	ft_printf("aaaa%c %c %c %c\n", '1', 'B', 'C', 'D');
 	printf("aaaa%c %c %c %c\n", 'A', 'B', 'C', 'D');
 	printf("\n");
-//	ft_printf("int:%s\n", number);
-//	printf("int:%s\n", number);
+	ft_printf("%s\n", str);
+	printf("%s\n", str);
 	printf("\n");
 	ft_printf("%p\n", &str[0]);
 	printf("%p\n", &str[0]);
@@ -140,7 +142,6 @@ int main ()
     i = printf("%s\n", sss);
     j = ft_printf("%s\n", sss);
 	printf("INT_MAX超えの出力%d:%d\n\n",i,j);
-	free(sss);
 
 	//INT_MAX超えの出力
     sss = (char *)calloc(1, (size_t)INT_MAX + 10);
@@ -148,7 +149,6 @@ int main ()
     i = printf("aaa%s\n", sss);
     j = ft_printf("aaa%s\n", sss);
 	printf("%d:%d\n\n",i,j);
-	free(sss);
 
-	return (0);
+	exit (0);
 }

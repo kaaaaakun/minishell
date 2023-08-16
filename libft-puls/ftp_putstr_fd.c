@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 13:44:32 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/06/06 22:04:36 by tokazaki         ###   ########.fr       */
+/*   Created: 2023/05/22 19:52:24 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/06/21 11:33:34 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-size_t	ft_strlen(const char *src)
+ssize_t	ftp_putstr_fd(char *s, int fd)
 {
-	size_t	i;
-
-	if (!src)
-		return (0);
-	i = 0;
-	while (src[i])
-		i++;
-	return (i);
+	if (!s)
+		return (write (fd, "(null)", 6));
+	return (write (fd, s, ft_strlen(s)));
 }
-//'\0'が現れるまでの文字数をカウント
-//19-20:本家にはないエラー処理追加
+
+ssize_t	ftp_putchar_fd(int c, int fd)
+{
+	char	chr;
+
+	chr = (char)c;
+	return (write (fd, &chr, 1));
+}

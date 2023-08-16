@@ -17,6 +17,7 @@
 # include <limits.h>
 # include <unistd.h>
 # include <inttypes.h>
+# include "libft.h"
 
 int		ft_printf(const char *format, ...);
 
@@ -25,6 +26,6 @@ ssize_t	ftp_putstr_fd(char *s, int fd);
 ssize_t	ftp_putnbr_base(long long int c, int fd, char *base, int flag);
 ssize_t	ftp_put_pointer(uintptr_t c, int fd, char *base);
 
-size_t	ft_strlen(const char *src);
+//size_t	ft_strlen(const char *src);
 
 #endif

@@ -18,33 +18,25 @@ OPERARIONS_DIR = operations
 OBJS_DIR = objs
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
-		push_swap.c \
-		make_node.c \
-		process_args.c \
-		make_compression.c \
-		check_sort.c \
-		lessor_3args_sort.c \
-		more_3args_advance.c \
-		more_3args_reverse.c \
-		utils.c \
-		debug.c \
-		$(addprefix operations/, \
-		util_swap.c \
-		util_push.c \
-		util_rotate.c \
-		util_reverse_rotate.c \
-		) \
+		main.c \
+		exit.c \
+		echo.c \
+		cd.c \
+		pwd.c \
+		env.c \
+		export.c \
+		unset.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
 #OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -I./libft -I./srcs
+CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-LIBFT_DIR	=	libft
+LIBFT_DIR	=	libft-puls
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
 DEBUG			= debug

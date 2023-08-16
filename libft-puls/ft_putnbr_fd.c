@@ -6,69 +6,44 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 19:58:06 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/06/22 18:26:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/05/28 10:56:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "ft_printf.h"
+#include <unistd.h>
 
-static ssize_t	ft_putnbr(size_t c, int fd, char *base, size_t base_len);
-
-//値の処理の流れ
-//pointerの場合：ftp_put_pointer -> ftp_putnbr_base ->ft_putnbr
-//そのほかの値：ftp_putnbr_base ->ft_putnbr
-
-ssize_t	ftp_put_pointer(uintptr_t c, int fd, char *base)
+static void	wrt(int b, int fd)
 {
-	ssize_t	count;
-	ssize_t	tmp;
+	char	a;
 
-	count = write(fd, "0x", 2);
-	tmp = ft_putnbr(c, fd, base, 16);
-	if (tmp == -1 || count == -1)
-		return (-1);
-	return (count + tmp);
+	a = b + 48;
+	write (fd, &a, 1);
 }
 
-ssize_t	ftp_putnbr_base(long long int c, int fd, char *base, int flag)
+void	ft_putnbr_fd(int c, int fd)
 {
-	int		count;
-	int		base_len;
-	ssize_t	tmp;
+	int	tmp;
 
-	count = 0;
-	base_len = ft_strlen(base);
-	if (flag == 1)
-		c = (unsigned int)c;
-	if (c < 0)
+	if (fd < 0)
+		return ;
+	if (c == -2147483648)
 	{
-		count += write (fd, "-", 1);
-		c = c * -1;
+		write (fd, "-", 1);
+		wrt(2, fd);
+		ft_putnbr_fd (147483648, fd);
 	}
-	tmp = ft_putnbr(c, fd, base, base_len);
-	if (tmp == -1 || count == -1)
-		return (-1);
-	return (count + tmp);
-}
-//baseは都度指定
-//flag == 1の場合はunsigned
-//put_nbrの引数がマイナスにならないように処理
-
-static ssize_t	ft_putnbr(size_t c, int fd, char *base, size_t base_len)
-{
-	int		count;
-	ssize_t	tmp;
-
-	count = 0;
-	if (0 <= c && c <= base_len - 1)
-		tmp = write(fd, &base[c], 1);
+	else if (c < 0)
+	{
+		write(fd, "-", 1);
+		c = c * -1;
+		ft_putnbr_fd(c, fd);
+	}
+	else if (0 <= c && c <= 9)
+		wrt(c, fd);
 	else
 	{
-		count = ft_putnbr (c / base_len, fd, base, base_len);
-		tmp = write(fd, &base[c % base_len], 1);
+		tmp = c % 10;
+		ft_putnbr_fd (c / 10, fd);
+		wrt(tmp, fd);
 	}
-	if (tmp == -1 || count == -1)
-		return (-1);
-	return (count + tmp);
 }

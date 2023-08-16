@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/10 20:16:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/06/27 18:01:53 by tokazaki         ###   ########.fr       */
+/*   Created: 2023/05/31 16:29:32 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/06/27 17:58:21 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 static char	*line_make(char *line);
 static char	*read_line(char *line, int fd, char *buf);
+static void	*free_gnl(char *str);
 
 char	*get_next_line(int fd)
 {
-	static char	*content[OPEN_MAX] = {0};
+	static char	*content = NULL;
 	char		*buf;
 	char		*line;
 
@@ -25,15 +26,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
-		return (NULL);
-	line = read_line(content[fd], fd, buf);
+		return (free_gnl(content));
+	line = read_line(content, fd, buf);
 	free (buf);
 	if (!line)
-	{
-		free(content[fd]);
 		return (NULL);
-	}
-	content[fd] = line_make(line);
+	content = line_make(line);
 	return (line);
 }
 
@@ -76,10 +74,7 @@ static char	*line_make(char *line)
 		return (NULL);
 	content = ft_strdup(&line[i + 1]);
 	if (*content == '\0')
-	{
-		free(content);
-		return (NULL);
-	}
+		return (free_gnl(content));
 	line[i + 1] = '\0';
 	return (content);
 }
@@ -92,4 +87,10 @@ size_t	ft_strlen(const char *src)
 	while (src[i])
 		i++;
 	return (i);
+}
+
+static void	*free_gnl(char *str)
+{
+	free (str);
+	return (NULL);
 }

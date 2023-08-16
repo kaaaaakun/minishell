@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "libft.h"
 #include "get_next_line.h"
 #include "get_next_line_bonus.h"
 
@@ -12,7 +13,7 @@ static void destructor() {
 int	main(void)
 {
 	int i = 0;
-	int fd = open("a.txt",O_RDONLY);
+	int fd = 0;//open("a.txt",O_RDONLY);
 	while(i++ < 10)
 	{
 		char *line = get_next_line(fd);

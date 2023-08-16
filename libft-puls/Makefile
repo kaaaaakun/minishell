@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/08/15 15:15:02 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/15 15:20:25 by tokazaki         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = libft.a
 
 SRCS =	ft_strlen.c \
@@ -47,10 +35,9 @@ SRCS =	ft_strlen.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
 		get_next_line_bonus.c \
-		ft_putstr_fd.c \
-		ft_putnbr_fd.c \
-		ft_printf.c
-
+		ft_printf.c \
+		ftp_putnbr_fd.c \
+		ftp_putstr_fd.c
 B_SRCS=	ft_lstnew.c \
 		ft_lstadd_front.c \
 		ft_lstsize.c \
