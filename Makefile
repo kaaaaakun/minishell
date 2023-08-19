@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/15 16:46:53 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/19 19:40:29 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,18 +48,21 @@ CFLAGS_DEBUG	= $(CFLAGS) -g -fsanitize=address
 all: $(NAME)
 
 .c.o:
-	$(CC) $(CFLAGS) -o $@ -c $<
+	@ $(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT) 
 	$(CC) $(OBJS) $(CFLAGS) $(LIBFT) -o $@
+	@ echo "compiled!"
 
 clean:
-	@make -C $(LIBFT_DIR) clean
-	$(RM) $(OBJS) $(B_OBJS)
+	@ make -C $(LIBFT_DIR) clean
+	@ $(RM) $(OBJS) $(B_OBJS)
+	@ echo "cleaned!"
 
 fclean: clean
-	@make -C $(LIBFT_DIR) fclean
-	$(RM) $(NAME)
+	@ make -C $(LIBFT_DIR) fclean
+	@ $(RM) $(NAME)
+	@ echo "all cleaned!"
 
 re: fclean all
 

@@ -62,16 +62,17 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(NAME) $(OBJS)
+	@ $(AR) $(NAME) $(OBJS)
+	@ echo "libft+ compiled!"
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	@ $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(B_OBJS)	
+	@ $(RM) $(OBJS) $(B_OBJS)	
 
 fclean: clean
-	$(RM) $(NAME)
+	@ $(RM) $(NAME)
 
 bonus:
 	make WITH_BONUS=1

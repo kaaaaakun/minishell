@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/19 17:44:10 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/19 19:43:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	check_command(char *line, char **env)
 {
 	char **split;
-
-	split = ft_split(line, ' ');
+//ft_printf ("[%s]",line);
 	if (!line)
 		ex_exit(NULL);
-	else if (*line == '\0')
+	split = ft_split(line, ' ');
+	if (*line == '\0')
 		ft_putstr_fd("", 1);
 	else if (ft_memcmp(split[0], "exit", 5) == 0)
 		ex_exit(split);
@@ -43,16 +43,18 @@ void	check_command(char *line, char **env)
 
 void	check_line(char *line, char **env)
 {
-	check_command(line, env);
-//	int	i;
-//
-//	i = 0;
-//	while (split[i] != NULL)
-//	{
-//		check_command(split[i], env);
+	int		i;
+	char	**split;
+
+	split = ft_split(line, '|');
+	i = 0;
+	while (split[i] != NULL)
+	{
+//ft_printf ("[%d]",i);
+		check_command((char *)split[i], env);
 //		check_doc(split[i], env);
-//		i++;
-//	}
+		i++;
+	}
 }
 
 int	main(int argc, char *argv[], char **env)
