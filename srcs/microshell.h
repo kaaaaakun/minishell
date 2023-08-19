@@ -3,6 +3,9 @@
 # define MICROSHELL_H
 
 # include "libft.h"
+#include "stdio.h"    
+#include <readline/readline.h>
+#include <readline/history.h>
 
 void	check_command(char *line, char **env);
 void	ex_env(char **split, char **env);

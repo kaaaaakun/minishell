@@ -38,7 +38,9 @@ void	check_command(char *line, char **env)
 	else if (ft_memcmp(line, "<<", 2) == 0)
 		ex_env(split, env);
 	else
-		ft_putstr_fd(ft_strjoin("builtin not found: ", line), 1);
+		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
+	if (line)
+		add_history(line);
 }
 
 void	check_line(char *line, char **env)
@@ -59,7 +61,6 @@ void	check_line(char *line, char **env)
 
 int	main(int argc, char *argv[], char **env)
 {
-	//char	*line = NULL;
 	char	*line;
 	int		i;
 
@@ -69,8 +70,10 @@ int	main(int argc, char *argv[], char **env)
 	while (1)
 	{
 		ft_printf("my-shell[%d]:",i);
-		line = get_next_line(0);
-		//readline(line);
+//		line = get_next_line(0);
+		line = readline(">> ");
+		if (!line)
+			ex_exit(0);
 		check_line(ft_strtrim(line, "\n"), env);
 		free (line);
 		i++;

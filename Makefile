@@ -32,7 +32,8 @@ OBJS = $(SRCS:.c=.o)
 #OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
+#CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
+CFLAGS	= -lreadline -Wall -Wextra -Werror -I./libft-puls -I./srcs
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
