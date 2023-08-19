@@ -1,30 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/08/19 17:44:10 by tokazaki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "microshell.h"
 
-void	check_line(char *line, char **env)
+void	check_command(char *line, char **env)
 {
-	int i;
+	char **split;
 
-	i = 0;
-	if (*line == '\n' || *line == '\0')
+	split = ft_split(line, ' ');
+	if (!line)
+		ex_exit(NULL);
+	else if (*line == '\0')
 		ft_putstr_fd("", 1);
-	else if (ft_strncmp(line, "echo ", 5) == 0)
-		ft_putstr_fd(line + 5, 1);
-	else if (ft_memcmp(line, "echo\n", 5) == 0)
-		ft_putendl_fd("", 1);
-	else if (ft_strncmp(line, "env", 3) == 0)
-		while(env[i] != NULL)
-		{
-			ft_putendl_fd(env[i], 1);
-			i++;
-		}
-	else if (ft_memcmp(line, "exit", 4) == 0)//EOFのshignalを受けとたら終了するように
-		ex_exit();
+	else if (ft_memcmp(split[0], "exit", 5) == 0)
+		ex_exit(split);
+	else if (ft_memcmp(split[0], "echo", 5) == 0)
+		ex_echo(split);
+	else if (ft_memcmp(line, "env", 4) == 0)
+		ex_env(split, env);
+	else if (ft_memcmp(line, "cd", 3) == 0)
+		ex_env(split, env);
+	else if (ft_memcmp(line, "pwd", 4) == 0)
+		ex_env(split, env);
+	else if (ft_memcmp(line, "unlink", 7) == 0)
+		ex_env(split, env);
+	else if (ft_memcmp(line, "export", 7) == 0)
+		ex_env(split, env);
+	else if (ft_memcmp(line, "<<", 2) == 0)
+		ex_env(split, env);
 	else
 		ft_putstr_fd(ft_strjoin("builtin not found: ", line), 1);
 }
 
+void	check_line(char *line, char **env)
+{
+	check_command(line, env);
+//	int	i;
+//
+//	i = 0;
+//	while (split[i] != NULL)
+//	{
+//		check_command(split[i], env);
+//		check_doc(split[i], env);
+//		i++;
+//	}
+}
+
 int	main(int argc, char *argv[], char **env)
 {
+	//char	*line = NULL;
 	char	*line;
 	int		i;
 
@@ -35,7 +68,8 @@ int	main(int argc, char *argv[], char **env)
 	{
 		ft_printf("my-shell[%d]:",i);
 		line = get_next_line(0);
-		check_line(line, env);
+		//readline(line);
+		check_line(ft_strtrim(line, "\n"), env);
 		free (line);
 		i++;
 	}
