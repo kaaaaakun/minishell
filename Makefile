@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/19 19:40:29 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/20 21:02:09 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,14 +26,14 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		env.c \
 		export.c \
 		unset.c \
+		add_sigaction.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
 #OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 CC		= cc
-#CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
-CFLAGS	= -lreadline -Wall -Wextra -Werror -I./libft-puls -I./srcs
+CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -52,7 +52,7 @@ all: $(NAME)
 	@ $(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT) 
-	$(CC) $(OBJS) $(CFLAGS) $(LIBFT) -o $@
+	$(CC) $(OBJS) -lreadline $(CFLAGS) $(LIBFT) -o $@
 	@ echo "compiled!"
 
 clean:
@@ -73,6 +73,6 @@ $(DEBUG):
 	make all
 
 $(LIBFT):
-	make -C $(LIBFT_DIR) all
+	make -C $(LIBFT_DIR) all -lreadline
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

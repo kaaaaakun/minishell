@@ -6,16 +6,17 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/19 19:43:53 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/20 21:01:26 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "microshell.h"
+#include "minishell.h"
 
-void	check_command(char *line, char **env)
+void	check_command(char *line)
 {
 	char **split;
-//ft_printf ("[%s]",line);
+	extern char **env;
+
 	if (!line)
 		ex_exit(NULL);
 	split = ft_split(line, ' ');
@@ -26,24 +27,25 @@ void	check_command(char *line, char **env)
 	else if (ft_memcmp(split[0], "echo", 5) == 0)
 		ex_echo(split);
 	else if (ft_memcmp(line, "env", 4) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else if (ft_memcmp(line, "cd", 3) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else if (ft_memcmp(line, "unlink", 7) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else if (ft_memcmp(line, "export", 7) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else if (ft_memcmp(line, "<<", 2) == 0)
-		ex_env(split, env);
+		ex_env(split);
 	else
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
 	if (line)
 		add_history(line);
+	rl_on_new_line();
 }
 
-void	check_line(char *line, char **env)
+void	check_line(char *line)
 {
 	int		i;
 	char	**split;
@@ -53,28 +55,27 @@ void	check_line(char *line, char **env)
 	while (split[i] != NULL)
 	{
 //ft_printf ("[%d]",i);
-		check_command((char *)split[i], env);
+		check_command((char *)split[i]);
 //		check_doc(split[i], env);
 		i++;
 	}
 }
 
-int	main(int argc, char *argv[], char **env)
+int	main(int argc, char *argv[])
 {
 	char	*line;
 	int		i;
 
 	i = 0;
+	add_sigaction();
 	(void)argc;
 	(void)argv;
 	while (1)
 	{
-		ft_printf("my-shell[%d]:",i);
-//		line = get_next_line(0);
 		line = readline(">> ");
 		if (!line)
 			ex_exit(0);
-		check_line(ft_strtrim(line, "\n"), env);
+		check_line(ft_strtrim(line, "\n"));
 		free (line);
 		i++;
 	}

@@ -6,11 +6,11 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/19 19:13:24 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:10:47 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "microshell.h"
+#include "minishell.h"
 
 void	ex_echo(char **split)
 {
