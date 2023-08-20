@@ -29,5 +29,6 @@ void	ex_cd(char **split);
 void	ex_pwd(char **split);
 void	ex_execve(char **split);
 void	add_sigaction(void);
-
+void	line_read(void);
+int		main(void);
 #endif

@@ -61,23 +61,23 @@ void	check_line(char *line)
 	}
 }
 
-int	main(int argc, char *argv[])
+void	line_read(void)
 {
 	char	*line;
-	int		i;
 
-	i = 0;
-	add_sigaction();
-	(void)argc;
-	(void)argv;
 	while (1)
 	{
 		line = readline(">> ");
 		if (!line)
 			ex_exit(0);
-		check_line(ft_strtrim(line, "\n"));
+		check_line(line);
 		free (line);
-		i++;
 	}
+}
+
+int	main(void)
+{
+	add_sigaction();
+	line_read();
 	return (0);
 }

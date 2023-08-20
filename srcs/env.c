@@ -25,12 +25,12 @@ void	ex_env(char **split)
 void	write_env(void)
 {
 	int			i;
-	extern char	**env;
+	extern char	**environ;
 
 	i = 0;
-	while (env[i] != NULL)
+	while (environ[i] != NULL)
 	{
-		ft_putendl_fd(env[i], 1);
+		ft_putendl_fd(environ[i], 1);
 		i++;
 	}
 }

@@ -17,6 +17,11 @@ void	sa_sigint(int signum);
 void	add_sigaction(void)
 {
 	struct sigaction sa_int;
+   // シグナルセットを初期化し、SIGINT シグナルをセットに追加
+    
+	sigset_t set;
+    sigemptyset(&set);
+    sigaddset(&set, SIGINT);
 
 	sa_int.sa_handler = sa_sigint;
 	sa_int.sa_flags = 0;
@@ -26,10 +31,15 @@ void	add_sigaction(void)
 		perror("sigaction");
 		ex_exit(NULL);
 	}
+	ft_putendl_fd("set signal int", 1);
 }
 
 void	sa_sigint(int signum)
 {
 	(void)signum;
+	ft_putendl_fd("signal int", 1);
 	check_command("");
+//	rl_on_new_line();
+//	main();
+	line_read();
 }
