@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/21 13:06:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:51:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_command(char *line)
 	else if (ft_memcmp(line, "cd", 3) == 0)
 		ex_env(split);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
-		ex_env(split);
+		ex_pwd();
 	else if (ft_memcmp(line, "unlink", 7) == 0)
 		ex_env(split);
 	else if (ft_memcmp(line, "export", 7) == 0)
