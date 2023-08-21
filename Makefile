@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/20 21:02:09 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/21 20:12:04 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ NAME = minishell
 SRCS_DIR = srcs
 OPERARIONS_DIR = operations
 OBJS_DIR = objs
+BUILTIN_DIR = builtin
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
@@ -28,6 +29,20 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		unset.c \
 		add_sigaction.c \
 		)
+
+#SRCS = $(addprefix $(SRCS_DIR)/, \
+#		$(addprefix $(BUILTIN_DIR) \
+#		main.c \
+#		exit.c \
+#		echo.c \
+#		cd.c \
+#		pwd.c \
+#		env.c \
+#		export.c \
+#		unset.c \
+#		add_sigaction.c \
+#		)
+#		)
 
 OBJS = $(SRCS:.c=.o)
 #OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
