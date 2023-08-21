@@ -15,7 +15,7 @@
 void	check_command(char *line)
 {
 	char **split;
-	extern char **env;
+	extern char **environ;
 
 	if (!line)
 		ex_exit(NULL);
@@ -29,7 +29,7 @@ void	check_command(char *line)
 	else if (ft_memcmp(line, "env", 4) == 0)
 		ex_env(split);
 	else if (ft_memcmp(line, "cd", 3) == 0)
-		ex_env(split);
+		ex_cd(split);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
 		ex_pwd();
 	else if (ft_memcmp(line, "unlink", 7) == 0)
@@ -58,6 +58,7 @@ void	check_line(char *line)
 		check_command((char *)split[i]);
 //		check_doc(split[i], env);
 		i++;
+		//free_split(split); push_swapより実装
 	}
 }
 
