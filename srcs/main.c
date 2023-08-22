@@ -6,20 +6,20 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/22 18:00:34 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/22 22:32:42 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 
-void	wait_process(int pid)
+void	wait_process(int pid, int count)
 {
 	int	i;
 	int	status;
 
 	i = 0;
-	while (i < 1)
+	while (i < count)
 	{
 		waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) != 0)
@@ -83,7 +83,6 @@ void	check_line(char *line)
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
 	}
-	ft_putstr_fd("[check_line]", 1);
 	pipe_flag = 1;
 	splited_pipe = ft_split(line, '|');
 	i = 0;
@@ -94,12 +93,9 @@ void	check_line(char *line)
 		check_command((char *)splited_pipe[i], pipe_flag, status);
 		i++;
 	}
-	ft_putstr_fd("[check_line]", 1);
 	if (pipe_flag == 1)
-		wait_process(status->pid);
-	ft_putstr_fd("[check_line]", 1);
+		wait_process(status->pid, i - 1);
 	split_free(splited_pipe);
-	ft_putstr_fd("[check_line]", 1);
 }
 
 void	line_read(void)
