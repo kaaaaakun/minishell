@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/21 15:23:37 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:54:08 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ void	add_sigaction(void)
 void	sa_sigint(int signum)
 {
 	(void)signum;
-	ft_putendl_fd("signal int", 1);
-	check_command("");
-//	char *a = "<<<<<";
-//	rl_replace_line (&a, 0);
+	ft_putstr_fd("[signint]", 1);
+	ft_putendl_fd("", 1);
 	rl_on_new_line();
 	line_read();
 }

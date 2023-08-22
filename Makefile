@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/21 20:12:04 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/22 16:13:50 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,9 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		export.c \
 		unset.c \
 		add_sigaction.c \
+		execve.c \
+		getpath.c \
+		pipex_utils.c \
 		)
 
 #SRCS = $(addprefix $(SRCS_DIR)/, \
@@ -56,7 +59,10 @@ LIBFT_DIR	=	libft-puls
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
 DEBUG			= debug
-CFLAGS_DEBUG	= $(CFLAGS) -g -fsanitize=address
+
+#ifdef WITH_DEBUG
+#	CFLAGS += -g -fsanitize=address
+#endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 .PHONY: all clean fclean re
@@ -69,6 +75,7 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT) 
 	$(CC) $(OBJS) -lreadline $(CFLAGS) $(LIBFT) -o $@
 	@ echo "compiled!"
+	make clean
 
 clean:
 	@ make -C $(LIBFT_DIR) clean
@@ -83,9 +90,8 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-$(DEBUG):
-	$(CC) $(OBJS) $(CFLAGS_DEBUG) $(LIBFT) -o $(NAME)
-	make all
+#$(DEBUG):
+#	make WITH_DEBUG=1
 
 $(LIBFT):
 	make -C $(LIBFT_DIR) all -lreadline
