@@ -275,7 +275,7 @@ void	line_read(void)
 
 int	main(void)
 {
-//	add_sigaction();
+	add_sigaction();
 	line_read();
 	return (0);
 }

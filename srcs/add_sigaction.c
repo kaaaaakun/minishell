@@ -12,28 +12,33 @@
 
 #include "minishell.h"
 
-void	sa_sigint(int signum);
+void	sighandla(int sig);
 
 void	add_sigaction(void)
 {
-	struct sigaction sa_int;
+//	struct sigaction sa_int;
 
-	sigemptyset(&sa_int.sa_mask);
-	sigaddset(&sa_int.sa_mask, SIGINT);
-	sa_int.sa_handler = sa_sigint;
-	sa_int.sa_flags = 0;
-	if (sigaction(SIGINT, &sa_int, NULL) == -1)
-	{
-		perror("sigaction");
-		ex_exit(NULL);
-	}
+    signal(SIGINT, sighandla);
+    signal(SIGQUIT, SIG_IGN);    // CTRL + /
+//	sigemptyset(&sa_int.sa_mask);
+//	sigaddset(&sa_int.sa_mask, SIGINT);
+//	sa_int.sa_handler = sa_sigint;
+//	sa_int.sa_flags = 0;
+//	if (sigaction(SIGINT, &sa_int, NULL) == -1)
+//	{
+//		perror("sigaction");
+//		ex_exit(NULL);
+//	}
 }
 
-void	sa_sigint(int signum)
+void	sighandla(int sig)
 {
-	(void)signum;
-	ft_putstr_fd("[signint]", 1);
-	ft_putendl_fd("", 1);
-	rl_on_new_line();
-	line_read();
+	if (sig == SIGINT)
+    {
+        printf("\n[sicnal]>> ");
+    }
+    if (rl_on_new_line() == -1)
+        exit(1);
+//    rl_replace_line("", 1);
+    rl_redisplay();
 }
