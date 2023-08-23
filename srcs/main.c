@@ -77,7 +77,7 @@ int	analysis_char(char c)
 		return (5);
 	if (c == '|')
 		return (6);
-	if (c == '"')
+	if (c == '\"')
 		return (7);
 	if (c == '\'')
 		return (8);
@@ -88,17 +88,32 @@ int	analysis_char(char c)
 
 void	lekpan(char *line, t_info *status)
 {
+	int	quote_f;
 	int	i;
 	int	value;
 	int	flag;
+	int	heredoc;
 
+	quote_f = 0;
 	flag = 0;
+	heredoc = 0;
 	while(*line != '\0')
 	{
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		if (value == 1)
+		if (quote_f == 1)// in quote
+		{
+			while (line[i] != '\"' )//&& line[i] != '\0')
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			ft_printf(" |command\n");
+			i++;
+			quote_f = 0;
+		}
+		else if (value == 1)// noflags
 		{
 			while (analysis_char(line[i]) == value)
 			{
@@ -107,20 +122,23 @@ void	lekpan(char *line, t_info *status)
 			}
 				if (flag == 0)
 					ft_putendl_fd(" | command", 1);
+				else if (heredoc == 1)
+				{
+					heredoc = 0;
+					ft_putendl_fd(" | heredoc EOF", 1);
+				}
 				else
 					ft_putendl_fd(" | file", 1);
 			flag = 0;
 		}
-		else if (value == 2)
+		else if (value == 2)// ' '
 		{
 			while (analysis_char(line[i]) == value)
 			{
-				ft_printf("%c", line[i]);
 				i++;
 			}
-				ft_putendl_fd(" | space", 1);
 		}
-		else if (value == 3)
+		else if (value == 3)// < << <<<
 		{
 			while (analysis_char(line[i]) == value)
 			{
@@ -133,6 +151,7 @@ void	lekpan(char *line, t_info *status)
 			{
 				ft_putendl_fd(" | heredoc", 1);	
 				flag = 1;
+				heredoc = 1;
 			}
 			else if (i == 1)
 			{
@@ -140,7 +159,7 @@ void	lekpan(char *line, t_info *status)
 				flag = 1;
 			}
 		}
-		else if (value == 4)
+		else if (value == 4)// > >> >>>
 		{
 			while (analysis_char(line[i]) == value)
 			{
@@ -160,9 +179,29 @@ void	lekpan(char *line, t_info *status)
 				flag = 1;
 			}
 		}
+		else if (value == 6)// |
+		{
+			while (analysis_char(line[i]) == value)
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (1 < i)
+				ft_putendl_fd(" | syntax error near unexpected token `|'", 1);
+			else if (i == 1)
+			{
+				ft_putendl_fd(" | pipe", 1);
+				flag = 1;
+			}
+		}
+		else if (value == 7)// "
+		{
+			quote_f = 1;
+			i++;
+		}
 		else
 		{
-			ft_putendl_fd(" | re:redirect", 1);
+			ft_printf("%c | else\n", *line);
 			line++;
 		}
 		line += i;
@@ -201,11 +240,13 @@ void	check_line(char *line, t_info *status)
 	pipe_flag = 1;
 	splited_pipe = ft_split(line, '|');
 	i = 0;
+	lekpan(line, status);
 	while (splited_pipe[i] != NULL)
 	{
+		ft_printf("[pipe:%d]\n",i);
 		if (splited_pipe[i + 1] == NULL)
 			pipe_flag = 0;
-		lekpan(line, status);
+	//lekpan(splited_pipe[i], status);
 //		check_command((char *)splited_pipe[i], pipe_flag, status);
 		i++;
 	}
