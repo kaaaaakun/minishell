@@ -6,27 +6,28 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/22 22:32:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/23 16:38:21 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 
-void	wait_process(int pid, int count)
+void	wait_process(t_info *info_status)
 {
 	int	i;
 	int	status;
 
-	i = 0;
-	while (i < count)
+	ft_printf("[wait;%d]", info_status->exec_count);
+	i = 1;
+	while (i < info_status->exec_count)
 	{
 		waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) != 0)
 			;
 		i++;
 	}
-	waitpid(pid, &status, 0);
+	waitpid(info_status->pid, &status, 0);
 	if (WEXITSTATUS(status) != 0)
 		;
 }
@@ -51,34 +52,79 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 	else if (ft_memcmp(split[0], "export", 7) == 0)
 		ex_env(split);
 	else if (ft_memcmp(line, "<<", 2) == 0)
-		ex_env(split);
+		ex_heardoc(line);
 	else
 	{
 		usleep(100);
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
 		ex_execve(split, pipe_flag, status);
 	}
-	if (line)
-		add_history(line);
 	rl_on_new_line();
 	split_free(split);
 }
 
-void	check_line(char *line)
+int	analysis_char(char c)
+{
+	if (ft_isdigit(c) || ft_isalpha(c))
+		return (1);
+	if (c == ' ')
+		return (2);
+	if (c == '<')
+		return (3);
+	if (c == '>')
+		return (4);
+	if (c == '$')
+		return (5);
+	if (c == '|')
+		return (6);
+	if (c == '"')
+		return (7);
+	if (c == '\'')
+		return (8);
+	if (c == '-')
+		return (9);
+	return(0);
+}
+
+void	lekpan(char *line, t_info *status)
+{
+	int	i;
+	int	value;
+
+	while(*line)
+	{
+		i = 0;
+		value = analysis_char(*line);
+		ft_printf("%c:%d\n", *line, value);
+
+		line++;
+	}
+	(void)status;
+}
+
+void	check_line(char *line, t_info *status)
 {
 	ft_putstr_fd("[check_line]", 1);
 	int		i;
 	int		pipe_flag;;
 	char	**splited_pipe;
-	t_info	*status;
 
-	status = (t_info *)malloc(sizeof(t_info) * 1);
-	if (!status)
-		ex_exit(NULL);
-	ft_putstr_fd("[check_line]", 1);
+	if (line && *line)
+		add_history(line);
+	ft_printf("[check_line:%d]", status->exec_count);
 	if (!line)
 		ex_exit(NULL);
-	else if (*line == '\0')
+//	if (!line )//&& status->exec_count != 0)
+//	{
+//		ft_printf("[check_line:%d/%s]", status->exec_count, line);
+//		status->exec_count = 0;
+//		ft_putendl_fd("", 1);
+//		rl_on_new_line();
+//		sleep(10);
+//		return ;
+//	}
+	status->exec_count = 0;
+	if (*line == '\0')
 	{
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
@@ -90,22 +136,28 @@ void	check_line(char *line)
 	{
 		if (splited_pipe[i + 1] == NULL)
 			pipe_flag = 0;
-		check_command((char *)splited_pipe[i], pipe_flag, status);
+		lekpan(line, status);
+//		check_command((char *)splited_pipe[i], pipe_flag, status);
 		i++;
 	}
-	if (pipe_flag == 1)
-		wait_process(status->pid, i - 1);
+	wait_process(status);
 	split_free(splited_pipe);
 }
 
 void	line_read(void)
 {
 	char	*line;
+	t_info	*status;
 
+	status = (t_info *)malloc(sizeof(t_info) * 1);
+	if (!status)
+		ex_exit(NULL);
+	status->exec_count = 0;
 	while (1)
 	{
 		line = readline("[readline]>> ");
-		check_line(line);
+		ft_printf("[%s]", line);
+		check_line(line, status);
 		free (line);
 	}
 }

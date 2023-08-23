@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/22 16:13:50 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/23 12:56:52 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		env.c \
 		export.c \
 		unset.c \
+		heardoc.c \
 		add_sigaction.c \
 		execve.c \
 		getpath.c \
