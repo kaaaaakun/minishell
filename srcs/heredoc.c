@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   heardoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 12:46:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/23 13:13:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:18:52 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ex_heardoc(char *line)
+void	ex_heredoc(char *line)
 {
 	char *getline;
 
-	ft_putstr_fd("[heardoc]", 1);
+	ft_putstr_fd("[heredoc]", 1);
 	while (1)
 	{
 		getline = readline(">");

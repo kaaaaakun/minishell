@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/23 16:38:21 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:47:22 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	wait_process(t_info *info_status)
 void	check_command(char *line, int pipe_flag, t_info *status)
 {
 	ft_putstr_fd("[check_command]", 1);
-	char **split;
-	extern char **environ;
+	char		 **split;
+	extern char	**environ;
 
 	split = ft_split(line, ' ');
 	if (ft_memcmp(split[0], "exit", 5) == 0)
@@ -52,7 +52,7 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 	else if (ft_memcmp(split[0], "export", 7) == 0)
 		ex_env(split);
 	else if (ft_memcmp(line, "<<", 2) == 0)
-		ex_heardoc(line);
+		ex_heredoc(line);
 	else
 	{
 		usleep(100);
