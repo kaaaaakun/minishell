@@ -65,7 +65,7 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c))
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='_')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -81,8 +81,8 @@ int	analysis_char(char c)
 		return (7);
 	if (c == '\'')
 		return (8);
-	if (c == '-')
-		return (9);
+	if (c == ';')
+		return (10);
 	return(0);
 }
 
@@ -90,16 +90,85 @@ void	lekpan(char *line, t_info *status)
 {
 	int	i;
 	int	value;
+	int	flag;
 
-	while(*line)
+	flag = 0;
+	while(*line != '\0')
 	{
 		i = 0;
+		value = -1;
 		value = analysis_char(*line);
-		ft_printf("%c:%d\n", *line, value);
-
-		line++;
+		if (value == 1)
+		{
+			while (analysis_char(line[i]) == value)
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+				if (flag == 0)
+					ft_putendl_fd(" | command", 1);
+				else
+					ft_putendl_fd(" | file", 1);
+			flag = 0;
+		}
+		else if (value == 2)
+		{
+			while (analysis_char(line[i]) == value)
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+				ft_putendl_fd(" | space", 1);
+		}
+		else if (value == 3)
+		{
+			while (analysis_char(line[i]) == value)
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (2 < i || flag)
+				ft_putendl_fd(" | syntax error near unexpected token `<'", 1);
+			else if (i == 2)
+			{
+				ft_putendl_fd(" | heredoc", 1);	
+				flag = 1;
+			}
+			else if (i == 1)
+			{
+				ft_putendl_fd(" | redirect", 1);
+				flag = 1;
+			}
+		}
+		else if (value == 4)
+		{
+			while (analysis_char(line[i]) == value)
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (2 < i || flag)
+				ft_putendl_fd(" | syntax error near unexpected token `>'", 1);
+			else if (i == 2)
+			{
+				ft_putendl_fd(" | re:heredoc", 1);	
+				flag = 1;
+			}
+			else if (i == 1)
+			{
+				ft_putendl_fd(" | re:redirect", 1);
+				flag = 1;
+			}
+		}
+		else
+		{
+			ft_putendl_fd(" | re:redirect", 1);
+			line++;
+		}
+		line += i;
 	}
 	(void)status;
+	(void)i;
 }
 
 void	check_line(char *line, t_info *status)
@@ -142,6 +211,7 @@ void	check_line(char *line, t_info *status)
 	}
 	wait_process(status);
 	split_free(splited_pipe);
+	(void)pipe_flag;
 }
 
 void	line_read(void)
@@ -164,7 +234,7 @@ void	line_read(void)
 
 int	main(void)
 {
-	add_sigaction();
+//	add_sigaction();
 	line_read();
 	return (0);
 }
