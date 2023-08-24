@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/23 18:18:52 by hhino            ###   ########.fr        #
+#    Updated: 2023/08/24 19:14:32 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,9 @@ OBJS = $(SRCS:.c=.o)
 #OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -I./libft-puls -I./srcs
+CFLAGS  = -I./libft-puls -I./srcs
+CFLAGS	+= -Wall -Wextra -Werror
+# CFLAGS	+= -g -fsanitaze=address
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -71,7 +73,7 @@ DEBUG			= debug
 all: $(NAME)
 
 .c.o:
-	@ $(CC) $(CFLAGS) -o $@ -c $<
+	@ $(CC) $(CFLAGS) -o $@ -c $< -I $(brew --prefix readline)/include
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) -lreadline $(CFLAGS) $(LIBFT) -o $@

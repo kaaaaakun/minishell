@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/24 11:42:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/08/24 18:45:08 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 # include <signal.h>
 # include <limits.h>
 
-typedef struct s_info
+
+typedef struct s_list
 {
-	int				pid;
-	int				exec_count;
-	struct s_stack	*stack;
-}	t_info;
+	char				*content;
+	struct t_list		*next;
+}	t_list;
 
 typedef struct s_stack
 {
@@ -38,12 +38,12 @@ typedef struct s_stack
 	struct s_stack		*next;
 }	t_stack;
 
-typedef struct s_list
+typedef struct s_info
 {
-	char				*content;
-	struct s_list		*next;
-}	t_list;
-
+	int				pid;
+	int				exec_count;
+	struct s_stack	*stack;
+}	t_info;
 
 void	check_command(char *line, int pipe_flag, t_info *status);
 

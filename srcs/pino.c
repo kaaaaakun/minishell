@@ -6,15 +6,17 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 18:48:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/08/24 11:58:46 by hhino            ###   ########.fr       */
+/*   Updated: 2023/08/24 19:41:22 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 
-void	put_to_list(char *str, t_stack *stack);
+void	check_line(char *line, t_info *status);
 void	init_stack(t_info *info);
+char	*put_space(char *line);
+void	put_to_list(char *str, t_stack *stack);
 
 void	check_line(char *line, t_info *status)
 {
@@ -47,6 +49,7 @@ void	check_line(char *line, t_info *status)
 	split_free(splited_pipe);
 }
 
+//stackの初期化の関数
 void	init_stack(t_info *status)
 {
 	status->stack->outputlist = NULL;
@@ -57,6 +60,30 @@ void	init_stack(t_info *status)
 	status->stack->next = NULL;
 }
 
+char	*put_space(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '>')
+		{
+			if (line[i + 1] == '>')
+				i++;
+			line[i + 1] = ' ';
+		}
+		else if (line[i] == '<')
+		{
+			if (line[i + 1] == '<')
+				i++;
+			line[i + 1] = ' ';
+		}
+		i++;
+	}
+	return (line);
+}
+
 void	put_to_list(char *line, t_stack *stack)
 {
 	int		i;
@@ -64,7 +91,7 @@ void	put_to_list(char *line, t_stack *stack)
 	int		in_fd;
 	int		out_fd;
 
-// もしも<,>,<<,>>の後に' 'がなかったら、' 'を入れる関数を作る？その方が一括でsplitできて楽
+	line = put_space(line);
 	split_line = ft_split(line, ' ');
 	i = 0;
 	while (split_line[i] != NULL)
@@ -96,7 +123,7 @@ void	put_to_list(char *line, t_stack *stack)
 			close(split_line[i]);
 			push_back(stack->inputlist, split_line[i]);
 		}
-		//if (ft_memcmp(split_line[i], "<<", 3))
+		//else if (ft_memcmp(split_line[i], "<<", 3))
 			//??;
 		else
 			push_back(stack->cmdlist, split_line[i]);

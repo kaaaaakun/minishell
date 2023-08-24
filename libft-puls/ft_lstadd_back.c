@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 11:34:31 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/05/30 13:46:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/24 18:43:46 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_libft_list **lst, t_libft_list *new)
 {
-	t_list	*tmp;
+	t_libft_list	*tmp;
 
 	if (!new || !lst)
 		return ;
