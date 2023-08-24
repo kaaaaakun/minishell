@@ -111,7 +111,7 @@ int	main(int argc, char *argv[], char *env[])
 	char	*line;
 	t_info	*status;
 
-	if (argc != 0)
+	if (argc != 1)
 		return (0);
 	add_sigaction();
 	status = (t_info *)malloc(sizeof(t_info) * 1);
