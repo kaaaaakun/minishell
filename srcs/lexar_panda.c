@@ -30,9 +30,11 @@ void	lekpan(char *line, t_info *status)
 	int	value;
 	int	flag;
 	int	heredoc;
+	int	command;
 
 	quote_f = 0;
 	flag = 0;
+	command = 0;
 	heredoc = 0;
 	while(*line != '\0')
 	{
@@ -46,12 +48,24 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			ft_printf(" |command\n");
+			if (command == 0)
+			{
+				ft_putendl_fd(" : command", 1);
+				command = 1;
+			}
+			else if (heredoc == 1)
+			{
+				heredoc = 0;
+				ft_putendl_fd(" : heredoc EOF", 1);
+			}
+			else
+				ft_putendl_fd(" : flag or file", 1);
 			if (line[i] == '\'' || line[i] == '\"')
 			{
 				quote_f = 0;
 				i++;
 			}
+			flag = 0;
 		}
 		else if (value == 1)// noflags
 		{
@@ -60,15 +74,18 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-				if (flag == 0)
-					ft_putendl_fd(" | command", 1);
+				if (command == 0)
+				{
+					ft_putendl_fd(" : command", 1);
+					command = 1;
+				}
 				else if (heredoc == 1)
 				{
 					heredoc = 0;
-					ft_putendl_fd(" | heredoc EOF", 1);
+					ft_putendl_fd(" : heredoc EOF", 1);
 				}
 				else
-					ft_putendl_fd(" | file", 1);
+					ft_putendl_fd(" : flag or file", 1);
 			flag = 0;
 		}
 		else if (value == 2)// ' '
@@ -86,16 +103,16 @@ void	lekpan(char *line, t_info *status)
 				i++;
 			}
 			if (2 < i || flag)
-				ft_putendl_fd(" | syntax error near unexpected token `<'", 1);
+				ft_putendl_fd(" : syntax error near unexpected token `<'", 1);
 			else if (i == 2)
 			{
-				ft_putendl_fd(" | heredoc", 1);
+				ft_putendl_fd(" : heredoc", 1);
 				flag = 1;
 				heredoc = 1;
 			}
 			else if (i == 1)
 			{
-				ft_putendl_fd(" | redirect", 1);
+				ft_putendl_fd(" : redirect", 1);
 				flag = 1;
 			}
 		}
@@ -107,15 +124,15 @@ void	lekpan(char *line, t_info *status)
 				i++;
 			}
 			if (2 < i || flag)
-				ft_putendl_fd(" | syntax error near unexpected token `>'", 1);
+				ft_putendl_fd(" : syntax error near unexpected token `>'", 1);
 			else if (i == 2)
 			{
-				ft_putendl_fd(" | re:heredoc", 1);
+				ft_putendl_fd(" : re:heredoc", 1);
 				flag = 1;
 			}
 			else if (i == 1)
 			{
-				ft_putendl_fd(" | re:redirect", 1);
+				ft_putendl_fd(" : re:redirect", 1);
 				flag = 1;
 			}
 		}
@@ -127,11 +144,14 @@ void	lekpan(char *line, t_info *status)
 				i++;
 			}
 			if (1 < i)
-				ft_putendl_fd(" | syntax error near unexpected token `|'", 1);
+			{
+				ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+			}
 			else if (i == 1)
 			{
-				ft_putendl_fd(" | pipe", 1);
+				ft_putendl_fd(" : pipe", 1);
 				flag = 1;
+				command = 0;
 			}
 		}
 		else if (value == 7)// "
@@ -146,7 +166,7 @@ void	lekpan(char *line, t_info *status)
 		}
 		else
 		{
-			ft_printf("%c | else\n", *line);
+			ft_printf("%c : else\n", *line);
 			line++;
 		}
 		line += i;
