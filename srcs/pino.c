@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 18:48:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/08/23 20:00:56 by hhino            ###   ########.fr       */
+/*   Updated: 2023/08/24 11:58:46 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "pipex.h"
 
 void	put_to_list(char *str, t_stack *stack);
+void	init_stack(t_info *info);
 
 void	check_line(char *line, t_info *status)
 {
@@ -24,6 +25,7 @@ void	check_line(char *line, t_info *status)
 	t_stack	*stack;
 
 	i = 0;
+	init_stack(&status);
 	stack = status->stack;
 	if (line && *line)
 		add_history(line);
@@ -45,6 +47,16 @@ void	check_line(char *line, t_info *status)
 	split_free(splited_pipe);
 }
 
+void	init_stack(t_info *status)
+{
+	status->stack->outputlist = NULL;
+	status->stack->appendlist = NULL;
+	status->stack->inputlist = NULL;
+	status->stack->heredoclist = NULL;
+	status->stack->cmdlist = NULL;
+	status->stack->next = NULL;
+}
+
 void	put_to_list(char *line, t_stack *stack)
 {
 	int		i;
@@ -57,35 +69,38 @@ void	put_to_list(char *line, t_stack *stack)
 	i = 0;
 	while (split_line[i] != NULL)
 	{
-		if (ft_memcmp(split_line[i], ">"))
+		if (ft_memcmp(split_line[i], ">", 2))
 		{
 			in_fd = open(split_line[i + 1], O_RDONLY, 0644);
 			if (in_fd == -1)
 				ex_exit(NULL);
-			//push_back
-
+			i++;
+			close(split_line[i]);
+			push_back(stack->outputlist, split_line[i]);
 		}
-		if (ft_memcmp(split_line[i], ">>"))
+		else if (ft_memcmp(split_line[i], ">>", 3))
 		{
 			in_fd = open(split_line[i + 1], O_RDONLY, 0644);
 			if (in_fd == -1)
 				ex_exit(NULL);
-			//push_back
+			i++;
+			close(split_line[i]);
+			push_back(stack->appendlist, split_line[i]);
 		}
-		if (ft_memcmp(split_line[i], "<"))
+		else if (ft_memcmp(split_line[i], "<", 2))
 		{
 			out_fd = open(split_line[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 			if (out_fd == -1)
 				ex_exit(NULL);
-			//push_back
+			i++;
+			close(split_line[i]);
+			push_back(stack->inputlist, split_line[i]);
 		}
-		//if (ft_memcmp(split_line[i], "<<"))
+		//if (ft_memcmp(split_line[i], "<<", 3))
 			//??;
 		else
-		{
-			//listnewしてpush_backする
-			stack->cmdlist->cmd = split_line[i];
-		}
+			push_back(stack->cmdlist, split_line[i]);
 		i++;
 	}
+	split_free(split_line);
 }

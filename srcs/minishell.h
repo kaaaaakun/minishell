@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/23 19:26:19 by hhino            ###   ########.fr       */
+/*   Updated: 2023/08/24 11:42:18 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,43 +30,19 @@ typedef struct s_info
 
 typedef struct s_stack
 {
-	struct s_outputlist		*outputlist;	//>
-	struct s_appendlist		*appendlist;	//>>
-	struct s_inputlist		*inputlist;		//<
-	struct s_heredoclist	*heredoclist;	//<<
-	struct s_cmdlist		*cmdlist;
-	struct s_stack			*next;
+	struct s_list		*outputlist;	//>
+	struct s_list		*appendlist;	//>>
+	struct s_list		*inputlist;		//<
+	struct s_list		*heredoclist;	//<<
+	struct s_list		*cmdlist;
+	struct s_stack		*next;
 }	t_stack;
 
-typedef struct s_outputlist
+typedef struct s_list
 {
-	char					*output;
-	struct s_outputlist		*next;
-}	t_outputlist;
-
-typedef struct s_appendlist
-{
-	char					*append;
-	struct s_appendlist		*next;
-}	t_appendlist;
-
-typedef struct s_inputlist
-{
-	char					*input;
-	struct s_inputlist		*next;
-}	t_inputlist;
-
-typedef struct s_heredoclist
-{
-	char						*heredoc;
-	struct s_heredoclist		*next;
-}	t_heredoclist;
-
-typedef struct s_cmdlist
-{
-	char				*cmd;
-	struct s_cmdlist	*next;
-}	t_cmdlist;
+	char				*content;
+	struct s_list		*next;
+}	t_list;
 
 
 void	check_command(char *line, int pipe_flag, t_info *status);
@@ -82,7 +58,11 @@ void	ex_cd(char **split);
 void	ex_pwd(void);
 void	ex_execve(char **command, int pipe_flag, t_info *status);
 
-
+//list.c
+t_stack	*create_list(char *str);
+void	push_back(t_list **head, char *str);
+//pino.c
+void	init_stack(t_info *status);
 
 void	add_sigaction(void);
 void	line_read(void);
