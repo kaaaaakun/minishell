@@ -116,7 +116,7 @@ void	put_to_list(char *line, t_stack *stack)
 		}
 		else if (ft_memcmp(split_line[i], "<", 2))
 		{
-			out_fd = open(split_line[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			out_fd = open(split_line[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);//(か)0777は正確ではないので、変えた方がいいかも
 			if (out_fd == -1)
 				ex_exit(NULL);
 			i++;

@@ -66,5 +66,7 @@ void	init_stack(t_info *status);
 
 void	add_sigaction(void);
 void	line_read(void);
-int		main(void);
+
+//lexar.c
+void	lekpan(char *line, t_info *status);
 #endif

@@ -30,6 +30,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		heredoc.c \
 		add_sigaction.c \
 		execve.c \
+		lexar.c \
 		getpath.c \
 		pipex_utils.c \
 		)
@@ -97,6 +98,6 @@ re: fclean all
 #	make WITH_DEBUG=1
 
 $(LIBFT):
-	make -C $(LIBFT_DIR) all -lreadline
+	make bonus -C $(LIBFT_DIR) all -lreadline
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
