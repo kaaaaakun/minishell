@@ -25,6 +25,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		cd.c \
 		pwd.c \
 		env.c \
+		make_env_list.c \
 		export.c \
 		unset.c \
 		heredoc.c \

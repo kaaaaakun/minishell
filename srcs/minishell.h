@@ -41,7 +41,9 @@ typedef struct s_stack
 typedef struct s_info
 {
 	int				pid;
+	int				error;
 	int				exec_count;
+	t_libft_list	*env;
 	struct s_stack	*stack;
 }	t_info;
 
@@ -69,4 +71,5 @@ void	line_read(void);
 
 //lexar.c
 void	lekpan(char *line, t_info *status);
+void	make_env_list(t_info *status, char *env[]);
 #endif

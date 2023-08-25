@@ -50,6 +50,8 @@ void	lekpan(char *line, t_info *status)
 	flag = 0;
 	command = 0;
 	heredoc = 0;
+	if (*line == '\0')
+		return ;
 	while(*line != '\0')
 	{
 		i = 0;
@@ -157,7 +159,7 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (1 < i)
+			if (1 < i || command == 0)
 			{
 				ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
 			}
@@ -189,6 +191,8 @@ void	lekpan(char *line, t_info *status)
 				ft_putendl_fd(" \"syntax error `\"'", 1);
 	else if (quote_f == 2)
 				ft_putendl_fd(" \"syntax error `\''", 1);
+	else if (command == 0)
+				ft_putendl_fd(" \"syntax error `|'", 1);
 	(void)status;
 	(void)i;
 }

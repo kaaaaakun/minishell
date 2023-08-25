@@ -13,6 +13,10 @@
 #include "minishell.h"
 #include "pipex.h"
 
+void print_data(void *data) {
+    ft_printf("%s\n", (char *)data);
+}
+
 void	wait_process(t_info *info_status)
 {
 	int	i;
@@ -64,9 +68,9 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 void	check_line(char *line, t_info *status)
 {
 	ft_putstr_fd("[check_line]", 1);
-	int		i;
+//	int		i;
 	int		pipe_flag;;
-	char	**splited_pipe;
+//	char	**splited_pipe;
 
 	if (line && *line)
 		add_history(line);
@@ -89,20 +93,19 @@ void	check_line(char *line, t_info *status)
 		rl_on_new_line();
 	}
 	pipe_flag = 1;
-	splited_pipe = ft_split(line, '|');
-	i = 0;
+//	splited_pipe = ft_split(line, '|');
+//	i = 0;
 	lekpan(line, status);
-	while (splited_pipe[i] != NULL)
-	{
-		ft_printf("[pipe:%d]\n",i);
-		if (splited_pipe[i + 1] == NULL)
-			pipe_flag = 0;
-	//lekpan(splited_pipe[i], status);
-//		check_command((char *)splited_pipe[i], pipe_flag, status);
-		i++;
-	}
+//	ft_lstiter(status->env, print_data); listの中身を全て表示するやるやつ
+//	while (splited_pipe[i] != NULL)
+//	{
+//		ft_printf("[pipe:%d]\n",i);
+//		if (splited_pipe[i + 1] == NULL)
+//			pipe_flag = 0;
+//		i++;
+//	}
 	wait_process(status);
-	split_free(splited_pipe);
+//	split_free(splited_pipe);
 	(void)pipe_flag;
 }
 
@@ -118,6 +121,8 @@ int	main(int argc, char *argv[], char *env[])
 	if (!status)
 		ex_exit(NULL);
 	status->exec_count = 0;
+	status->error = 0;
+	make_env_list(status, env);
 	while (1)
 	{
 		line = readline("[readline]>> ");
