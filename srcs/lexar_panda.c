@@ -23,6 +23,20 @@ int	analysis_char(char c)
 	return(0);
 }
 
+int	is_function_word(char c)
+{
+	int	value;
+
+	value = analysis_char(c);
+	if (value == 3)
+		return (1);
+	if (value == 4)
+		return (1);
+	if (value == 6)
+		return (1);
+	return (0);
+}
+
 void	lekpan(char *line, t_info *status)
 {
 	int	quote_f;

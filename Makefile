@@ -30,7 +30,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		heredoc.c \
 		add_sigaction.c \
 		execve.c \
-		lexar.c \
+		lexar_panda.c \
 		getpath.c \
 		pipex_utils.c \
 		)
