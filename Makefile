@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/24 19:14:32 by hhino            ###   ########.fr        #
+#    Updated: 2023/08/26 17:47:45 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,22 +36,8 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		pipex_utils.c \
 		)
 
-#SRCS = $(addprefix $(SRCS_DIR)/, \
-#		$(addprefix $(BUILTIN_DIR) \
-#		main.c \
-#		exit.c \
-#		echo.c \
-#		cd.c \
-#		pwd.c \
-#		env.c \
-#		export.c \
-#		unset.c \
-#		add_sigaction.c \
-#		)
-#		)
-
 OBJS = $(SRCS:.c=.o)
-#OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
+# OBJS	= $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 CC		= cc
 CFLAGS  = -I./libft-puls -I./srcs
