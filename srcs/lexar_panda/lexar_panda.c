@@ -191,9 +191,9 @@ void	lekpan(char *line, t_info *status)
 				ft_putendl_fd(" \"syntax error `\"'", 1);
 	if (flag == 1)
 				ft_putendl_fd(" \"syntax error `< << > >>'", 1);
-	else if (quote_f == 2)
+	if (quote_f == 2)
 				ft_putendl_fd(" \"syntax error `\''", 1);
-	else if (command == 0)
+	if (command == 0)
 				ft_putendl_fd(" \"syntax error `|'", 1);
 	(void)status;
 	(void)i;

@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/26 17:47:45 by hhino            ###   ########.fr        #
+#    Updated: 2023/08/26 19:49:16 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,24 @@ BUILTIN_DIR = builtin
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
-		exit.c \
-		echo.c \
-		cd.c \
-		pwd.c \
-		env.c \
-		make_env_list.c \
-		export.c \
-		unset.c \
-		heredoc.c \
 		add_sigaction.c \
+		$(addprefix builtin/, \
+			exit.c \
+			echo.c \
+			cd.c \
+			pwd.c \
+			env.c \
+			export.c \
+			unset.c \
+			) \
+		$(addprefix lexar_panda/, \
+			make_env_list.c \
+			replace_env.c \
+			lexar_panda.c \
+			heredoc.c \
+			getpath.c \
+			) \
 		execve.c \
-		lexar_panda.c \
-		getpath.c \
 		pipex_utils.c \
 		)
 
