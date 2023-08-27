@@ -35,18 +35,20 @@ int	is_function_word(char c)
 	if (value == 6)
 		return (1);
 	return (0);
-}
+} 
 
 void	lekpan(char *line, t_info *status)
 {
-	int	quote_f;
+	int	s_quote_f;
+	int	w_quote_f;
 	int	i;
 	int	value;
 	int	flag;
 	int	heredoc;
 	int	command;
 
-	quote_f = 0;
+	s_quote_f = 0;
+	w_quote_f = 0;
 	flag = 0;
 	command = 0;
 	heredoc = 0;
@@ -57,28 +59,54 @@ void	lekpan(char *line, t_info *status)
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		if (quote_f == 1 || quote_f == 2)// in quote
+		if (w_quote_f == 1)// in double quote
 		{
-			while (line[i] != '\"' && line[i] != '\"' && line[i] != '\0')
+			while (line[i] != '\"' && line[i] != '\0')
 			{
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (command == 0)
-			{
-				ft_putendl_fd(" : command", 1);
-				command = 1;
-			}
-			else if (heredoc == 1)
+			if (heredoc == 1)
 			{
 				heredoc = 0;
 				ft_putendl_fd(" : heredoc EOF", 1);
 			}
+			else if (command == 0)
+			{
+				ft_putendl_fd(" : command", 1);
+				command = 1;
+			}
 			else
 				ft_putendl_fd(" : flag or file", 1);
-			if (line[i] == '\'' || line[i] == '\"')
+			if (line[i] == '\"')
 			{
-				quote_f = 0;
+				w_quote_f = 0;
+				i++;
+			}
+			flag = 0;
+		}
+		else if (s_quote_f == 2)// in single quote
+		{
+			while (line[i] != '\'' && line[i] != '\0')
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (heredoc == 1)
+			{
+				heredoc = 0;
+				ft_putendl_fd(" : heredoc EOF", 1);
+			}
+			else if (command == 0)
+			{
+				ft_putendl_fd(" : command", 1);
+				command = 1;
+			}
+			else
+				ft_putendl_fd(" : flag or file", 1);
+			if (line[i] == '\'')
+			{
+				s_quote_f = 0;
 				i++;
 			}
 			flag = 0;
@@ -90,15 +118,15 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-				if (command == 0)
-				{
-					ft_putendl_fd(" : command", 1);
-					command = 1;
-				}
-				else if (heredoc == 1)
+				if (heredoc == 1)
 				{
 					heredoc = 0;
 					ft_putendl_fd(" : heredoc EOF", 1);
+				}
+				else if (command == 0)
+				{
+					ft_putendl_fd(" : command", 1);
+					command = 1;
 				}
 				else
 					ft_putendl_fd(" : flag or file", 1);
@@ -172,12 +200,12 @@ void	lekpan(char *line, t_info *status)
 		}
 		else if (value == 7)// "
 		{
-			quote_f = 1;
+			s_quote_f = 1;
 			i++;
 		}
 		else if (value == 8)// '
 		{
-			quote_f = 2;
+			w_quote_f = 1;
 			i++;
 		}
 		else
@@ -187,11 +215,11 @@ void	lekpan(char *line, t_info *status)
 		}
 		line += i;
 	}
-	if (quote_f == 1)
+	if (w_quote_f == 1)
 				ft_putendl_fd(" \"syntax error `\"'", 1);
 	if (flag == 1)
 				ft_putendl_fd(" \"syntax error `< << > >>'", 1);
-	if (quote_f == 2)
+	if (s_quote_f == 1)
 				ft_putendl_fd(" \"syntax error `\''", 1);
 	if (command == 0)
 				ft_putendl_fd(" \"syntax error `|'", 1);
