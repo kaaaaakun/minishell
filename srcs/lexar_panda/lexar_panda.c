@@ -204,15 +204,24 @@ void	lekpan(char *line, t_info *status)
 		else if (value == 5)// $
 		{
 			i++;
-			if (line[i] == ' ')
+			if (line[i] == '\0' || line[i] == ' ')
 			{
-				ft_printf("$");
+				ft_printf("$ : only\n");
 				i++;
 			}
 			else if (line[i] == '$')
 			{
-				ft_printf("PID");
+				ft_printf("$$ : PID\n");
 				i++;
+			}
+			else
+			{
+				while (line[i] != '\0' && line[i] != ' ' && line[i] != '<'  && line[i] != '>' && line[i] != '|' && line[i] != '$')
+				{
+					ft_printf("%c", line[i]);
+					i++;
+				}
+				ft_printf(" : env\n");
 			}
 		}
 		else if (value == 6)// |

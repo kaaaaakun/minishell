@@ -23,4 +23,5 @@ char	*replace_env(char *line, t_info *status)
 	return (s1);
 	(void)line;
 	(void)status;
+	(void)line_start;
 }
