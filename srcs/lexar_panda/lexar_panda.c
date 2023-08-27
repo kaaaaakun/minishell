@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexar_panda.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/08/27 18:34:59 by tokazaki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	analysis_char(char c)
@@ -35,7 +47,68 @@ int	is_function_word(char c)
 	if (value == 6)
 		return (1);
 	return (0);
-} 
+}
+
+//int	in_double_quote(char *line, int *flag, t_info *status)
+//{
+//	int	i = 0;
+//
+//	while (line[i] != '\"' && line[i] != '\0')
+//	{
+//		ft_printf("%c", line[i]);
+//		i++;
+//	}
+//	if (heredoc == 1)
+//	{
+//		heredoc = 0;
+//		ft_putendl_fd(" : heredoc EOF", 1);
+//	}
+//	else if (command == 0)
+//	{
+//		ft_putendl_fd(" : command", 1);
+//		command = 1;
+//	}
+//	else
+//		ft_putendl_fd(" : flag or file", 1);
+//	if (line[i] == '\"')
+//	{
+//		w_quote_f = 0;
+//		i++;
+//	}
+//	flag = 0;
+//	(void)status;
+//	return (i);
+//}
+//int	in_single_quote(char *line, int *flag, t_info *status)
+//{
+//	int	i = 0;
+//
+//	while (line[i] != '\"' && line[i] != '\0')
+//	{
+//		ft_printf("%c", line[i]);
+//		i++;
+//	}
+//	if (heredoc == 1)
+//	{
+//		heredoc = 0;
+//		ft_putendl_fd(" : heredoc EOF", 1);
+//	}
+//	else if (command == 0)
+//	{
+//		ft_putendl_fd(" : command", 1);
+//		command = 1;
+//	}
+//	else
+//		ft_putendl_fd(" : flag or file", 1);
+//	if (line[i] == '\"')
+//	{
+//		w_quote_f = 0;
+//		i++;
+//	}
+//	flag = 0;
+//	(void)status;
+//	return (i);
+//}
 
 void	lekpan(char *line, t_info *status)
 {
@@ -59,59 +132,7 @@ void	lekpan(char *line, t_info *status)
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		if (w_quote_f == 1)// in double quote
-		{
-			while (line[i] != '\"' && line[i] != '\0')
-			{
-				ft_printf("%c", line[i]);
-				i++;
-			}
-			if (heredoc == 1)
-			{
-				heredoc = 0;
-				ft_putendl_fd(" : heredoc EOF", 1);
-			}
-			else if (command == 0)
-			{
-				ft_putendl_fd(" : command", 1);
-				command = 1;
-			}
-			else
-				ft_putendl_fd(" : flag or file", 1);
-			if (line[i] == '\"')
-			{
-				w_quote_f = 0;
-				i++;
-			}
-			flag = 0;
-		}
-		else if (s_quote_f == 2)// in single quote
-		{
-			while (line[i] != '\'' && line[i] != '\0')
-			{
-				ft_printf("%c", line[i]);
-				i++;
-			}
-			if (heredoc == 1)
-			{
-				heredoc = 0;
-				ft_putendl_fd(" : heredoc EOF", 1);
-			}
-			else if (command == 0)
-			{
-				ft_putendl_fd(" : command", 1);
-				command = 1;
-			}
-			else
-				ft_putendl_fd(" : flag or file", 1);
-			if (line[i] == '\'')
-			{
-				s_quote_f = 0;
-				i++;
-			}
-			flag = 0;
-		}
-		else if (value == 1)// noflags
+		if (value == 1)// noflags
 		{
 			while (analysis_char(line[i]) == value)
 			{
@@ -180,6 +201,20 @@ void	lekpan(char *line, t_info *status)
 				flag = 1;
 			}
 		}
+		else if (value == 5)// $
+		{
+			i++;
+			if (line[i] == ' ')
+			{
+				ft_printf("$");
+				i++;
+			}
+			else if (line[i] == '$')
+			{
+				ft_printf("PID");
+				i++;
+			}
+		}
 		else if (value == 6)// |
 		{
 			while (analysis_char(line[i]) == value)
@@ -200,13 +235,61 @@ void	lekpan(char *line, t_info *status)
 		}
 		else if (value == 7)// "
 		{
-			s_quote_f = 1;
+			w_quote_f = 1;
 			i++;
+//			i = in_double_quote(&line[i], &flag, status);
+			while (line[i] != '\"' && line[i] != '\0')
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (heredoc == 1)
+			{
+				heredoc = 0;
+				ft_putendl_fd(" : heredoc EOF", 1);
+			}
+			else if (command == 0)
+			{
+				ft_putendl_fd(" : command", 1);
+				command = 1;
+			}
+			else
+				ft_putendl_fd(" : flag or file", 1);
+			if (line[i] == '\"')
+			{
+				w_quote_f = 0;
+				i++;
+			}
+			flag = 0;
 		}
 		else if (value == 8)// '
 		{
-			w_quote_f = 1;
+			s_quote_f = 1;
 			i++;
+//			i = in_single_quote(&line[i], &flag, status);
+			while (line[i] != '\'' && line[i] != '\0')
+			{
+				ft_printf("%c", line[i]);
+				i++;
+			}
+			if (heredoc == 1)
+			{
+				heredoc = 0;
+				ft_putendl_fd(" : heredoc EOF", 1);
+			}
+			else if (command == 0)
+			{
+				ft_putendl_fd(" : command", 1);
+				command = 1;
+			}
+			else
+				ft_putendl_fd(" : flag or file", 1);
+			if (line[i] == '\'')
+			{
+				s_quote_f = 0;
+				i++;
+			}
+			flag = 0;
 		}
 		else
 		{
@@ -217,10 +300,10 @@ void	lekpan(char *line, t_info *status)
 	}
 	if (w_quote_f == 1)
 				ft_putendl_fd(" \"syntax error `\"'", 1);
-	if (flag == 1)
-				ft_putendl_fd(" \"syntax error `< << > >>'", 1);
 	if (s_quote_f == 1)
 				ft_putendl_fd(" \"syntax error `\''", 1);
+	if (flag == 1)
+				ft_putendl_fd(" \"syntax error `< << | > >>'", 1);
 	if (command == 0)
 				ft_putendl_fd(" \"syntax error `|'", 1);
 	(void)status;

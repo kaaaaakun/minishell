@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/26 21:14:32 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/27 18:35:13 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 void	check_line(char *line, t_info *status)
 {
 	ft_putstr_fd("[check_line]", 1);
-//	int		i;
 	int		pipe_flag;;
-//	char	**splited_pipe;
 
 	if (line && *line)
 		add_history(line);
@@ -92,18 +90,22 @@ void	check_line(char *line, t_info *status)
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
 	}
-	pipe_flag = 1;
-//	splited_pipe = ft_split(line, '|');
-//	i = 0;
 	lekpan(line, status);
-//	ft_lstiter(status->env, print_data); listの中身を全て表示するやるやつ
-//	while (splited_pipe[i] != NULL)
-//	{
-//		ft_printf("[pipe:%d]\n",i);
-//		if (splited_pipe[i + 1] == NULL)
-//			pipe_flag = 0;
-//		i++;
-//	}
+//	ft_lstiter(status->env, print_data); //listの中身を全て表示するやるやつ
+
+//	exit (0);
+
+	pipe_flag = 1;
+	char **splited_pipe = ft_split(line, '|');
+	int	i = 0;
+	while (splited_pipe[i] != NULL)
+	{
+		ft_printf("[pipe:%d]\n",i);
+		if (splited_pipe[i + 1] == NULL)
+			pipe_flag = 0;
+		check_command(line, 0, status);
+		i++;
+	}
 	wait_process(status);
 //	split_free(splited_pipe);
 	(void)pipe_flag;
