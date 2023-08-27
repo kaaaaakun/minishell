@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/23 15:56:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/27 19:39:16 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	before_pipe(char **command, t_info *status)
 	ft_printf("[before_pipe:%s]",command[0]);
 	char		*path;
 	int			pid;
+//	int			cpy_stdin = dup(0);
 	extern char	**environ;
 	int			pipefd[2];
 
@@ -50,6 +51,8 @@ void	before_pipe(char **command, t_info *status)
 	close_ee(pipefd[1]);
 	status->exec_count++;
 	status->pid = pid;
+//	dup2(cpy_stdin, 0);
+//	close(cpy_stdin);
 }
 
 void	last_command(char **command, t_info *status)
