@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/26 19:49:16 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/08/29 21:12:03 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			getpath.c \
 			) \
 		execve.c \
+		list.c \
 		pipex_utils.c \
 		)
 

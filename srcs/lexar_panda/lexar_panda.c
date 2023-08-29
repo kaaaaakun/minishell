@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexar_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/29 20:49:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 21:29:47 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ void	lekar(char *line, t_info *status)
 	(void)status;
 }
 
-void	make_list(char *line, int len, t_list list)
+void	make_list(char *line, int len, t_list *list)
 {
+	ft_printf("make list");
 	char	*result;
-	t_list	*new;
 
 	result = ft_substr(line, 0, len);
 	if (!result)
@@ -139,17 +139,12 @@ void	make_list(char *line, int len, t_list list)
 //		info->error == 1;
 		return ;
 	}
-	new = (t_list *)ft_lstnew(result);
-	if (!new)
-	{
-//		info->error == 1;
-		return ;
-	}
-	ft_lstadd_back(&(t_libft_list *)list, new);
+	push_back(&list, result);
 }
 
 char	*serch_env(t_info *status, char *str)
 {
+	ft_printf("[serch_env]");
 	t_list	*env;
 	char	*serched_word;
 	int		len;
@@ -158,7 +153,8 @@ char	*serch_env(t_info *status, char *str)
 	serched_word = ft_strjoin(str, "=");
 	//status->error
 	len = ft_strlen(serched_word);
-	while (env->next == NULL)
+	ft_printf("[%s:%d]",serched_word,len);
+	while (env->next != NULL)
 	{
 		if (ft_strncmp(env->content, serched_word, len) == 0)
 			break ;
@@ -268,12 +264,12 @@ void	panda(char *line, t_info *status)
 			else if (i == 2)
 			{
 				ft_putendl_fd(" : re:heredoc", 1);
-				flag = flag | RE_HEREDOC;	
+				flag = flag | RE_HEREDOC;
 			}
 			else if (i == 1)
 			{
 				ft_putendl_fd(" : re:redirect", 1);
-				flag = flag | REDIRECT;	
+				flag = flag | REDIRECT;
 			}
 		}
 		else if (value == 5)// $
@@ -301,15 +297,16 @@ void	panda(char *line, t_info *status)
 				char *serch_word = ft_substr(line, 0, i);
 				serch_word = serch_env(status, serch_word);
 				ft_printf("[%s]\n", serch_word);
+				int j = 0;
 				while (1)
 				{
-					while (serch_word[i] == ' ')
+					while (serch_word[j] == ' ')
 						serch_word++;
 //					i = in_single_quote(&serch_word[i], &flag, status);
-					while (serch_word[i] != ' ' && serch_word[i] != '\'' && serch_word[i] != '\0')
+					while (serch_word[j] != ' ' && serch_word[j] != '\'' && serch_word[j] != '\0')
 					{
-						ft_printf("%c", serch_word[i]);
-						i++;
+						ft_printf("%c", serch_word[j]);
+						j++;
 					}
 					if (flag & REDIRECT)
 					{
@@ -338,9 +335,9 @@ void	panda(char *line, t_info *status)
 					}
 					else if (flag & COMMAND)
 						ft_putendl_fd(" : S flag or file", 1);
-					if (serch_word[i] == '\0')
+					if (serch_word[j] == '\0')
 						break ;
-					serch_word += i;
+					serch_word += j;
 				}
 				ft_printf(" : env\n");
 			}

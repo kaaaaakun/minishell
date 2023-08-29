@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/29 20:41:29 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 21:13:52 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define HEREDOC 0x020
 # define RE_REDIRECT 0x040
 # define RE_HEREDOC 0x080
-# define NEED_FILE REDIRECT + HEREDOC + RE_REDIRECT + RE_HEREDOC 
+# define NEED_FILE REDIRECT + HEREDOC + RE_REDIRECT + RE_HEREDOC
 
 # define ERROR 0x200
 # define NOFLAG 0x400
@@ -42,7 +42,7 @@
 typedef struct s_list
 {
 	char				*content;
-	struct t_list		*next;
+	struct s_list		*next;
 }	t_list;
 
 typedef struct s_stack
@@ -60,7 +60,7 @@ typedef struct s_info
 	int				pid;
 	int				error;
 	int				exec_count;
-	t_libft_list	*env;
+	t_list			*env;
 	t_libft_list	*line;
 	struct s_stack	*stack;
 }	t_info;
@@ -79,7 +79,7 @@ void	ex_pwd(void);
 void	ex_execve(char **command, int pipe_flag, t_info *status);
 
 //list.c
-t_stack	*create_list(char *str);
+t_list	*create_list(char *str);
 void	push_back(t_list **head, char *str);
 //pino.c
 void	init_stack(t_info *status);

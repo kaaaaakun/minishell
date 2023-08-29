@@ -6,14 +6,14 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/08/29 20:49:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 21:12:50 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 
-t_stack	*create_list(char *str)
+t_list	*create_list(char *str)
 {
 	t_list	*newlist;
 
