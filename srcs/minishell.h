@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/27 18:17:18 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:58:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,23 @@
 # include <signal.h>
 # include <limits.h>
 
-# define NOMAL 0x0
+//
+# define INITIAL 0x000
+# define AT_PIPE 0x001
+# define COMMAND 0x002
+
+# define D_QUOTE 0x004
+# define S_QUOTE 0x008
+
+# define REDIRECT 0x010
+# define HEREDOC 0x020
+# define RE_REDIRECT 0x040
+# define RE_HEREDOC 0x080
+# define NEED_FILE REDIRECT + HEREDOC + RE_REDIRECT + RE_HEREDOC 
+
+# define ERROR 0x200
+# define NOFLAG 0x400
+//
 
 typedef struct s_list
 {

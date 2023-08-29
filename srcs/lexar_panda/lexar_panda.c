@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/27 18:34:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:58:36 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='_')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -112,19 +112,11 @@ int	is_function_word(char c)
 
 void	lekpan(char *line, t_info *status)
 {
-	int	s_quote_f;
-	int	w_quote_f;
 	int	i;
 	int	value;
 	int	flag;
-	int	heredoc;
-	int	command;
 
-	s_quote_f = 0;
-	w_quote_f = 0;
-	flag = 0;
-	command = 0;
-	heredoc = 0;
+	flag = INITIAL;
 	if (*line == '\0')
 		return ;
 	while(*line != '\0')
@@ -132,26 +124,40 @@ void	lekpan(char *line, t_info *status)
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		if (value == 1)// noflags
+		if (value == 1) // noflags
 		{
-			while (analysis_char(line[i]) == value)
-			{
-				ft_printf("%c", line[i]);
-				i++;
-			}
-				if (heredoc == 1)
+				while (analysis_char(line[i]) == value)
 				{
-					heredoc = 0;
-					ft_putendl_fd(" : heredoc EOF", 1);
+					ft_printf("%c", line[i]);
+					i++;
 				}
-				else if (command == 0)
+				if (flag & REDIRECT)
+				{
+					flag = flag - REDIRECT;
+					ft_putendl_fd(" : redirect", 1);
+				}
+				else if (flag & RE_REDIRECT)
+				{
+					flag -= RE_REDIRECT;
+					ft_putendl_fd(" : RE redirect", 1);
+				}
+				else if (flag & HEREDOC)
+				{
+					flag -= HEREDOC;
+					ft_putendl_fd(" : heredoc", 1);
+				}
+				else if (flag & RE_HEREDOC)
+				{
+					flag -= RE_HEREDOC;
+					ft_putendl_fd(" : re_heredoc", 1);
+				}
+				else if (!(flag & COMMAND))
 				{
 					ft_putendl_fd(" : command", 1);
-					command = 1;
+					flag = flag | COMMAND;
 				}
 				else
 					ft_putendl_fd(" : flag or file", 1);
-			flag = 0;
 		}
 		else if (value == 2)// ' '
 		{
@@ -167,18 +173,20 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (2 < i || flag)
+			if (2 < i || (flag & NEED_FILE))
+			{
 				ft_putendl_fd(" : syntax error near unexpected token `<'", 1);
+				flag += ERROR;
+			}
 			else if (i == 2)
 			{
 				ft_putendl_fd(" : heredoc", 1);
-				flag = 1;
-				heredoc = 1;
+				flag = flag | HEREDOC;
 			}
 			else if (i == 1)
 			{
 				ft_putendl_fd(" : redirect", 1);
-				flag = 1;
+				flag = flag | REDIRECT;
 			}
 		}
 		else if (value == 4)// > >> >>>
@@ -188,17 +196,20 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (2 < i || flag)
+			if (2 < i || (flag & NEED_FILE))
+			{
 				ft_putendl_fd(" : syntax error near unexpected token `>'", 1);
+				flag += ERROR;
+			}
 			else if (i == 2)
 			{
 				ft_putendl_fd(" : re:heredoc", 1);
-				flag = 1;
+				flag = flag | RE_HEREDOC;	
 			}
 			else if (i == 1)
 			{
 				ft_putendl_fd(" : re:redirect", 1);
-				flag = 1;
+				flag = flag | REDIRECT;	
 			}
 		}
 		else if (value == 5)// $
@@ -231,20 +242,20 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (1 < i || command == 0)
+			if (1 < i || (flag & NEED_FILE) || !(flag & COMMAND))
 			{
 				ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+				flag += ERROR;
 			}
 			else if (i == 1)
 			{
 				ft_putendl_fd(" : pipe", 1);
-				flag = 1;
-				command = 0;
+				flag = AT_PIPE;
 			}
 		}
 		else if (value == 7)// "
 		{
-			w_quote_f = 1;
+			flag += D_QUOTE;
 			i++;
 //			i = in_double_quote(&line[i], &flag, status);
 			while (line[i] != '\"' && line[i] != '\0')
@@ -252,28 +263,42 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (heredoc == 1)
+			if (flag & REDIRECT)
 			{
-				heredoc = 0;
-				ft_putendl_fd(" : heredoc EOF", 1);
+				flag = flag - REDIRECT;
+				ft_putendl_fd(" : redirect", 1);
 			}
-			else if (command == 0)
+			else if (flag & RE_REDIRECT)
+			{
+				flag -= RE_REDIRECT;
+				ft_putendl_fd(" : RE redirect", 1);
+			}
+			else if (flag & HEREDOC)
+			{
+				flag -= HEREDOC;
+				ft_putendl_fd(" : heredoc", 1);
+			}
+			else if (flag & RE_HEREDOC)
+			{
+				flag -= RE_HEREDOC;
+				ft_putendl_fd(" : re_heredoc", 1);
+			}
+			else if (!(flag & COMMAND))
 			{
 				ft_putendl_fd(" : command", 1);
-				command = 1;
+				flag = flag | COMMAND;
 			}
-			else
-				ft_putendl_fd(" : flag or file", 1);
-			if (line[i] == '\"')
+			else if (flag & COMMAND)
+				ft_putendl_fd(" : D_QUOTE flag or file", 1);
+			if (line[i] == '\'')
 			{
-				w_quote_f = 0;
+				flag -= D_QUOTE;
 				i++;
 			}
-			flag = 0;
 		}
 		else if (value == 8)// '
 		{
-			s_quote_f = 1;
+			flag += S_QUOTE;
 			i++;
 //			i = in_single_quote(&line[i], &flag, status);
 			while (line[i] != '\'' && line[i] != '\0')
@@ -281,24 +306,38 @@ void	lekpan(char *line, t_info *status)
 				ft_printf("%c", line[i]);
 				i++;
 			}
-			if (heredoc == 1)
+			if (flag & REDIRECT)
 			{
-				heredoc = 0;
-				ft_putendl_fd(" : heredoc EOF", 1);
+				flag = flag - REDIRECT;
+				ft_putendl_fd(" : redirect", 1);
 			}
-			else if (command == 0)
+			else if (flag & RE_REDIRECT)
+			{
+				flag -= RE_REDIRECT;
+				ft_putendl_fd(" : RE redirect", 1);
+			}
+			else if (flag & HEREDOC)
+			{
+				flag -= HEREDOC;
+				ft_putendl_fd(" : heredoc", 1);
+			}
+			else if (flag & RE_HEREDOC)
+			{
+				flag -= RE_HEREDOC;
+				ft_putendl_fd(" : re_heredoc", 1);
+			}
+			else if (!(flag & COMMAND))
 			{
 				ft_putendl_fd(" : command", 1);
-				command = 1;
+				flag = flag | COMMAND;
 			}
-			else
-				ft_putendl_fd(" : flag or file", 1);
+			else if (flag & COMMAND)
+				ft_putendl_fd(" : S_QUOTE flag or file", 1);
 			if (line[i] == '\'')
 			{
-				s_quote_f = 0;
+				flag -= S_QUOTE;
 				i++;
 			}
-			flag = 0;
 		}
 		else
 		{
@@ -307,14 +346,15 @@ void	lekpan(char *line, t_info *status)
 		}
 		line += i;
 	}
-	if (w_quote_f == 1)
+	if (flag & D_QUOTE)
 				ft_putendl_fd(" \"syntax error `\"'", 1);
-	if (s_quote_f == 1)
+	if (flag & S_QUOTE)
 				ft_putendl_fd(" \"syntax error `\''", 1);
-	if (flag == 1)
-				ft_putendl_fd(" \"syntax error `< << | > >>'", 1);
-	if (command == 0)
+	if (flag & NEED_FILE)
+				ft_putendl_fd(" \"syntax error `< << > >>'", 1);
+	if (!(flag = COMMAND))
 				ft_putendl_fd(" \"syntax error `|'", 1);
 	(void)status;
 	(void)i;
+	ft_printf("\n%u\n",flag);
 }
