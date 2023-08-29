@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/28 16:58:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 20:41:29 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_info
 	int				error;
 	int				exec_count;
 	t_libft_list	*env;
+	t_libft_list	*line;
 	struct s_stack	*stack;
 }	t_info;
 
@@ -87,6 +88,7 @@ void	add_sigaction(void);
 void	line_read(void);
 
 //lexar.c
-void	lekpan(char *line, t_info *status);
+void	lekar(char *line, t_info *status);
+void	panda(char *line, t_info *status);
 void	make_env_list(t_info *status, char *env[]);
 #endif

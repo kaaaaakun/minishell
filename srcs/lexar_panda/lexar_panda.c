@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/28 16:58:36 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 20:49:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,68 @@ int	is_function_word(char c)
 //	(void)status;
 //	return (i);
 //}
+void	lekar(char *line, t_info *status)
+{
+	int	i;
 
-void	lekpan(char *line, t_info *status)
+	i = 0;
+	while (line[i] != '\0' && line[i] != ' ')
+		line++;
+	while (line[i] != '\0')
+	{
+		while (line[i] != '\0' && line[i] != ' ' && line[i] != '<'  && line[i] != '>' && line[i] != '|' && line[i] != '$')
+			i++;
+
+		while (line[i] != '\0' && line[i] != ' ')
+			line++;
+	}
+	(void)line;
+	(void)status;
+}
+
+void	make_list(char *line, int len, t_list list)
+{
+	char	*result;
+	t_list	*new;
+
+	result = ft_substr(line, 0, len);
+	if (!result)
+	{
+//		info->error == 1;
+		return ;
+	}
+	new = (t_list *)ft_lstnew(result);
+	if (!new)
+	{
+//		info->error == 1;
+		return ;
+	}
+	ft_lstadd_back(&(t_libft_list *)list, new);
+}
+
+char	*serch_env(t_info *status, char *str)
+{
+	t_list	*env;
+	char	*serched_word;
+	int		len;
+
+	env = status->env;
+	serched_word = ft_strjoin(str, "=");
+	//status->error
+	len = ft_strlen(serched_word);
+	while (env->next == NULL)
+	{
+		if (ft_strncmp(env->content, serched_word, len) == 0)
+			break ;
+		env = env->next;
+	}
+	if (ft_strncmp(env->content, serched_word, len) != 0)
+		return (NULL);
+	return (&env->content[len]);
+
+}
+
+void	panda(char *line, t_info *status)
 {
 	int	i;
 	int	value;
@@ -135,41 +195,45 @@ void	lekpan(char *line, t_info *status)
 				{
 					flag = flag - REDIRECT;
 					ft_putendl_fd(" : redirect", 1);
+					//make_list(line, i, status->inputlist);
 				}
 				else if (flag & RE_REDIRECT)
 				{
 					flag -= RE_REDIRECT;
 					ft_putendl_fd(" : RE redirect", 1);
+					//make_list(line, i, status->oututlist);
 				}
 				else if (flag & HEREDOC)
 				{
 					flag -= HEREDOC;
 					ft_putendl_fd(" : heredoc", 1);
+					//make_list(line, i, status->heredoclist);
 				}
 				else if (flag & RE_HEREDOC)
 				{
 					flag -= RE_HEREDOC;
 					ft_putendl_fd(" : re_heredoc", 1);
+					//make_list(line, i, status->appendlist);
 				}
 				else if (!(flag & COMMAND))
 				{
 					ft_putendl_fd(" : command", 1);
 					flag = flag | COMMAND;
+					//make_list(line, i, status->heredoclist);
 				}
 				else
 					ft_putendl_fd(" : flag or file", 1);
+					//make_list(line, i, status->cmdlist);
 		}
 		else if (value == 2)// ' '
 		{
 			while (analysis_char(line[i]) == value)
-			{
 				i++;
-			}
 		}
 		else if (value == 3)// < << <<<
 		{
 			while (analysis_char(line[i]) == value)
-		{
+			{
 				ft_printf("%c", line[i]);
 				i++;
 			}
@@ -214,15 +278,17 @@ void	lekpan(char *line, t_info *status)
 		}
 		else if (value == 5)// $
 		{
-			i++;
+			line++;
 			if (line[i] == '\0' || line[i] == ' ')
 			{
-				ft_printf("$ : only\n");
+				ft_printf("$ : $ only\n");
+				//make_list("$", 1, status->cmdlist);
 				i++;
 			}
 			else if (line[i] == '$')
 			{
 				ft_printf("$$ : PID\n");
+				//make_list("$$", 2, status->cmdlist);
 				i++;
 			}
 			else
@@ -231,6 +297,50 @@ void	lekpan(char *line, t_info *status)
 				{
 					ft_printf("%c", line[i]);
 					i++;
+				}
+				char *serch_word = ft_substr(line, 0, i);
+				serch_word = serch_env(status, serch_word);
+				ft_printf("[%s]\n", serch_word);
+				while (1)
+				{
+					while (serch_word[i] == ' ')
+						serch_word++;
+//					i = in_single_quote(&serch_word[i], &flag, status);
+					while (serch_word[i] != ' ' && serch_word[i] != '\'' && serch_word[i] != '\0')
+					{
+						ft_printf("%c", serch_word[i]);
+						i++;
+					}
+					if (flag & REDIRECT)
+					{
+						flag = flag - REDIRECT;
+						ft_putendl_fd(" : S redirect", 1);
+					}
+					else if (flag & RE_REDIRECT)
+					{
+						flag -= RE_REDIRECT;
+						ft_putendl_fd(" : S RE redirect", 1);
+					}
+					else if (flag & HEREDOC)
+					{
+						flag -= HEREDOC;
+						ft_putendl_fd(" : S heredoc", 1);
+					}
+					else if (flag & RE_HEREDOC)
+					{
+						flag -= RE_HEREDOC;
+						ft_putendl_fd(" : S re_heredoc", 1);
+					}
+					else if (!(flag & COMMAND))
+					{
+						ft_putendl_fd(" : S command", 1);
+						flag = flag | COMMAND;
+					}
+					else if (flag & COMMAND)
+						ft_putendl_fd(" : S flag or file", 1);
+					if (serch_word[i] == '\0')
+						break ;
+					serch_word += i;
 				}
 				ft_printf(" : env\n");
 			}
@@ -258,85 +368,105 @@ void	lekpan(char *line, t_info *status)
 			flag += D_QUOTE;
 			i++;
 //			i = in_double_quote(&line[i], &flag, status);
-			while (line[i] != '\"' && line[i] != '\0')
+			while(1)
 			{
-				ft_printf("%c", line[i]);
-				i++;
-			}
-			if (flag & REDIRECT)
-			{
-				flag = flag - REDIRECT;
-				ft_putendl_fd(" : redirect", 1);
-			}
-			else if (flag & RE_REDIRECT)
-			{
-				flag -= RE_REDIRECT;
-				ft_putendl_fd(" : RE redirect", 1);
-			}
-			else if (flag & HEREDOC)
-			{
-				flag -= HEREDOC;
-				ft_putendl_fd(" : heredoc", 1);
-			}
-			else if (flag & RE_HEREDOC)
-			{
-				flag -= RE_HEREDOC;
-				ft_putendl_fd(" : re_heredoc", 1);
-			}
-			else if (!(flag & COMMAND))
-			{
-				ft_putendl_fd(" : command", 1);
-				flag = flag | COMMAND;
-			}
-			else if (flag & COMMAND)
-				ft_putendl_fd(" : D_QUOTE flag or file", 1);
-			if (line[i] == '\'')
-			{
-				flag -= D_QUOTE;
-				i++;
+				while (line[i] != '$' && line[i] != '\"' && line[i] != ' ' && line[i] != '\0')
+				{
+					ft_printf("%c", line[i]);
+					i++;
+				}
+				if (line[i] != '$')
+				{
+					ft_putendl_fd(" : $展開", 1);
+				}
+				else if (flag & REDIRECT)
+				{
+					flag = flag - REDIRECT;
+					ft_putendl_fd(" : Dquote redirect", 1);
+				}
+				else if (flag & RE_REDIRECT)
+				{
+					flag -= RE_REDIRECT;
+					ft_putendl_fd(" : Dquote RE redirect", 1);
+				}
+				else if (flag & HEREDOC)
+				{
+					flag -= HEREDOC;
+					ft_putendl_fd(" : Dquote heredoc", 1);
+				}
+				else if (flag & RE_HEREDOC)
+				{
+					flag -= RE_HEREDOC;
+					ft_putendl_fd(" : Dquote re_heredoc", 1);
+				}
+				else if (!(flag & COMMAND))
+				{
+					ft_putendl_fd(" : Dquote command", 1);
+					flag = flag | COMMAND;
+				}
+				else if (flag & COMMAND)
+					ft_putendl_fd(" : Dquote flag or file", 1);
+				if (line[i] == '\"')
+				{
+					flag -= D_QUOTE;
+					i++;
+					break ;
+				}
+				else if (line[i] == ' ')
+					i++;
+				else if (line[i] == '\0')
+					break ;
 			}
 		}
 		else if (value == 8)// '
 		{
 			flag += S_QUOTE;
 			i++;
-//			i = in_single_quote(&line[i], &flag, status);
-			while (line[i] != '\'' && line[i] != '\0')
+			while (1)
 			{
-				ft_printf("%c", line[i]);
-				i++;
-			}
-			if (flag & REDIRECT)
-			{
-				flag = flag - REDIRECT;
-				ft_putendl_fd(" : redirect", 1);
-			}
-			else if (flag & RE_REDIRECT)
-			{
-				flag -= RE_REDIRECT;
-				ft_putendl_fd(" : RE redirect", 1);
-			}
-			else if (flag & HEREDOC)
-			{
-				flag -= HEREDOC;
-				ft_putendl_fd(" : heredoc", 1);
-			}
-			else if (flag & RE_HEREDOC)
-			{
-				flag -= RE_HEREDOC;
-				ft_putendl_fd(" : re_heredoc", 1);
-			}
-			else if (!(flag & COMMAND))
-			{
-				ft_putendl_fd(" : command", 1);
-				flag = flag | COMMAND;
-			}
-			else if (flag & COMMAND)
-				ft_putendl_fd(" : S_QUOTE flag or file", 1);
-			if (line[i] == '\'')
-			{
-				flag -= S_QUOTE;
-				i++;
+//				i = in_single_quote(&line[i], &flag, status);
+				while (line[i] != ' ' && line[i] != '\'' && line[i] != '\0')
+				{
+					ft_printf("%c", line[i]);
+					i++;
+				}
+				if (flag & REDIRECT)
+				{
+					flag = flag - REDIRECT;
+					ft_putendl_fd(" : S redirect", 1);
+				}
+				else if (flag & RE_REDIRECT)
+				{
+					flag -= RE_REDIRECT;
+					ft_putendl_fd(" : S RE redirect", 1);
+				}
+				else if (flag & HEREDOC)
+				{
+					flag -= HEREDOC;
+					ft_putendl_fd(" : S heredoc", 1);
+				}
+				else if (flag & RE_HEREDOC)
+				{
+					flag -= RE_HEREDOC;
+					ft_putendl_fd(" : S re_heredoc", 1);
+				}
+				else if (!(flag & COMMAND))
+				{
+					ft_putendl_fd(" : S command", 1);
+					flag = flag | COMMAND;
+				}
+				else if (flag & COMMAND)
+					ft_putendl_fd(" : S flag or file", 1);
+				if (line[i] == '\"')
+				{
+					flag -= S_QUOTE;
+					i++;
+					break ;
+				}
+				else if (line[i] == ' ')
+					i++;
+				else if (line[i] == '\0')
+					break ;
 			}
 		}
 		else

@@ -3,22 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/27 19:36:16 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/27 20:26:18 by tokazaki         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/27 19:25:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/08/29 20:49:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +82,11 @@ void	check_line(char *line, t_info *status)
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
 	}
-	lekpan(line, status);
-//	ft_lstiter(status->env, print_data); //listの中身を全て表示するやるやつ
+	lekar(line, status);
+	panda(line, status);
+	//	ft_lstiter(status->env, print_data); //listの中身を全て表示するやるやつ
 
-//exit (0);
+	//exit (0);
 
 	pipe_flag = 1;
 	char **splited_pipe = ft_split(line, '|');
