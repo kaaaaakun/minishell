@@ -130,7 +130,7 @@ void	lekar(char *line, t_info *status)
 
 void	make_list(char *line, int len, t_list *list)
 {
-	ft_printf("make list");
+	ft_printf("[make list]");
 	char	*result;
 
 	result = ft_substr(line, 0, len);
@@ -168,6 +168,7 @@ char	*serch_env(t_info *status, char *str)
 
 void	panda(char *line, t_info *status)
 {
+	ft_printf("[panda]");
 	int	i;
 	int	value;
 	int	flag;
@@ -180,6 +181,7 @@ void	panda(char *line, t_info *status)
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
+		ft_printf("[panda:%c:%d]",*line,value);
 		if (value == 1) // noflags
 		{
 				while (analysis_char(line[i]) == value)
@@ -367,12 +369,12 @@ void	panda(char *line, t_info *status)
 //			i = in_double_quote(&line[i], &flag, status);
 			while(1)
 			{
-				while (line[i] != '$' && line[i] != '\"' && line[i] != ' ' && line[i] != '\0')
+				while (line[i] != '$' && line[i] != '\"' && line[i] != '\0')
 				{
 					ft_printf("%c", line[i]);
 					i++;
 				}
-				if (line[i] != '$')
+				if (line[i] == '$')
 				{
 					ft_putendl_fd(" : $展開", 1);
 				}
@@ -409,8 +411,6 @@ void	panda(char *line, t_info *status)
 					i++;
 					break ;
 				}
-				else if (line[i] == ' ')
-					i++;
 				else if (line[i] == '\0')
 					break ;
 			}
@@ -419,10 +419,8 @@ void	panda(char *line, t_info *status)
 		{
 			flag += S_QUOTE;
 			i++;
-			while (1)
-			{
 //				i = in_single_quote(&line[i], &flag, status);
-				while (line[i] != ' ' && line[i] != '\'' && line[i] != '\0')
+				while (line[i] != '\'' && line[i] != '\0')
 				{
 					ft_printf("%c", line[i]);
 					i++;
@@ -454,17 +452,14 @@ void	panda(char *line, t_info *status)
 				}
 				else if (flag & COMMAND)
 					ft_putendl_fd(" : S flag or file", 1);
-				if (line[i] == '\"')
+				if (line[i] == '\'')
 				{
 					flag -= S_QUOTE;
 					i++;
 					break ;
 				}
-				else if (line[i] == ' ')
-					i++;
 				else if (line[i] == '\0')
 					break ;
-			}
 		}
 		else
 		{

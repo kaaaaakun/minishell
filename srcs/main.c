@@ -82,7 +82,7 @@ void	check_line(char *line, t_info *status)
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
 	}
-	lekar(line, status);
+//	lekar(line, status);
 	panda(line, status);
 	//	ft_lstiter(status->env, print_data); //listの中身を全て表示するやるやつ
 
