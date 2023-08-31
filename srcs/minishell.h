@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/29 21:13:52 by hhino            ###   ########.fr       */
+/*   Updated: 2023/08/31 13:16:05 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 # define D_QUOTE 0x004
 # define S_QUOTE 0x008
 
-# define REDIRECT 0x010
+# define INPUT_REDIRECT 0x010
 # define HEREDOC 0x020
-# define RE_REDIRECT 0x040
-# define RE_HEREDOC 0x080
-# define NEED_FILE REDIRECT + HEREDOC + RE_REDIRECT + RE_HEREDOC
+# define OUTPUT_REDIRECT 0x040
+# define APPENDDOC 0x080
+# define NEED_FILE INPUT_REDIRECT + HEREDOC + OUTPUT_REDIRECT + APPENDDOC
 
 # define ERROR 0x200
 # define NOFLAG 0x400
