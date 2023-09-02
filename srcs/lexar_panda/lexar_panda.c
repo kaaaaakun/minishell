@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 18:57:06 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:28:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	in_single_quote(char *line, int *flag, t_info *status)
 	{
 		while (line[len] != '\'' && line[len] != '\0')
 		{
-			//make_list(line, len, list);
 			ft_printf("%c", line[len]);
 			len++;
 		}
@@ -200,16 +199,17 @@ void	panda(char *line, t_info *status)
 	int	i;
 	int	value;
 	int	flag;
+	t_stack	*data;
 
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
+	data = (t_stack *)malloc(sizeof(t_stack) * 1);
 	while(*line != '\0')
 	{
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		ft_printf("[panda:%c:%d]",*line,value);
 		if (value == 1) // noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
@@ -222,35 +222,35 @@ void	panda(char *line, t_info *status)
 				{
 					flag = flag - INPUT_REDIRECT;
 					ft_putendl_fd(" : redirect", 1);
-					//make_list(line, i, status->inputlist);
+					make_list(line, i, data->inputlist);
 				}
 				else if (flag & OUTPUT_REDIRECT)
 				{
 					flag -= OUTPUT_REDIRECT;
 					ft_putendl_fd(" : RE redirect", 1);
-					//make_list(line, i, status->oututlist);
+					make_list(line, i, data->outputlist);
 				}
 				else if (flag & HEREDOC)
 				{
 					flag -= HEREDOC;
 					ft_putendl_fd(" : heredoc", 1);
-					//make_list(line, i, status->heredoclist);
+					make_list(line, i, data->heredoclist);
 				}
 				else if (flag & APPENDDOC)
 				{
 					flag -= APPENDDOC;
 					ft_putendl_fd(" : append", 1);
-					//make_list(line, i, status->appendlist);
+					make_list(line, i, data->appendlist);
 				}
 				else if (!(flag & COMMAND))
 				{
 					ft_putendl_fd(" : command", 1);
 					flag = flag | COMMAND;
-					//make_list(line, i, status->heredoclist);
+					make_list(line, i, data->heredoclist);
 				}
 				else
 					ft_putendl_fd(" : flag or file", 1);
-					//make_list(line, i, status->cmdlist);
+					make_list(line, i, data->cmdlist);
 		}
 		else if (value == 2)// ' '
 		{
@@ -312,13 +312,13 @@ void	panda(char *line, t_info *status)
 			if (line[i] == '\0' || line[i] == ' ')
 			{
 				ft_printf("$ : $ only\n");
-				//make_list("$", 1, status->cmdlist);
+				make_list("$", 1, data->cmdlist);
 				i++;
 			}
 			else if (line[i] == '$')
 			{
 				ft_printf("$$ : PID\n");
-				//make_list("$$", 2, status->cmdlist);
+				make_list("$$", 2, data->cmdlist);
 				i++;
 			}
 			else
