@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/31 20:44:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:57:06 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,8 @@ char	*serch_env(t_info *status, char *str)
 	int		len;
 
 	env = status->env;
+	if (!env)
+		return (NULL);
 	serched_word = ft_strjoin(str, "=");
 	//status->error
 	len = ft_strlen(serched_word);
@@ -190,12 +192,11 @@ char	*serch_env(t_info *status, char *str)
 	if (ft_strncmp(env->content, serched_word, len) != 0)
 		return (NULL);
 	return (&env->content[len]);
-
 }
 
 void	panda(char *line, t_info *status)
 {
-	ft_printf("[panda]");
+//	ft_printf("[panda]");
 	int	i;
 	int	value;
 	int	flag;
@@ -338,11 +339,14 @@ void	panda(char *line, t_info *status)
 				}
 				while (j < i)
 				{
-					while (line[j] != '$' && line[j] != '\0')
+					while (line[j] != '$' && j < i)
+					{
+						ft_printf("%c", line[j]);
 						j++;
+					}
 					if (k == 0)
 					{
-						pre_word = ft_substr(&line[l], 0, j);
+						pre_word = ft_substr(&line[l], 0, j - l);
 						pre_word = serch_env(status, pre_word);
 						if (pre_word != NULL)
 							k++;
@@ -351,25 +355,23 @@ void	panda(char *line, t_info *status)
 					{
 						serch_word = ft_substr(&line[l], 0, j - l);
 						serch_word = serch_env(status, serch_word);
-						if (pre_word != NULL)
+						if (serch_word != NULL)
 							pre_word = ft_strjoin(pre_word, serch_word);
 					}
-					ft_printf("j:%s\n", line[j]);
-					ft_printf("l:%s\n", line[l]);
 					j++;
 					l = j;
+					ft_printf("[j:%d/i:%d/k:%d/l:%d]\n",j,i,k,l);
 				}
 				serch_word = pre_word;
-				ft_printf("[j:%d/i:%d/k:%d/l:%d]",j,i,k,l);
 
 				j = 0;
 				while (1)
 				{
-//					if (!serch_word)
-//					{
-//						ft_printf("[env.skip]");
-//						break ;
-//					}
+					if (!serch_word)
+					{
+						ft_printf("[env.skip]");
+						break ;
+					}
 					while (serch_word[j] == ' ')
 						serch_word++;
 					while (serch_word[j] != ' ' && serch_word[j] != '\0')
