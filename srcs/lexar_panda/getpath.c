@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   getpath.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/29 20:00:02 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:30:53 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "pipex.h"
 
 void	malloc_error(void)
@@ -18,15 +19,13 @@ void	malloc_error(void)
 	exit (1);
 }
 
-char	**getpath(char **env)
+char	**getpath(t_info *status)
 {
 	char	**path;
-	int		i;
+	char	*long_path;
 
-	i = 0;
-	while (ft_strncmp(env[i], "PATH=", 5) != 0)
-		i++;
-	path = ft_split(&env[i][5], ':');
+	long_path = serch_env(status, "PATH");
+	path = ft_split(long_path, ':');
 	if (!path)
 		return (NULL);
 	return (path);
@@ -54,7 +53,7 @@ char	*check_path(char *command, char **path)
 	exit (1);
 }
 
-char	*check_access(char *command, char **env)
+char	*check_access(char *command, t_info *status)
 {
 	if (!command)
 		return (NULL);
@@ -62,5 +61,5 @@ char	*check_access(char *command, char **env)
 		return (ft_strtrim(command, "./"));
 	else if (access(command, X_OK) == 0)
 		return (command);
-	return (check_path(ft_strjoin("/", command), getpath(env)));
+	return (check_path(ft_strjoin("/", command), getpath(status)));
 }

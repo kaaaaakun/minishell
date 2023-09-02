@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 18:48:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/08/27 19:08:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:38:57 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	check_line(char *line, t_info *status)
 		add_history(line);
 	ft_printf("[check_line:%d]", status->exec_count);
 	if (!line)
-		ex_exit(NULL);
+		ex_exit(0);
 	status->exec_count = 0;
 	if (*line == '\0')
 		rl_on_new_line();
@@ -100,7 +100,7 @@ void	put_to_list(char *line, t_stack *stack)
 		{
 			in_fd = open(split_line[i + 1], O_RDONLY, 0644);
 			if (in_fd == -1)
-				ex_exit(NULL);
+				ex_exit(0);
 			i++;
 			close(split_line[i]);
 			push_back(stack->outputlist, split_line[i]);
@@ -109,7 +109,7 @@ void	put_to_list(char *line, t_stack *stack)
 		{
 			in_fd = open(split_line[i + 1], O_RDONLY, 0644);
 			if (in_fd == -1)
-				ex_exit(NULL);
+				ex_exit(0);
 			i++;
 			close(split_line[i]);
 			push_back(stack->appendlist, split_line[i]);
@@ -118,7 +118,7 @@ void	put_to_list(char *line, t_stack *stack)
 		{
 			out_fd = open(split_line[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);//(か)0777は正確ではないので、変えた方がいいかも
 			if (out_fd == -1)
-				ex_exit(NULL);
+				ex_exit(0);
 			i++;
 			close(split_line[i]);
 			push_back(stack->inputlist, split_line[i]);

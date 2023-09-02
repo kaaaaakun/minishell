@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/29 20:49:37 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 18:41:41 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 
 	split = ft_split(line, ' ');
 	if (ft_memcmp(split[0], "exit", 5) == 0)
-		ex_exit(split);
+		ex_exit(0);
 	else if (ft_memcmp(split[0], "echo", 5) == 0)
 		ex_echo(split);
 	else if (ft_memcmp(split[0], "env", 4) == 0)
 		ex_env(split);
 	else if (ft_memcmp(split[0], "cd", 3) == 0)
-		ex_cd(split);
+		ex_cd(status, status->stack);
 	else if (ft_memcmp(split[0], "pwd", 4) == 0)
 		ex_pwd();
 	else if (ft_memcmp(split[0], "export", 7) == 0)
@@ -75,7 +75,7 @@ void	check_line(char *line, t_info *status)
 		add_history(line);
 	ft_printf("[check_line:%d]", status->exec_count);
 	if (!line)
-		ex_exit(NULL);
+		ex_exit(0);
 	status->exec_count = 0;
 	if (*line == '\0')
 	{
@@ -115,7 +115,7 @@ int	main(int argc, char *argv[], char *env[])
 	add_sigaction();
 	status = (t_info *)malloc(sizeof(t_info) * 1);
 	if (!status)
-		ex_exit(NULL);
+		ex_exit(0);
 	status->exec_count = 0;
 	status->error = 0;
 	make_env_list(status, env);

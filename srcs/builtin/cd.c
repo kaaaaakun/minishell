@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/08/31 19:03:25 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/02 18:53:46 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 
 void	ex_cd(t_info *status, t_stack *data)
 {
+	char	*path_name;
+
+	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
-		//ホームに移動
+		chdir(serch_env(status, "HOME"));
+	else if (check_access(data->cmdlist->next->content, status))
+		chdir(data->cmdlist->next->content);
 	else
-		
-	//t_stackからcmdの二つ目を読み込む
-	//cmd二つ目がアクセスが可能か確認
-		//bash: cd: ../1234: No such file or directory
-	//cmd二つ目が/だったら移動
+		ex_exit(0);
+	getcwd(path_name, PATH_MAX);
+	ft_printf("%s\n", path_name);
+	free(path_name);
+	return ;
 }
 
+//getcwd, chdir
 
 // cd はHOMEに戻る
 // cd /は一番最初の階層に戻る
@@ -44,12 +50,3 @@ void	ex_cd(t_info *status, t_stack *data)
 	//bash-3.2$ ls
 	//a          cd/        minishell/ test/
 
-void	ex_cd(char **split)
-{
-	(void)split;
-//	if (!split[1])
-//		$HOMEへ移動
-//	if (check_access(split[1])指定のディレクトリにアクセスできるか判定)
-//		エラーメッセージを出力
-//	そのフォルダに移動
-}
