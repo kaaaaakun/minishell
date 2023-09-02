@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 19:25:38 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/02 22:03:59 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	check_command(char *line, int pipe_flag, t_info *status);
 
 
 void	ex_heredoc(char *line);
-void	ex_env(char **split);
+void	ex_env(void);
 void	ex_unset(char **split);
-void	ex_export(char **split);
+void	ex_export(t_info *status, t_stack *data);
 void	ex_echo(char **split);
 void	ex_cd(t_info *status, t_stack *data);
 void	ex_pwd(void);

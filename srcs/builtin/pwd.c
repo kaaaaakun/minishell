@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:44:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/27 17:38:53 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:50:35 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ex_pwd()
+void	ex_pwd(void)
 {
-	char *i;
-	char buf[PATH_MAX];
+	char	*i;
+	char	buf[PATH_MAX];
 
 	i = getcwd(buf, PATH_MAX);
 	if (i == NULL) //PATH_MAXより長いディレクトリだった場合error
