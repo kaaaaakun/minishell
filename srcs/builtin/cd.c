@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/02 18:53:46 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/02 19:20:24 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ex_cd(t_info *status, t_stack *data)
 {
 	char	*path_name;
 
+	// ft_printf("\n%s\n", serch_env(status, "HOME"));
 	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
 		chdir(serch_env(status, "HOME"));
@@ -29,7 +30,6 @@ void	ex_cd(t_info *status, t_stack *data)
 	return ;
 }
 
-//getcwd, chdir
 
 // cd はHOMEに戻る
 // cd /は一番最初の階層に戻る

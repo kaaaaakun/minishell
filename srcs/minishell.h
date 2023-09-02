@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 18:48:46 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/02 19:25:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ t_list	*create_list(char *str);
 void	push_back(t_list **head, char *str);
 //pino.c
 void	init_stack(t_info *status);
+void	put_to_list(char *line, t_stack *stack);
+char	*put_space(char *line);
+void	check_line(char *line, t_info *status);
 
 void	add_sigaction(void);
 void	line_read(void);

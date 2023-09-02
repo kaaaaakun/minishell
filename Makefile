@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/08/29 21:12:03 by hhino            ###   ########.fr        #
+#    Updated: 2023/09/02 19:12:32 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS_DIR = objs
 BUILTIN_DIR = builtin
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
-		main.c \
+		pino.c \
 		add_sigaction.c \
 		$(addprefix builtin/, \
 			exit.c \
