@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/02 19:12:32 by hhino            ###   ########.fr        #
+#    Updated: 2023/09/03 19:31:36 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS_DIR = objs
 BUILTIN_DIR = builtin
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
-		pino.c \
+		main.c \
 		add_sigaction.c \
 		$(addprefix builtin/, \
 			exit.c \
@@ -57,9 +57,9 @@ LIBFT		=	$(LIBFT_DIR)/libft.a
 
 DEBUG			= debug
 
-#ifdef WITH_DEBUG
-#	CFLAGS += -g -fsanitize=address
-#endif
+ifdef WITH_DEBUG
+	CFLAGS += -g -O0 -fsanitize=address
+endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 .PHONY: all clean fclean re
@@ -87,8 +87,8 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-#$(DEBUG):
-#	make WITH_DEBUG=1
+$(DEBUG):
+	make WITH_DEBUG=1
 
 $(LIBFT):
 	make bonus -C $(LIBFT_DIR) all -lreadline

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/03 20:56:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/03 21:20:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,21 @@ void	check_command(t_info *status, t_stack *data)
 {
 	ft_putstr_fd("[check_command]", 1);
 	char		 *line;
-	char		 **split = NULL;
 
 	line = data->cmdlist->content;
 	ft_printf("[line:%s]",line);
 	if (ft_memcmp(line, "exit", 5) == 0)
 		ex_exit(0);
 	else if (ft_memcmp(line, "echo", 5) == 0)
-		ex_echo(split);
+		ex_echo(status, data);
 	else if (ft_memcmp(line, "env", 4) == 0)
-		ex_env(split);
+		ex_env();
 	else if (ft_memcmp(line, "cd", 3) == 0)
 		ex_cd(status, status->stack);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
 		ex_pwd();
 	else if (ft_memcmp(line, "export", 7) == 0)
-		ex_env(split);
+		ex_env();
 	else
 	{
 		usleep(100);
@@ -103,6 +102,7 @@ int	main(int argc, char *argv[], char *env[])
 		ex_exit(0);
 	status->exec_count = 0;
 	status->error = 0;
+	status->stack = 0;
 	make_env_list(status, env);
 	while (1)
 	{

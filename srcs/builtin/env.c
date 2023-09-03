@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/21 16:14:06 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:48:31 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void	write_env(void);
 
-void	ex_env(char **split)
+void	ex_env(void)
 {
-	(void)split;
 	write_env();
-//	if (split[1] == NULL)
-//		env_all(env);
 }
 
 void	write_env(void)
