@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 18:41:41 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/03 20:56:30 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,40 +36,40 @@ void	wait_process(t_info *info_status)
 		;
 }
 
-void	check_command(char *line, int pipe_flag, t_info *status)
+void	check_command(t_info *status, t_stack *data)
 {
 	ft_putstr_fd("[check_command]", 1);
-	char		 **split;
-	extern char	**environ;
+	char		 *line;
+	char		 **split = NULL;
 
-	split = ft_split(line, ' ');
-	if (ft_memcmp(split[0], "exit", 5) == 0)
+	line = data->cmdlist->content;
+	ft_printf("[line:%s]",line);
+	if (ft_memcmp(line, "exit", 5) == 0)
 		ex_exit(0);
-	else if (ft_memcmp(split[0], "echo", 5) == 0)
+	else if (ft_memcmp(line, "echo", 5) == 0)
 		ex_echo(split);
-	else if (ft_memcmp(split[0], "env", 4) == 0)
+	else if (ft_memcmp(line, "env", 4) == 0)
 		ex_env(split);
-	else if (ft_memcmp(split[0], "cd", 3) == 0)
+	else if (ft_memcmp(line, "cd", 3) == 0)
 		ex_cd(status, status->stack);
-	else if (ft_memcmp(split[0], "pwd", 4) == 0)
+	else if (ft_memcmp(line, "pwd", 4) == 0)
 		ex_pwd();
-	else if (ft_memcmp(split[0], "export", 7) == 0)
+	else if (ft_memcmp(line, "export", 7) == 0)
 		ex_env(split);
 	else
 	{
 		usleep(100);
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
-		ex_execve(split, pipe_flag, status);
+//		ex_execve(split, pipe_flag, status);
 	}
 	rl_on_new_line();
-	split_free(split);
+//	split_free(split);
 }
 
 void	check_line(char *line, t_info *status)
 {
 	ft_putstr_fd("[check_line]", 1);
 	int			cpy_stdin = dup(0);
-	int		pipe_flag;;
 
 	if (line && *line)
 		add_history(line);
@@ -82,27 +82,12 @@ void	check_line(char *line, t_info *status)
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
 	}
-//	lekar(line, status);
 	panda(line, status);
-	//	ft_lstiter(status->env, print_data); //listの中身を全て表示するやるやつ
+	check_command(status, status->stack);
 
-	//exit (0);
-
-	pipe_flag = 1;
-	char **splited_pipe = ft_split(line, '|');
-	int	i = 0;
-	while (splited_pipe[i] != NULL)
-	{
-		ft_printf("[pipe:%d]\n",i);
-		if (splited_pipe[i + 1] == NULL)
-			pipe_flag = 0;
-		check_command(splited_pipe[i], pipe_flag, status);
-		i++;
-	}
 	wait_process(status);
 	dup2(cpy_stdin, 0);
 //	split_free(splited_pipe);
-	(void)pipe_flag;
 }
 
 int	main(int argc, char *argv[], char *env[])

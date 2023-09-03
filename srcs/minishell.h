@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 19:25:38 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/02 22:08:50 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ typedef struct s_info
 	struct s_stack	*stack;
 }	t_info;
 
-void	check_command(char *line, int pipe_flag, t_info *status);
-
+void	check_line(char *line, t_info *status);
 
 void	ex_heredoc(char *line);
 void	ex_env(char **split);
