@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 22:04:15 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/03 19:15:26 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	check_command(char *line, int pipe_flag, t_info *status)
 	if (ft_memcmp(split[0], "exit", 5) == 0)
 		ex_exit(0);
 	else if (ft_memcmp(split[0], "echo", 5) == 0)
-		ex_echo(split);
+		ex_echo(status, status->stack);
 	else if (ft_memcmp(split[0], "env", 4) == 0)
 		ex_env();
 	else if (ft_memcmp(split[0], "cd", 3) == 0)

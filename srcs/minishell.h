@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 22:03:59 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/03 20:02:01 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_info
 	int				pid;
 	int				error;
 	int				exec_count;
-	t_list			*env;
+	t_list			*env; //exportの中身をpush_backする, unsetで消す
 	t_libft_list	*line;
 	struct s_stack	*stack;
 }	t_info;
@@ -72,7 +72,7 @@ void	ex_heredoc(char *line);
 void	ex_env(void);
 void	ex_unset(char **split);
 void	ex_export(t_info *status, t_stack *data);
-void	ex_echo(char **split);
+void	ex_echo(t_info *status, t_stack *data);
 void	ex_cd(t_info *status, t_stack *data);
 void	ex_pwd(void);
 void	ex_execve(char **command, int pipe_flag, t_info *status);
