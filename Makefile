@@ -35,6 +35,8 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			replace_env.c \
 			lexar_panda.c \
 			heredoc.c \
+			make_list.c \
+			chck_flag_error.c \
 			getpath.c \
 			) \
 		execve.c \

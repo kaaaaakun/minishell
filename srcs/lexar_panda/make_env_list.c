@@ -14,3 +14,28 @@ void	make_env_list(t_info *status, char *env[])
 	}
 	status->env = envlist;
 }
+
+char	*serch_env(t_info *status, char *str)
+{
+	ft_printf("[serch_env]");
+	t_list	*env;
+	char	*serched_word;
+	int		len;
+
+	env = status->env;
+	if (!env)
+		return (NULL);
+	serched_word = ft_strjoin(str, "=");
+	//status->error
+	len = ft_strlen(serched_word);
+	ft_printf("[%s:%d]",serched_word,len);
+	while (env->next != NULL)
+	{
+		if (ft_strncmp(env->content, serched_word, len) == 0)
+			break ;
+		env = env->next;
+	}
+	if (ft_strncmp(env->content, serched_word, len) != 0)
+		return (NULL);
+	return (&env->content[len]);
+}

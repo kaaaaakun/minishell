@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexar_panda.h"
 
 int	analysis_char(char c)
 {
@@ -79,21 +80,6 @@ int	is_function_word(char c)
 //	(void)status;
 //	return (i);
 //}
-
-void	make_list(char *line, int len, t_list **list)
-{
-	ft_printf("[make list:");
-	char	*result;
-
-	result = ft_substr(line, 0, len);
-	if (!result)
-	{
-//		status->error == 1;
-		return ;
-	}
-	ft_printf(" %s]",result);
-	push_back(list, result);
-}
 
 int	in_single_quote(char *line, int *flag, t_info *status)
 {
@@ -167,31 +153,6 @@ void	lekar(char *line, t_info *status)
 	}
 	(void)line;
 	(void)status;
-}
-
-char	*serch_env(t_info *status, char *str)
-{
-	ft_printf("[serch_env]");
-	t_list	*env;
-	char	*serched_word;
-	int		len;
-
-	env = status->env;
-	if (!env)
-		return (NULL);
-	serched_word = ft_strjoin(str, "=");
-	//status->error
-	len = ft_strlen(serched_word);
-	ft_printf("[%s:%d]",serched_word,len);
-	while (env->next != NULL)
-	{
-		if (ft_strncmp(env->content, serched_word, len) == 0)
-			break ;
-		env = env->next;
-	}
-	if (ft_strncmp(env->content, serched_word, len) != 0)
-		return (NULL);
-	return (&env->content[len]);
 }
 
 void	panda(char *line, t_info *status)
@@ -491,47 +452,7 @@ void	panda(char *line, t_info *status)
 		{
 			flag += S_QUOTE;
 			line++;
-				i = in_single_quote(&line[i], &flag, status);
-				// while (line[i] != '\'' && line[i] != '\0')
-				// {
-				// 	ft_printf("%c", line[i]);
-				// 	i++;
-				// }
-				// if (flag & INPUT_REDIRECT)
-				// {
-				// 	flag = flag - INPUT_REDIRECT;
-				// 	ft_putendl_fd(" : S redirect", 1);
-				// }
-				// else if (flag & OUTPUT_REDIRECT)
-				// {
-				// 	flag -= OUTPUT_REDIRECT;
-				// 	ft_putendl_fd(" : S RE redirect", 1);
-				// }
-				// else if (flag & HEREDOC)
-				// {
-				// 	flag -= HEREDOC;
-				// 	ft_putendl_fd(" : S heredoc", 1);
-				// }
-				// else if (flag & APPENDDOC)
-				// {
-				// 	flag -= APPENDDOC;
-				// 	ft_putendl_fd(" : S append", 1);
-				// }
-				// else if (!(flag & COMMAND))
-				// {
-				// 	ft_putendl_fd(" : S command", 1);
-				// 	flag = flag | COMMAND;
-				// }
-				// else if (flag & COMMAND)
-				// 	ft_putendl_fd(" : S flag or file", 1);
-				// if (line[i] == '\'')
-				// {
-				// 	flag -= S_QUOTE;
-				// 	i++;
-				// 	break ;
-				// }
-				// else if (line[i] == '\0')
-				// 	break ;
+			i = in_single_quote(&line[i], &flag, status);//シングルクオートの処理部分
 		}
 		else
 		{
@@ -540,14 +461,7 @@ void	panda(char *line, t_info *status)
 		}
 		line += i;
 	}
-	if (flag & D_QUOTE)
-				ft_putendl_fd(" \"syntax error `\"'", 1);
-	if (flag & S_QUOTE)
-				ft_putendl_fd(" \"syntax error `\''", 1);
-	if (flag & NEED_FILE)
-				ft_putendl_fd(" \"syntax error `< << > >>'", 1);
-	if (!(flag = COMMAND))
-				ft_putendl_fd(" \"syntax error `|'", 1);
+	lexar_panda_error_check(&flag, status);//errorチェック
 	(void)status;
 	(void)i;
 	ft_printf("\n%u\n",flag);
