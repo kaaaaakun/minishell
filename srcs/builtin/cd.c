@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/02 19:20:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/04 20:59:01 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@ void	ex_cd(t_info *status, t_stack *data)
 {
 	char	*path_name;
 
-	// ft_printf("\n%s\n", serch_env(status, "HOME"));
+	ft_printf("\n[HOME:%s]\n", serch_env(status, "HOME"));
+	ft_printf("\n[current:%s]\n", data->cmdlist->content);
+	ft_printf("[next:%s]\n", data->cmdlist->next->content);
+	ft_printf("[next next:%s]\n", data->cmdlist->next->next->content);
 	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
 		chdir(serch_env(status, "HOME"));
 	else if (check_access(data->cmdlist->next->content, status))
 		chdir(data->cmdlist->next->content);
 	else
-		ex_exit(0);
+		return ; //本当はエラーにして子プロセス終了させたい
 	getcwd(path_name, PATH_MAX);
-	ft_printf("%s\n", path_name);
+	// ft_printf("\n%s\n", path_name);
 	free(path_name);
+	// free_stack(data); //freeできてた
+	// ft_printf("\n------------\n");
 	return ;
 }
 

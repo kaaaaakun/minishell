@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/03 21:15:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/04 20:00:40 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "libft.h"
 # include "pipex.h"
+// # include "builtin.h"
+// # include "lexar_panda.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -67,24 +69,11 @@ typedef struct s_info
 
 void	check_line(char *line, t_info *status);
 
-void	ex_heredoc(char *line);
-void	ex_env(void);
-void	ex_unset(char **split);
-void	ex_export(t_info *status, t_stack *data);
-void	ex_echo(t_info *status, t_stack *data);
-void	ex_cd(t_info *status, t_stack *data);
-void	ex_pwd(void);
-void	ex_execve(char **command, int pipe_flag, t_info *status);
-void	ex_exit(int i);
-
 //list.c
 t_list	*create_list(char *str);
 void	push_back(t_list **head, char *str);
-//pino.c
-void	init_stack(t_info *status);
-void	put_to_list(char *line, t_stack *stack);
-char	*put_space(char *line);
-void	check_line(char *line, t_info *status);
+void	free_list(t_list *head);
+void	free_stack(t_stack *stack);
 
 void	add_sigaction(void);
 void	line_read(void);
@@ -97,5 +86,17 @@ char	*serch_env(t_info *status, char *str);
 
 //getpath.c
 char	*check_access(char *command, t_info *status);
+
+
+void	ex_heredoc(char *line);
+void	ex_env(void);
+void	ex_unset(char **split);
+void	ex_export(t_info *status, t_stack *data);
+void	ex_echo(t_info *status, t_stack *data);
+void	ex_cd(t_info *status, t_stack *data);
+void	ex_pwd(void);
+void	ex_execve(char **command, int pipe_flag, t_info *status);
+void	ex_exit(int i);
+
 
 #endif

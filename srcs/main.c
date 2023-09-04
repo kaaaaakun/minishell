@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/03 21:20:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/04 20:31:11 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	check_command(t_info *status, t_stack *data)
 	else if (ft_memcmp(line, "env", 4) == 0)
 		ex_env();
 	else if (ft_memcmp(line, "cd", 3) == 0)
-		ex_cd(status, status->stack);
+		ex_cd(status, data);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
 		ex_pwd();
 	else if (ft_memcmp(line, "export", 7) == 0)
-		ex_env();
+		ex_export(status, data);
 	else
 	{
 		usleep(100);

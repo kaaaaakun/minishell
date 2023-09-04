@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/02 21:59:41 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/04 20:11:42 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,26 @@ void	push_back(t_list **head, char *str)
 		current = current->next;
 	current->next = newlist;
 }
+
+void	free_list(t_list *head)
+{
+	t_list	*temp;
+
+	while (head != NULL)
+	{
+		temp = head;
+		free(temp);
+		head = head->next;
+	}
+}
+
+void	free_stack(t_stack *stack)
+{
+	free_list(stack->outputlist);
+	free_list(stack->appendlist);
+	free_list(stack->inputlist);
+	free_list(stack->heredoclist);
+	free_list(stack->cmdlist);
+	stack->next = NULL;
+}
+//これでstackの中身全てnullになっている
