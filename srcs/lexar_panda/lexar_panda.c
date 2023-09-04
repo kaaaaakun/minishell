@@ -214,8 +214,10 @@ void	panda(char *line, t_info *status)
 					make_list(line, i, &data->cmdlist);
 				}
 				else
+				{
 					ft_putendl_fd(" : flag or file", 1);
 					make_list(line, i, &data->cmdlist);
+				}
 		}
 		else if (value == 2)// ' '
 		{
