@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 14:02:57 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:10:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,42 +181,41 @@ void	panda(char *line, t_info *status)
 //						flag += D_QUOTE;
 //						i++;
 //					}
-					ft_putendl_fd("!a!", 1);
 				}
 				if (flag & INPUT_REDIRECT)
 				{
-					flag = flag - INPUT_REDIRECT;
 					ft_putendl_fd(" : redirect", 1);
-					make_list(line, i, &data->inputlist);
+					make_list(&flag, line, i, &data->inputlist);
+					flag = flag - INPUT_REDIRECT;
 				}
 				else if (flag & OUTPUT_REDIRECT)
 				{
-					flag -= OUTPUT_REDIRECT;
 					ft_putendl_fd(" : RE redirect", 1);
-					make_list(line, i, &data->outputlist);
+					make_list(&flag, line, i, &data->outputlist);
+					flag -= OUTPUT_REDIRECT;
 				}
 				else if (flag & HEREDOC)
 				{
-					flag -= HEREDOC;
 					ft_putendl_fd(" : heredoc", 1);
-					make_list(line, i, &data->heredoclist);
+					make_list(&flag, line, i, &data->heredoclist);
+					flag -= HEREDOC;
 				}
 				else if (flag & APPENDDOC)
 				{
-					flag -= APPENDDOC;
 					ft_putendl_fd(" : append", 1);
-					make_list(line, i, &data->appendlist);
+					make_list(&flag, line, i, &data->appendlist);
+					flag -= APPENDDOC;
 				}
 				else if (!(flag & COMMAND))
 				{
 					ft_putendl_fd(" : noflag command", 1);
+					make_list(&flag, line, i, &data->cmdlist);
 					flag = flag | COMMAND;
-					make_list(line, i, &data->cmdlist);
 				}
 				else
 				{
 					ft_putendl_fd(" : flag or file", 1);
-					make_list(line, i, &data->cmdlist);
+					make_list(&flag, line, i, &data->cmdlist);
 				}
 		}
 		else if (value == 2)// ' '
@@ -279,13 +278,13 @@ void	panda(char *line, t_info *status)
 			if (line[i] == '\0' || line[i] == ' ')
 			{
 				ft_printf("$ : $ only\n");
-				make_list("$", 1, &data->cmdlist);
+				make_list(&flag, "$", 1, &data->cmdlist);
 				i++;
 			}
 			else if (line[i] == '$')
 			{
 				ft_printf("$$ : PID\n");
-				make_list("$$", 2, &data->cmdlist);
+				make_list(&flag, "$$", 2, &data->cmdlist);
 				i++;
 			}
 			else

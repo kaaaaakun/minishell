@@ -19,3 +19,4 @@ t_stack	*make_stack(t_info *status, t_stack *pre_data)
 		pre_data->next = data;
 	return (data);
 }
+

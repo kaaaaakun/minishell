@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:46:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 15:06:37 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:21:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ void	lstiter(t_list *lst, void (*f)(void *))
 		lst = lst->next;
 	}
 }
-
-void	debug(t_info *status)
+void	debug(t_info *status,char *str)
 {
+	ft_printf("---------[%s]---------\n",str);
 	t_stack *data;
 	data = status->stack;
 	while (data != NULL)
 	{
-		ft_printf("envの中身を全て表示\n");
-		lstiter(status->env, print_data);//listの中身を表示
+	//	ft_printf("envの中身を全て表示\n");
+	//	lstiter(status->env, print_data);//listの中身を表示
 		ft_printf("\n[outputlist]\n");
 		lstiter(data->outputlist, print_data);//
 		ft_printf("\n[appendlist]\n");
@@ -50,4 +50,5 @@ void	debug(t_info *status)
 		if (data != NULL)
 			ft_printf("\n---------pipe----------\n");
 	}
+	ft_printf("-----------------------\n");
 }

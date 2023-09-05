@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 15:02:37 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:58:54 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ void	ex_execve(char **command, int pipe_flag, t_info *status);
 void	ex_exit(int i);
 
 
-void	debug(t_info *status);
+void	debug(t_info *status,char *str);
 #endif

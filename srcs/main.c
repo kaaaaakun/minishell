@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 15:07:00 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:00:42 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,11 @@ void	check_line(char *line, t_info *status)
 		rl_on_new_line();
 	}
 	panda(line, status);
+	debug(status,"panda to check");
 	check_command(status, status->stack);
+	debug(status,"before free");
 	free_stack(status);
+	debug(status,"after free");
 //	wait_process(status);
 	dup2(cpy_stdin, 0);
 //	split_free(splited_pipe);

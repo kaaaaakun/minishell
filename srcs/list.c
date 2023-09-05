@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/05 14:21:13 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:57:21 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void	free_stack(t_info *status)
 		free(data);
 		data = tmp;
 	}
+	status->stack = NULL;
 }
 //これでstackの中身全てnullになっている

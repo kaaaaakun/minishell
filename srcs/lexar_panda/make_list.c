@@ -1,8 +1,7 @@
 #include "lexar_panda.h"
 
-void	make_list(char *line, int len, t_list **list)
+void	make_list(int *flag, char *line, int len, t_list **list)
 {
-	ft_printf("[make list:");
 	char	*result;
 
 	result = ft_substr(line, 0, len);
@@ -11,7 +10,6 @@ void	make_list(char *line, int len, t_list **list)
 //		status->error == 1;
 		return ;
 	}
-	ft_printf(" %s]",result);
-	ft_printf("[[%p]]",result);
 	push_back(list, result);
+	(void)flag;
 }
