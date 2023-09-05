@@ -136,28 +136,9 @@ int	in_single_quote(char *line, int *flag, t_info *status)
 	(void)status;
 }
 
-void	lekar(char *line, t_info *status)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] != '\0' && line[i] != ' ')
-		line++;
-	while (line[i] != '\0')
-	{
-		while (line[i] != '\0' && line[i] != ' ' && line[i] != '<'  && line[i] != '>' && line[i] != '|' && line[i] != '$')
-			i++;
-
-		while (line[i] != '\0' && line[i] != ' ')
-			line++;
-	}
-	(void)line;
-	(void)status;
-}
-
 void	panda(char *line, t_info *status)
 {
-//	ft_printf("[panda]");
+	ft_printf("[panda]");
 	int	i;
 	int	value;
 	int	flag;
@@ -167,10 +148,6 @@ void	panda(char *line, t_info *status)
 	if (*line == '\0')
 		return ;
 	data = make_stack(status, NULL);
-//	data = (t_stack *)malloc(sizeof(t_stack) * 1);
-//	data->cmdlist = NULL;
-//	data->next = NULL;
-//	status->stack = data;
 	while(*line != '\0')
 	{
 		i = 0;
@@ -179,10 +156,32 @@ void	panda(char *line, t_info *status)
 		if (value == 1) // noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
-				while (analysis_char(line[i]) == value)
+				while (analysis_char(line[i]) == value && line[i] != '\0')
 				{
 					ft_printf("%c", line[i]);
 					i++;
+//					if (line[i] == '\'' && flag & S_QUOTE)
+//					{
+//						flag-= S_QUOTE;
+//						i++;
+//					}
+//					if (line[i] == '\"' && flag & D_QUOTE)
+//					{
+//						flag -= D_QUOTE;
+//						i++;
+//					}
+//					if (line[i] == '\'' && !(flag & S_QUOTE) && !(flag & S_QUOTE))
+//					{
+//						flag += S_QUOTE;
+//						i++;
+//					}
+//					if (line[i] == '\"' && !(flag & S_QUOTE) && !(flag & D_QUOTE))
+//					{
+//					ft_putendl_fd("D", 1);
+//						flag += D_QUOTE;
+//						i++;
+//					}
+					ft_putendl_fd("!a!", 1);
 				}
 				if (flag & INPUT_REDIRECT)
 				{

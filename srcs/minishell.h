@@ -79,7 +79,6 @@ void	add_sigaction(void);
 void	line_read(void);
 
 //lexar.c
-void	lekar(char *line, t_info *status);
 void	panda(char *line, t_info *status);
 void	make_env_list(t_info *status, char *env[]);
 char	*serch_env(t_info *status, char *str);
