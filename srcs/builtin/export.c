@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/05 20:52:30 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 21:05:03 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	ex_export(t_info *status, t_stack *data)
 	return ;
 }
 
-//exportの後何もついていない場合は、declare -xを先頭につけ、=以下の文字列を""で囲む処理をする
-//=の後に',"がついていない場合、spで区切られる前の文字列までのみ認識される
 // bash-3.2$ export aaa=bbb
 // bash-3.2$ export ccc="echo $aaa"
 // bash-3.2$ $ccc
@@ -68,5 +66,6 @@ void	ex_export(t_info *status, t_stack *data)
 // bash-3.2$ export ccc="echo $aaa"
 // bash-3.2$ $ccc
 // bbb
-// $の後にくるものは英数字と_
+// $の後にくるものは英数字と_のみ
 // $$(必須ではない、プロセスID), $?(必須、終了ステータス)
+// 左辺が以前に定義したものと同値であれば=以下を書き換える
