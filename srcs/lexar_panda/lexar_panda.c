@@ -166,10 +166,11 @@ void	panda(char *line, t_info *status)
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
-	data = (t_stack *)malloc(sizeof(t_stack) * 1);
-	data->cmdlist = NULL;
-	data->next = NULL;
-	status->stack = data;
+	data = make_stack(status, NULL);
+//	data = (t_stack *)malloc(sizeof(t_stack) * 1);
+//	data->cmdlist = NULL;
+//	data->next = NULL;
+//	status->stack = data;
 	while(*line != '\0')
 	{
 		i = 0;

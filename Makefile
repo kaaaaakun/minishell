@@ -36,6 +36,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			lexar_panda.c \
 			heredoc.c \
 			make_list.c \
+			make_stack.c \
 			chck_flag_error.c \
 			getpath.c \
 			) \
