@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 18:10:37 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 20:04:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	in_single_quote(char *line, int *flag, t_info *status)
 		}
 		if (*flag & INPUT_REDIRECT)
 		{
+			
 			*flag = *flag - INPUT_REDIRECT;
 			ft_putendl_fd(" : S redirect", 1);
 		}
@@ -182,40 +183,47 @@ void	panda(char *line, t_info *status)
 //						i++;
 //					}
 				}
+				char *str;
 				if (flag & INPUT_REDIRECT)
 				{
 					ft_putendl_fd(" : redirect", 1);
-					make_list(&flag, line, i, &data->inputlist);
+					str = make_list(&flag, line, i, &data->inputlist);
+					check_flag(status, str, &flag);
 					flag = flag - INPUT_REDIRECT;
 				}
 				else if (flag & OUTPUT_REDIRECT)
 				{
 					ft_putendl_fd(" : RE redirect", 1);
-					make_list(&flag, line, i, &data->outputlist);
+					str = make_list(&flag, line, i, &data->outputlist);
+					check_flag(status, str, &flag);
 					flag -= OUTPUT_REDIRECT;
 				}
 				else if (flag & HEREDOC)
 				{
 					ft_putendl_fd(" : heredoc", 1);
-					make_list(&flag, line, i, &data->heredoclist);
+					str = make_list(&flag, line, i, &data->heredoclist);
+					check_flag(status, str, &flag);
 					flag -= HEREDOC;
 				}
 				else if (flag & APPENDDOC)
 				{
 					ft_putendl_fd(" : append", 1);
-					make_list(&flag, line, i, &data->appendlist);
+					str = make_list(&flag, line, i, &data->appendlist);
+					check_flag(status, str, &flag);
 					flag -= APPENDDOC;
 				}
 				else if (!(flag & COMMAND))
 				{
 					ft_putendl_fd(" : noflag command", 1);
-					make_list(&flag, line, i, &data->cmdlist);
+					str = make_list(&flag, line, i, &data->cmdlist);
+					check_flag(status, str, &flag);
 					flag = flag | COMMAND;
 				}
 				else
 				{
 					ft_putendl_fd(" : flag or file", 1);
-					make_list(&flag, line, i, &data->cmdlist);
+					str = make_list(&flag, line, i, &data->cmdlist);
+					check_flag(status, str, &flag);
 				}
 		}
 		else if (value == 2)// ' '
