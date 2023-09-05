@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/04 20:11:42 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 14:21:13 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,22 @@ void	free_list(t_list *head)
 	}
 }
 
-void	free_stack(t_stack *stack)
+void	free_stack(t_info *status)
 {
-	free_list(stack->outputlist);
-	free_list(stack->appendlist);
-	free_list(stack->inputlist);
-	free_list(stack->heredoclist);
-	free_list(stack->cmdlist);
-	stack->next = NULL;
+	t_stack	*data;
+	t_stack	*tmp;
+
+	data = status->stack;
+	while (data != NULL)
+	{
+		free_list(data->outputlist);
+		free_list(data->appendlist);
+		free_list(data->inputlist);
+		free_list(data->heredoclist);
+		free_list(data->cmdlist);
+		tmp = data->next;
+		free(data);
+		data = tmp;
+	}
 }
 //これでstackの中身全てnullになっている

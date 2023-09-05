@@ -6,16 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/04 20:31:11 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 15:07:00 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 
-void print_data(void *data) {
-    ft_printf("%s\n", (char *)data);
-}
 
 void	wait_process(t_info *info_status)
 {
@@ -83,8 +80,8 @@ void	check_line(char *line, t_info *status)
 	}
 	panda(line, status);
 	check_command(status, status->stack);
-
-	wait_process(status);
+	free_stack(status);
+//	wait_process(status);
 	dup2(cpy_stdin, 0);
 //	split_free(splited_pipe);
 }

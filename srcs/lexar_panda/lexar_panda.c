@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/03 21:10:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:02:57 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	panda(char *line, t_info *status)
 		if (value == 1) // noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
-				while (analysis_char(line[i]) == value && line[i] != '\0')
+				while (analysis_char(line[i]) == value)
 				{
 					ft_printf("%c", line[i]);
 					i++;

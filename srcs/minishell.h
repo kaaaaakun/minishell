@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/04 20:00:40 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 15:02:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	check_line(char *line, t_info *status);
 t_list	*create_list(char *str);
 void	push_back(t_list **head, char *str);
 void	free_list(t_list *head);
-void	free_stack(t_stack *stack);
+void	free_stack(t_info *status);
 
 void	add_sigaction(void);
 void	line_read(void);
@@ -98,4 +98,5 @@ void	ex_execve(char **command, int pipe_flag, t_info *status);
 void	ex_exit(int i);
 
 
+void	debug(t_info *status);
 #endif
