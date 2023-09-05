@@ -50,4 +50,5 @@ void	ex_echo(t_info *status, t_stack *data)
 	if (nflag != 1)
 		ft_putstr_fd("\n", 1);
 	(void)status;
+	(void)i;
 }

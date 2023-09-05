@@ -15,7 +15,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'')
 		return (1);
 	if (c == ' ')
 		return (2);

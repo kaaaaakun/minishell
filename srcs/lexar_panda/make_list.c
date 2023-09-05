@@ -12,5 +12,6 @@ void	make_list(char *line, int len, t_list **list)
 		return ;
 	}
 	ft_printf(" %s]",result);
+	ft_printf("[[%p]]",result);
 	push_back(list, result);
 }
