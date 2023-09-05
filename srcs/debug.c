@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:46:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 17:21:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 20:35:18 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	debug(t_info *status,char *str)
 	data = status->stack;
 	while (data != NULL)
 	{
-	//	ft_printf("envの中身を全て表示\n");
-	//	lstiter(status->env, print_data);//listの中身を表示
+		ft_printf("envの中身を全て表示\n");
+		lstiter(status->env, print_data);//listの中身を表示
 		ft_printf("\n[outputlist]\n");
 		lstiter(data->outputlist, print_data);//
 		ft_printf("\n[appendlist]\n");

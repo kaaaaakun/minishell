@@ -6,13 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/04 21:02:02 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 20:52:30 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	insert_doublequotes(char *str)
+static void	insert_doublequotes(char *str)
 {
 	int		len;
 	char	*flag;
@@ -44,13 +44,17 @@ void	print_export_env(t_list *env)
 
 void	ex_export(t_info *status, t_stack *data)
 {
-	// (void)data;
-	// ft_printf("\n[current:%p]\n", data->cmdlist->content);
-	// ft_printf("[next:%p]\n", data->cmdlist->next->content);
 	if (data->cmdlist->next == NULL)
 		print_export_env(status->env);
-	// else
-	// 	return ;
+	else
+	{
+		data->cmdlist = data->cmdlist->next;
+		while (data->cmdlist != NULL)
+		{
+			push_back(&status->env, data->cmdlist->content);
+			data->cmdlist = data->cmdlist->next;
+		}
+	}
 	return ;
 }
 
@@ -64,3 +68,5 @@ void	ex_export(t_info *status, t_stack *data)
 // bash-3.2$ export ccc="echo $aaa"
 // bash-3.2$ $ccc
 // bbb
+// $の後にくるものは英数字と_
+// $$(必須ではない、プロセスID), $?(必須、終了ステータス)

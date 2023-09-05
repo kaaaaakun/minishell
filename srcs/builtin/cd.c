@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/04 20:59:01 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/05 20:15:49 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	ex_cd(t_info *status, t_stack *data)
 {
 	char	*path_name;
 
-	ft_printf("\n[HOME:%s]\n", serch_env(status, "HOME"));
-	ft_printf("\n[current:%s]\n", data->cmdlist->content);
-	ft_printf("[next:%s]\n", data->cmdlist->next->content);
-	ft_printf("[next next:%s]\n", data->cmdlist->next->next->content);
+	// ft_printf("\n[HOME:%s]\n", serch_env(status, "HOME"));
+	// ft_printf("\n[current:%s]\n", data->cmdlist->content);
+	// ft_printf("[next:%s]\n", data->cmdlist->next->content);
+	// ft_printf("[next next:%s]\n", data->cmdlist->next->next->content);
 	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
 		chdir(serch_env(status, "HOME"));

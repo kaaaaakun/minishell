@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexar_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 20:04:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/05 20:31:24 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='=')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -95,7 +95,7 @@ int	in_single_quote(char *line, int *flag, t_info *status)
 		}
 		if (*flag & INPUT_REDIRECT)
 		{
-			
+
 			*flag = *flag - INPUT_REDIRECT;
 			ft_putendl_fd(" : S redirect", 1);
 		}
