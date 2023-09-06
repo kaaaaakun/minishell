@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/05 21:05:03 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/06 21:01:20 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	print_export_env(t_list *env)
 {
 	char	*str;
 
-	while (env->next != NULL)
+	while (env != NULL)
 	{
 		str = ft_strjoin("declare -x ", env->content);
 		insert_doublequotes(str);
@@ -40,6 +40,24 @@ void	print_export_env(t_list *env)
 		free(str);
 		env = env->next;
 	}
+}
+
+int	check_left(t_list *env, char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '=')
+		i++;
+	if (i == ft_strlen(str))
+		return (0);
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->content, str, i) == 0)
+			return (1);
+		env = env->next;
+	}
+	return (0);
 }
 
 void	ex_export(t_info *status, t_stack *data)
@@ -51,7 +69,14 @@ void	ex_export(t_info *status, t_stack *data)
 		data->cmdlist = data->cmdlist->next;
 		while (data->cmdlist != NULL)
 		{
-			push_back(&status->env, data->cmdlist->content);
+			if (check_left(status->env, data->cmdlist->content) == 1)
+			{
+				create_list(ft_strchr(data->cmdlist->content, '='));
+				//newlistのnextなどをつなげ直す
+				//かつてのenvの中のリストをfreeする
+			}
+			else
+				push_back(&status->env, data->cmdlist->content);
 			data->cmdlist = data->cmdlist->next;
 		}
 	}
