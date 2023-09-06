@@ -84,7 +84,6 @@ void	check_line(char *line, t_info *status)
 	panda(line, status);
 	debug(status,"panda to check");
 	check_command(status, status->stack);
-	debug(status,"before free");
 	free_stack(status);//
 //	wait_process(status);
 	dup2(cpy_stdin, 0);

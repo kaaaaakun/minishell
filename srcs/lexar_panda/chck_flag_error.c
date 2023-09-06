@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "lexar_panda.h"
 
 void	lexar_panda_error_check(int *flag, t_info *status)
 {

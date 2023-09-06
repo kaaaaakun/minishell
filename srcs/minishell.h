@@ -23,50 +23,32 @@
 # include <signal.h>
 # include <limits.h>
 
-//
-# define INITIAL 0x000
-# define AT_PIPE 0x001
-# define COMMAND 0x002
+# include "typedef_struct.h"
+// typedef struct s_list
+// {
+// 	char				*content;
+// 	struct s_list		*next;
+// }	t_list;
 
-# define D_QUOTE 0x004
-# define S_QUOTE 0x008
-# define IN_QUOTE S_QUOTE + D_QUOTE 
+// typedef struct s_stack
+// {
+// 	struct s_list		*outputlist;	//>
+// 	struct s_list		*appendlist;	//>>
+// 	struct s_list		*inputlist;		//<
+// 	struct s_list		*heredoclist;	//<<
+// 	struct s_list		*cmdlist;
+// 	struct s_stack		*next;
+// }	t_stack;
 
-# define INPUT_REDIRECT 0x010
-# define HEREDOC 0x020
-# define OUTPUT_REDIRECT 0x040
-# define APPENDDOC 0x080
-# define NEED_FILE INPUT_REDIRECT + HEREDOC + OUTPUT_REDIRECT + APPENDDOC
-
-# define ERROR 0x200
-# define NOFLAG 0x400
-//
-
-typedef struct s_list
-{
-	char				*content;
-	struct s_list		*next;
-}	t_list;
-
-typedef struct s_stack
-{
-	struct s_list		*outputlist;	//>
-	struct s_list		*appendlist;	//>>
-	struct s_list		*inputlist;		//<
-	struct s_list		*heredoclist;	//<<
-	struct s_list		*cmdlist;
-	struct s_stack		*next;
-}	t_stack;
-
-typedef struct s_info
-{
-	int				pid;
-	int				error;
-	int				exec_count;
-	t_list			*env; //exportの中身をpush_backする, unsetで消す
-	t_libft_list	*line;
-	struct s_stack	*stack;
-}	t_info;
+// typedef struct s_info
+// {
+// 	int				pid;
+// 	int				error;
+// 	int				exec_count;
+// 	t_list			*env; //exportの中身をpush_backする, unsetで消す
+// 	t_libft_list	*line;
+// 	struct s_stack	*stack;
+// }	t_info;
 
 void	check_line(char *line, t_info *status);
 
