@@ -29,13 +29,11 @@ void	lstiter(t_list *lst, void (*f)(void *))
 }
 void	debug(t_info *status,char *str)
 {
-	ft_printf("---------[%s]---------\n",str);
+	ft_printf("\n---------[%s]---------\n",str);
 	t_stack *data;
 	data = status->stack;
 	while (data != NULL)
 	{
-//		ft_printf("envの中身を全て表示\n");
-//		lstiter(status->env, print_data);//listの中身を表示
 		ft_printf("\n[outputlist]\n");
 		lstiter(data->outputlist, print_data);//
 		ft_printf("\n[appendlist]\n");
@@ -55,7 +53,7 @@ void	debug(t_info *status,char *str)
 
 void	debug_env(t_info *status,char *str)
 {
-	ft_printf("---------[env]---------\n",str);
+	ft_printf("\n---------[env]---------\n",str);
 	t_stack *data;
 	data = status->stack;
 	while (data != NULL)
