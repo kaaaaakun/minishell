@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/05 16:57:21 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:12:52 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ void	free_list(t_list *head)
 
 	while (head != NULL)
 	{
-		temp = head;
-		free(temp);
-		head = head->next;
+		temp = head->next;
+		free(head);
+		head = NULL;
+		head = temp;
 	}
 }
 

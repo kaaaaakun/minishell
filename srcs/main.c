@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 17:00:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:22:33 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	check_command(t_info *status, t_stack *data)
 	ft_putstr_fd("[check_command]", 1);
 	char		 *line;
 
+	if (data->cmdlist == NULL)
+		return ;
 	line = data->cmdlist->content;
 	ft_printf("[line:%s]",line);
 	if (ft_memcmp(line, "exit", 5) == 0)
@@ -84,7 +86,6 @@ void	check_line(char *line, t_info *status)
 	check_command(status, status->stack);
 	debug(status,"before free");
 	free_stack(status);//
-	debug(status,"after free");
 //	wait_process(status);
 	dup2(cpy_stdin, 0);
 //	split_free(splited_pipe);

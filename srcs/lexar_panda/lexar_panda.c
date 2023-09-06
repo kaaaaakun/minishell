@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 20:31:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/06 19:28:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='=')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='=')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -23,17 +23,17 @@ int	analysis_char(char c)
 		return (3);
 	if (c == '>')
 		return (4);
-	if (c == '$')
-		return (5);
+//	if (c == '$')
+//		return (5);
 	if (c == '|')
 		return (6);
-	if (c == '\"')
-		return (7);
-	if (c == '\'')
-		return (8);
-	if (c == ';')
-		return (10);
-	return(0);
+//	if (c == '\"')
+//		return (7);
+//	if (c == '\'')
+//		return (8);
+//	if (c == ';')
+//		return (10);
+	return (0);
 }
 
 int	is_function_word(char c)
@@ -50,91 +50,97 @@ int	is_function_word(char c)
 	return (0);
 }
 
-//int	in_double_quote(char *line, int *flag, t_info *status)
-//{
-//	int	i = 0;
-//
-//	while (line[i] != '\"' && line[i] != '\0')
-//	{
-//		ft_printf("%c", line[i]);
-//		i++;
-//	}
-//	if (heredoc == 1)
-//	{
-//		heredoc = 0;
-//		ft_putendl_fd(" : heredoc EOF", 1);
-//	}
-//	else if (command == 0)
-//	{
-//		ft_putendl_fd(" : command", 1);
-//		command = 1;
-//	}
-//	else
-//		ft_putendl_fd(" : flag or file", 1);
-//	if (line[i] == '\"')
-//	{
-//		w_quote_f = 0;
-//		i++;
-//	}
-//	flag = 0;
-//	(void)status;
-//	return (i);
-//}
-
-int	in_single_quote(char *line, int *flag, t_info *status)
+char	*check_dollar(t_info *status, char *line)
 {
-	int	len;
+	ft_printf("[check_dollar]");
+	int	i;
+	int	flag;
+	int	j;
+	char	*result;
 
-	len = 0;
+	i = 0;
+	j = 0;
+	flag = 0;
+	result = line;
 	while (1)
 	{
-		while (line[len] != '\'' && line[len] != '\0')
+		while (line[i] != '$' || flag & S_QUOTE)
 		{
-			ft_printf("%c", line[len]);
-			len++;
+			if (line[i] == '\0')//null文字break;
+				return (result) ;
+			else if ((line[i] == '\'' || line[i] == '\"') && !(flag & IN_QUOTE))
+			{
+				if (line[i] == '\'')
+					flag += S_QUOTE;
+				else if (line[i] == '\"')
+					flag += D_QUOTE;
+				i++;
+			}
+			else if ((line[i] == '\'' && flag & S_QUOTE) || (line[i] == '\"' && flag & D_QUOTE))
+			{
+				if (line[i] == '\'')
+					flag -= S_QUOTE;
+				else if (line[i] == '\"')
+					flag -= D_QUOTE;
+				i++;
+			}
+			i++;
 		}
-		if (*flag & INPUT_REDIRECT)
+		if (i == 0)
 		{
+			result = ft_substr(line, j, i - j);
+		}
+		else
+		{
+			result = ft_strjoin(result, ft_substr(line, j, i - j));
+			ft_printf("\n\n\n[result:%s]",ft_substr(line, j, i - j));
+			ft_printf("[i:%d/j:%d]",i,i - j);
+		}
+		i++;
+		if (line[i] == '\0' || line[i] == ' ')
+		{
+			result = ft_strjoin(result, "$");
+			i++;
+		}
+		else if (line[i] == '$')
+		{
+			result = ft_strjoin(result, "PID");
+			i++;
+		}
+		else
+		{
+			ft_printf("\n\n\n[result:%s]",result);
+			char	*pre_word;
+			int		k;
 
-			*flag = *flag - INPUT_REDIRECT;
-			ft_putendl_fd(" : S redirect", 1);
+			k = 0;
+			while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && ((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<'  && line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
+			{
+				ft_printf("%c", line[i + k]);
+				k++;
+			}
+			if (*result == '\0')
+			{
+				pre_word = ft_substr(&line[i], 0, k);
+				result = serch_env(status, pre_word);
+				ft_printf("\n[result=NULL:%s]",result);
+			}
+			else
+			{
+				pre_word = ft_substr(&line[i], 0, k);
+				pre_word = serch_env(status, pre_word);
+			ft_printf("\n[pre-word:%s]",pre_word);
+			ft_printf("\n[result:%s]",result);
+				if (pre_word != NULL)
+					result = ft_strjoin(result, pre_word);
+			}
+			ft_printf("\n[result:%s]",result);
+			ft_printf("[i:%d/k:%d]",i,k);
+			i += k;
 		}
-		else if (*flag & OUTPUT_REDIRECT)
-		{
-			*flag -= OUTPUT_REDIRECT;
-			ft_putendl_fd(" : S RE redirect", 1);
-		}
-		else if (*flag & HEREDOC)
-		{
-			*flag -= HEREDOC;
-			ft_putendl_fd(" : S heredoc", 1);
-		}
-		else if (*flag & APPENDDOC)
-		{
-			*flag -= APPENDDOC;
-			ft_putendl_fd(" : S append", 1);
-		}
-		else if (!(*flag & COMMAND))
-		{
-			ft_putendl_fd(" : S command", 1);
-			*flag = *flag | COMMAND;
-		}
-		else if (*flag & COMMAND)
-			ft_putendl_fd(" : S *flag or file", 1);
-		if (line[len] == '\'')
-		{
-			*flag -= S_QUOTE;
-			len++;
-			return(len) ;
-		}
-		else if (line[len] == '\0')
-		{
-			len++;
-			return(len) ;
-		}
+		j = i;
 	}
-	return(len) ;
-	(void)status;
+	return (result);
 }
 
 void	panda(char *line, t_info *status)
@@ -148,7 +154,10 @@ void	panda(char *line, t_info *status)
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
+	ft_printf("\n[%s]\n", line);
 	data = make_stack(status, NULL);
+	line = check_dollar(status, line);
+	ft_printf("\n[%s]\n", line);
 	while(*line != '\0')
 	{
 		i = 0;
@@ -157,31 +166,30 @@ void	panda(char *line, t_info *status)
 		if (value == 1) // noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
-				while (analysis_char(line[i]) == value)
+				while ((analysis_char(line[i]) == value || flag & IN_QUOTE) && line[i] != '\0')
 				{
 					ft_printf("%c", line[i]);
 					i++;
-//					if (line[i] == '\'' && flag & S_QUOTE)
-//					{
-//						flag-= S_QUOTE;
-//						i++;
-//					}
-//					if (line[i] == '\"' && flag & D_QUOTE)
-//					{
-//						flag -= D_QUOTE;
-//						i++;
-//					}
-//					if (line[i] == '\'' && !(flag & S_QUOTE) && !(flag & S_QUOTE))
-//					{
-//						flag += S_QUOTE;
-//						i++;
-//					}
-//					if (line[i] == '\"' && !(flag & S_QUOTE) && !(flag & D_QUOTE))
-//					{
-//					ft_putendl_fd("D", 1);
-//						flag += D_QUOTE;
-//						i++;
-//					}
+					if (line[i] == '\'' && flag & S_QUOTE)
+					{
+						flag-= S_QUOTE;
+						i++;
+					}
+					if (line[i] == '\"' && flag & D_QUOTE)
+					{
+						flag -= D_QUOTE;
+						i++;
+					}
+					if (line[i] == '\'' && !(flag & IN_QUOTE))
+					{
+						flag += S_QUOTE;
+						i++;
+					}
+					if (line[i] == '\"' && !(flag & IN_QUOTE))
+					{
+						flag += D_QUOTE;
+						i++;
+					}
 				}
 				char *str;
 				if (flag & INPUT_REDIRECT)
@@ -231,7 +239,7 @@ void	panda(char *line, t_info *status)
 			while (analysis_char(line[i]) == value)
 				i++;
 		}
-		else if (value == 3)// < << <<<
+		else if (value == 3)// < << <<<　ここは完成
 		{
 //			i = check_less_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
@@ -255,7 +263,7 @@ void	panda(char *line, t_info *status)
 				flag = flag | INPUT_REDIRECT;
 			}
 		}
-		else if (value == 4)// > >> >>>
+		else if (value == 4)// > >> >> ここは完成
 		{
 //			i = check_more_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
@@ -276,9 +284,10 @@ void	panda(char *line, t_info *status)
 			else if (i == 1)
 			{
 				ft_putendl_fd(" : re:redirect", 1);
-				flag = flag | INPUT_REDIRECT;
+				flag = flag | OUTPUT_REDIRECT;
 			}
 		}
+		/////////////////////////////////////////////////////ここは消していく
 		else if (value == 5)// $
 		{
 //			i = check_dollar_word(&line[i], &flag, status);
@@ -404,65 +413,65 @@ void	panda(char *line, t_info *status)
 				flag = AT_PIPE;
 			}
 		}
-		else if (value == 7)// "
-		{
-			flag += D_QUOTE;
-			line++;
-//			i = in_double_quote(&line[i], &flag, status);
-			while(1)
-			{
-				while (line[i] != '$' && line[i] != '\"' && line[i] != '\0')
-				{
-					ft_printf("%c", line[i]);
-					i++;
-				}
-				if (line[i] == '$')
-				{
-					ft_putendl_fd(" : $展開", 1);
-				}
-				else if (flag & INPUT_REDIRECT)
-				{
-					flag = flag - INPUT_REDIRECT;
-					ft_putendl_fd(" : Dquote redirect", 1);
-				}
-				else if (flag & OUTPUT_REDIRECT)
-				{
-					flag -= OUTPUT_REDIRECT;
-					ft_putendl_fd(" : Dquote RE redirect", 1);
-				}
-				else if (flag & HEREDOC)
-				{
-					flag -= HEREDOC;
-					ft_putendl_fd(" : Dquote heredoc", 1);
-				}
-				else if (flag & APPENDDOC)
-				{
-					flag -= APPENDDOC;
-					ft_putendl_fd(" : Dquote append", 1);
-				}
-				else if (!(flag & COMMAND))
-				{
-					ft_putendl_fd(" : Dquote command", 1);
-					flag = flag | COMMAND;
-				}
-				else if (flag & COMMAND)
-					ft_putendl_fd(" : Dquote flag or file", 1);
-				if (line[i] == '\"')
-				{
-					flag -= D_QUOTE;
-					i++;
-					break ;
-				}
-				else if (line[i] == '\0')
-					break ;
-			}
-		}
-		else if (value == 8)// '
-		{
-			flag += S_QUOTE;
-			line++;
-			i = in_single_quote(&line[i], &flag, status);//シングルクオートの処理部分
-		}
+//		else if (value == 7)// "
+//		{
+//			flag += D_QUOTE;
+//			line++;
+////			i = in_double_quote(&line[i], &flag, status);
+//			while(1)
+//			{
+//				while (line[i] != '$' && line[i] != '\"' && line[i] != '\0')
+//				{
+//					ft_printf("%c", line[i]);
+//					i++;
+//				}
+//				if (line[i] == '$')
+//				{
+//					ft_putendl_fd(" : $展開", 1);
+//				}
+//				else if (flag & INPUT_REDIRECT)
+//				{
+//					flag = flag - INPUT_REDIRECT;
+//					ft_putendl_fd(" : Dquote redirect", 1);
+//				}
+//				else if (flag & OUTPUT_REDIRECT)
+//				{
+//					flag -= OUTPUT_REDIRECT;
+//					ft_putendl_fd(" : Dquote RE redirect", 1);
+//				}
+//				else if (flag & HEREDOC)
+//				{
+//					flag -= HEREDOC;
+//					ft_putendl_fd(" : Dquote heredoc", 1);
+//				}
+//				else if (flag & APPENDDOC)
+//				{
+//					flag -= APPENDDOC;
+//					ft_putendl_fd(" : Dquote append", 1);
+//				}
+//				else if (!(flag & COMMAND))
+//				{
+//					ft_putendl_fd(" : Dquote command", 1);
+//					flag = flag | COMMAND;
+//				}
+//				else if (flag & COMMAND)
+//					ft_putendl_fd(" : Dquote flag or file", 1);
+//				if (line[i] == '\"')
+//				{
+//					flag -= D_QUOTE;
+//					i++;
+//					break ;
+//				}
+//				else if (line[i] == '\0')
+//					break ;
+//			}
+//		}
+//		else if (value == 8)// '
+//		{
+//			flag += S_QUOTE;
+//			line++;
+//			i = in_single_quote(&line[i], &flag, status);//シングルクオートの処理部分
+//		}
 		else
 		{
 			ft_printf("%c : else\n", *line);
