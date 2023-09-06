@@ -98,6 +98,7 @@ void	ex_pwd(void);
 void	ex_execve(char **command, int pipe_flag, t_info *status);
 void	ex_exit(int i);
 
-
+//debug.c
 void	debug(t_info *status,char *str);
+void	debug_env(t_info *status,char *str);
 #endif

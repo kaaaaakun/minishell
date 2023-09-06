@@ -50,5 +50,18 @@ void	debug(t_info *status,char *str)
 		if (data != NULL)
 			ft_printf("\n---------pipe----------\n");
 	}
-	ft_printf("-----------------------\n");
+	ft_printf("-----------------------\n\n");
+}
+
+void	debug_env(t_info *status,char *str)
+{
+	ft_printf("---------[env]---------\n",str);
+	t_stack *data;
+	data = status->stack;
+	while (data != NULL)
+	{
+		ft_printf("envの中身を全て表示\n");
+		lstiter(status->env, print_data);//listの中身を表示
+	}
+	ft_printf("-----------------------\n\n");
 }
