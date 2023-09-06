@@ -65,7 +65,6 @@ void	check_command(t_info *status, t_stack *data)
 void	check_line(char *line, t_info *status)
 {
 	ft_putstr_fd("[check_line]", 1);
-	int			cpy_stdin = dup(0);
 
 	if (line && *line)
 		add_history(line);
@@ -77,12 +76,14 @@ void	check_line(char *line, t_info *status)
 	{
 		ft_putstr_fd("", 1);
 		rl_on_new_line();
+		return ;
 	}
+	int			cpy_stdin = dup(0);
 	panda(line, status);
 	debug(status,"panda to check");
 	check_command(status, status->stack);
 	debug(status,"before free");
-	free_stack(status);
+	free_stack(status);//
 	debug(status,"after free");
 //	wait_process(status);
 	dup2(cpy_stdin, 0);

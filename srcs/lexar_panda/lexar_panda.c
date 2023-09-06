@@ -186,7 +186,7 @@ void	panda(char *line, t_info *status)
 				char *str;
 				if (flag & INPUT_REDIRECT)
 				{
-					ft_putendl_fd(" : redirect", 1);
+					ft_putendl_fd(" : noflag redirect", 1);
 					str = make_list(&flag, line, i, &data->inputlist);
 					check_flag(status, str, &flag);
 					flag = flag - INPUT_REDIRECT;

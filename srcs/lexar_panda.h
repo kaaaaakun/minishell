@@ -9,4 +9,7 @@ void	lexar_panda_error_check(int *flag, t_info *status);
 t_stack	*make_stack(t_info *status, t_stack *pre_data);
 void	check_flag(t_info *status, char *result, int *flag);
 
+//utils
+void	free_null(void *ptr);
+
 #endif

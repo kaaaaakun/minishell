@@ -42,6 +42,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			) \
 		execve.c \
 		list.c \
+		utils.c \
 		debug.c \
 		pipex_utils.c \
 		)

@@ -34,8 +34,8 @@ void	debug(t_info *status,char *str)
 	data = status->stack;
 	while (data != NULL)
 	{
-		ft_printf("envの中身を全て表示\n");
-		lstiter(status->env, print_data);//listの中身を表示
+//		ft_printf("envの中身を全て表示\n");
+//		lstiter(status->env, print_data);//listの中身を表示
 		ft_printf("\n[outputlist]\n");
 		lstiter(data->outputlist, print_data);//
 		ft_printf("\n[appendlist]\n");

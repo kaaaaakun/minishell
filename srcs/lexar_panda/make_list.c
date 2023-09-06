@@ -33,7 +33,7 @@ void	check_outfile(t_info *status, char *result)
 	(void)status;
 }
 
-void	check_command_path(t_info *status, char *result)
+char	*check_command_path(t_info *status, char *result)
 {
 	char	*path;
 	char	**splited_path;
@@ -41,6 +41,7 @@ void	check_command_path(t_info *status, char *result)
 	path = serch_env(status, "PATH");
 	splited_path = ft_split(path, ':');
 	path = check_path(result, splited_path);
+	return (path);
 	(void)result;
 	(void)status;
 }
@@ -48,13 +49,22 @@ void	check_command_path(t_info *status, char *result)
 void	check_flag(t_info *status, char *result, int *flag)
 {
 	return ;//ここで一回止めてる
+	ft_printf("[check_flag]");
 	if (*flag & INPUT_REDIRECT)
 		check_infile(status, result);
 	else if (*flag & OUTPUT_REDIRECT)
 		check_outfile(status, result);
+	else if (*flag & HEREDOC)
+		;
+	else if (*flag & APPENDDOC)
+		;
 	else if (!(*flag & COMMAND))
-		check_command_path(status, result);
+	{
+	//	data->content = check_command_path(status, ft_strjoin("/", result));
+		check_command_path(status, ft_strjoin("/", result));
+	}
 }
+
 
 char	*make_list(int *flag, char *line, int len, t_list **list)
 {
