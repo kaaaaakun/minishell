@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/06 19:28:12 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:38:43 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*check_dollar(t_info *status, char *line)
 			}
 			i++;
 		}
-		if (i == 0)
+		if (j == 0)
 		{
 			result = ft_substr(line, j, i - j);
 		}
@@ -133,8 +133,8 @@ char	*check_dollar(t_info *status, char *line)
 			ft_printf("\n[result:%s]",result);
 				if (pre_word != NULL)
 					result = ft_strjoin(result, pre_word);
+			ft_printf("\n[af join esult:%s]",result);
 			}
-			ft_printf("\n[result:%s]",result);
 			ft_printf("[i:%d/k:%d]",i,k);
 			i += k;
 		}
