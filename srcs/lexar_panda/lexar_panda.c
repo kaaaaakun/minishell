@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/06 19:38:43 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:01:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*check_dollar(t_info *status, char *line)
 		while (line[i] != '$' || flag & S_QUOTE)
 		{
 			if (line[i] == '\0')//null文字break;
-				return (result) ;
+				break ;
 			else if ((line[i] == '\'' || line[i] == '\"') && !(flag & IN_QUOTE))
 			{
 				if (line[i] == '\'')
@@ -84,60 +84,77 @@ char	*check_dollar(t_info *status, char *line)
 					flag -= D_QUOTE;
 				i++;
 			}
-			i++;
+			else
+				i++;
+			ft_printf("[fline:%d;%c]\n", i, line[i]);
 		}
 		if (j == 0)
 		{
 			result = ft_substr(line, j, i - j);
+			ft_printf("\n\n\n[j = 0result:%s]",ft_substr(line, j, i - j));
 		}
 		else
 		{
 			result = ft_strjoin(result, ft_substr(line, j, i - j));
-			ft_printf("\n\n\n[result:%s]",ft_substr(line, j, i - j));
+			ft_printf("\n\n\n[j != 0result:%s]",ft_substr(line, j, i - j));
 			ft_printf("[i:%d/j:%d]",i,i - j);
+			ft_printf("[eline:%d;%c]\n", i, &line[i]);
 		}
-		i++;
-		if (line[i] == '\0' || line[i] == ' ')
+
+ft_printf("\n[間line:%d;%c]\n", i, line[i]);
+		if (line[i] == '$' && (line[i + 1] == '\0' && line[i + 1] == ' '))
 		{
 			result = ft_strjoin(result, "$");
+			ft_printf("\n\n\n[j != 0result:%s]",ft_substr(line, j, i - j));
+			ft_printf("[dline:%d;%c]\n", i, line[i]);
 			i++;
+		}
+		else if (line[i] == '$' && line[i + 1] == '$')
+		{
+			result = ft_strjoin(result, "PID");
+			ft_printf("[cline:%d;%c]\n", i, line[i]);
+			i += 2;
 		}
 		else if (line[i] == '$')
 		{
-			result = ft_strjoin(result, "PID");
 			i++;
-		}
-		else
-		{
 			ft_printf("\n\n\n[result:%s]",result);
+			ft_printf("[bline:%d;%c]\n", i, line[i]);
 			char	*pre_word;
 			int		k;
 
 			k = 0;
-			while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && ((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<'  && line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
+			while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && ((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<' && line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 			{
 				ft_printf("%c", line[i + k]);
 				k++;
 			}
+			//if (k == 0)
+			//	break ;
 			if (*result == '\0')
 			{
 				pre_word = ft_substr(&line[i], 0, k);
-				result = serch_env(status, pre_word);
-				ft_printf("\n[result=NULL:%s]",result);
+				pre_word = serch_env(status, pre_word);
+				if (pre_word != NULL)
+					result = pre_word;
+				ft_printf("\n[result=0:%s]",result);
 			}
 			else
 			{
 				pre_word = ft_substr(&line[i], 0, k);
 				pre_word = serch_env(status, pre_word);
-			ft_printf("\n[pre-word:%s]",pre_word);
-			ft_printf("\n[result:%s]",result);
+		ft_printf("\n[pre-word:%s]",pre_word);
+		ft_printf("\n[result:%s]",result);
 				if (pre_word != NULL)
 					result = ft_strjoin(result, pre_word);
 			ft_printf("\n[af join esult:%s]",result);
 			}
 			ft_printf("[i:%d/k:%d]",i,k);
 			i += k;
+			ft_printf("[aline:%d;%c]\n", i, &line[i]);
 		}
+		if (line[i] == '\0')//null文字break;
+			break ;
 		j = i;
 	}
 	return (result);
@@ -150,6 +167,7 @@ void	panda(char *line, t_info *status)
 	int	value;
 	int	flag;
 	t_stack	*data;
+	char *str;
 
 	flag = INITIAL;
 	if (*line == '\0')
@@ -166,73 +184,72 @@ void	panda(char *line, t_info *status)
 		if (value == 1) // noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
-				while ((analysis_char(line[i]) == value || flag & IN_QUOTE) && line[i] != '\0')
+			while ((analysis_char(line[i]) == value || flag & IN_QUOTE) && line[i] != '\0')
+			{
+				ft_printf("%c", line[i]);
+				i++;
+				if (line[i] == '\'' && flag & S_QUOTE)
 				{
-					ft_printf("%c", line[i]);
+					flag-= S_QUOTE;
 					i++;
-					if (line[i] == '\'' && flag & S_QUOTE)
-					{
-						flag-= S_QUOTE;
-						i++;
-					}
-					if (line[i] == '\"' && flag & D_QUOTE)
-					{
-						flag -= D_QUOTE;
-						i++;
-					}
-					if (line[i] == '\'' && !(flag & IN_QUOTE))
-					{
-						flag += S_QUOTE;
-						i++;
-					}
-					if (line[i] == '\"' && !(flag & IN_QUOTE))
-					{
-						flag += D_QUOTE;
-						i++;
-					}
 				}
-				char *str;
-				if (flag & INPUT_REDIRECT)
+				if (line[i] == '\"' && flag & D_QUOTE)
 				{
-					ft_putendl_fd(" : noflag redirect", 1);
-					str = make_list(&flag, line, i, &data->inputlist);
-					check_flag(status, str, &flag);
-					flag = flag - INPUT_REDIRECT;
+					flag -= D_QUOTE;
+					i++;
 				}
-				else if (flag & OUTPUT_REDIRECT)
+				if (line[i] == '\'' && !(flag & IN_QUOTE))
 				{
-					ft_putendl_fd(" : RE redirect", 1);
-					str = make_list(&flag, line, i, &data->outputlist);
-					check_flag(status, str, &flag);
-					flag -= OUTPUT_REDIRECT;
+					flag += S_QUOTE;
+					i++;
 				}
-				else if (flag & HEREDOC)
+				if (line[i] == '\"' && !(flag & IN_QUOTE))
 				{
-					ft_putendl_fd(" : heredoc", 1);
-					str = make_list(&flag, line, i, &data->heredoclist);
-					check_flag(status, str, &flag);
-					flag -= HEREDOC;
+					flag += D_QUOTE;
+					i++;
 				}
-				else if (flag & APPENDDOC)
-				{
-					ft_putendl_fd(" : append", 1);
-					str = make_list(&flag, line, i, &data->appendlist);
-					check_flag(status, str, &flag);
-					flag -= APPENDDOC;
-				}
-				else if (!(flag & COMMAND))
-				{
-					ft_putendl_fd(" : noflag command", 1);
-					str = make_list(&flag, line, i, &data->cmdlist);
-					check_flag(status, str, &flag);
-					flag = flag | COMMAND;
-				}
-				else
-				{
-					ft_putendl_fd(" : flag or file", 1);
-					str = make_list(&flag, line, i, &data->cmdlist);
-					check_flag(status, str, &flag);
-				}
+			}
+			if (flag & INPUT_REDIRECT)
+			{
+				ft_putendl_fd(" : noflag redirect", 1);
+				str = make_list(&flag, line, i, &data->inputlist);
+				check_flag(status, str, &flag);
+				flag = flag - INPUT_REDIRECT;
+			}
+			else if (flag & OUTPUT_REDIRECT)
+			{
+				ft_putendl_fd(" : RE redirect", 1);
+				str = make_list(&flag, line, i, &data->outputlist);
+				check_flag(status, str, &flag);
+				flag -= OUTPUT_REDIRECT;
+			}
+			else if (flag & HEREDOC)
+			{
+				ft_putendl_fd(" : heredoc", 1);
+				str = make_list(&flag, line, i, &data->heredoclist);
+				check_flag(status, str, &flag);
+				flag -= HEREDOC;
+			}
+			else if (flag & APPENDDOC)
+			{
+				ft_putendl_fd(" : append", 1);
+				str = make_list(&flag, line, i, &data->appendlist);
+				check_flag(status, str, &flag);
+				flag -= APPENDDOC;
+			}
+			else if (!(flag & COMMAND))
+			{
+				ft_putendl_fd(" : noflag command", 1);
+				str = make_list(&flag, line, i, &data->cmdlist);
+				check_flag(status, str, &flag);
+				flag = flag | COMMAND;
+			}
+			else
+			{
+				ft_putendl_fd(" : flag or file", 1);
+				str = make_list(&flag, line, i, &data->cmdlist);
+				check_flag(status, str, &flag);
+			}
 		}
 		else if (value == 2)// ' '
 		{
@@ -287,113 +304,6 @@ void	panda(char *line, t_info *status)
 				flag = flag | OUTPUT_REDIRECT;
 			}
 		}
-		/////////////////////////////////////////////////////ここは消していく
-		else if (value == 5)// $
-		{
-//			i = check_dollar_word(&line[i], &flag, status);
-			line++;
-			if (line[i] == '\0' || line[i] == ' ')
-			{
-				ft_printf("$ : $ only\n");
-				make_list(&flag, "$", 1, &data->cmdlist);
-				i++;
-			}
-			else if (line[i] == '$')
-			{
-				ft_printf("$$ : PID\n");
-				make_list(&flag, "$$", 2, &data->cmdlist);
-				i++;
-			}
-			else
-			{
-				char	*serch_word;
-				char	*pre_word;
-				int		j;
-				int		k;
-				int		l;
-
-				j = 0;
-				k = 0;
-				l = 0;
-				while (line[i] != '\0' && line[i] != ' ' && line[i] != '<'  && line[i] != '>' && line[i] != '|')
-				{
-					ft_printf("%c", line[i]);
-					i++;
-				}
-				while (j < i)
-				{
-					while (line[j] != '$' && j < i)
-					{
-						ft_printf("%c", line[j]);
-						j++;
-					}
-					if (k == 0)
-					{
-						pre_word = ft_substr(&line[l], 0, j - l);
-						pre_word = serch_env(status, pre_word);
-						if (pre_word != NULL)
-							k++;
-					}
-					else
-					{
-						serch_word = ft_substr(&line[l], 0, j - l);
-						serch_word = serch_env(status, serch_word);
-						if (serch_word != NULL)
-							pre_word = ft_strjoin(pre_word, serch_word);
-					}
-					j++;
-					l = j;
-					ft_printf("[j:%d/i:%d/k:%d/l:%d]\n",j,i,k,l);
-				}
-				serch_word = pre_word;
-
-				j = 0;
-				while (1)
-				{
-					if (!serch_word)
-					{
-						ft_printf("[env.skip]");
-						break ;
-					}
-					while (serch_word[j] == ' ')
-						serch_word++;
-					while (serch_word[j] != ' ' && serch_word[j] != '\0')
-					{
-						ft_printf("%c", serch_word[j]);
-						j++;
-					}
-					if (flag & INPUT_REDIRECT)
-					{
-						flag = flag - INPUT_REDIRECT;
-						ft_putendl_fd(" : $ redirect", 1);
-					}
-					else if (flag & OUTPUT_REDIRECT)
-					{
-						flag -= OUTPUT_REDIRECT;
-						ft_putendl_fd(" : $ RE redirect", 1);
-					}
-					else if (flag & HEREDOC)
-					{
-						flag -= HEREDOC;
-						ft_putendl_fd(" : $ heredoc", 1);
-					}
-					else if (flag & APPENDDOC)
-					{
-						flag -= APPENDDOC;
-						ft_putendl_fd(" : $ append", 1);
-					}
-					else if (!(flag & COMMAND))
-					{
-						ft_putendl_fd(" : $ command", 1);
-						flag = flag | COMMAND;
-					}
-					else if (flag & COMMAND)
-						ft_putendl_fd(" : $ flag or file", 1);
-					if (serch_word[j] == '\0')
-						break ;
-				}
-			}
-		}
 		else if (value == 6)// |
 		{
 //			i = check_pipe_word(&line[i], &flag, status);
@@ -413,65 +323,6 @@ void	panda(char *line, t_info *status)
 				flag = AT_PIPE;
 			}
 		}
-//		else if (value == 7)// "
-//		{
-//			flag += D_QUOTE;
-//			line++;
-////			i = in_double_quote(&line[i], &flag, status);
-//			while(1)
-//			{
-//				while (line[i] != '$' && line[i] != '\"' && line[i] != '\0')
-//				{
-//					ft_printf("%c", line[i]);
-//					i++;
-//				}
-//				if (line[i] == '$')
-//				{
-//					ft_putendl_fd(" : $展開", 1);
-//				}
-//				else if (flag & INPUT_REDIRECT)
-//				{
-//					flag = flag - INPUT_REDIRECT;
-//					ft_putendl_fd(" : Dquote redirect", 1);
-//				}
-//				else if (flag & OUTPUT_REDIRECT)
-//				{
-//					flag -= OUTPUT_REDIRECT;
-//					ft_putendl_fd(" : Dquote RE redirect", 1);
-//				}
-//				else if (flag & HEREDOC)
-//				{
-//					flag -= HEREDOC;
-//					ft_putendl_fd(" : Dquote heredoc", 1);
-//				}
-//				else if (flag & APPENDDOC)
-//				{
-//					flag -= APPENDDOC;
-//					ft_putendl_fd(" : Dquote append", 1);
-//				}
-//				else if (!(flag & COMMAND))
-//				{
-//					ft_putendl_fd(" : Dquote command", 1);
-//					flag = flag | COMMAND;
-//				}
-//				else if (flag & COMMAND)
-//					ft_putendl_fd(" : Dquote flag or file", 1);
-//				if (line[i] == '\"')
-//				{
-//					flag -= D_QUOTE;
-//					i++;
-//					break ;
-//				}
-//				else if (line[i] == '\0')
-//					break ;
-//			}
-//		}
-//		else if (value == 8)// '
-//		{
-//			flag += S_QUOTE;
-//			line++;
-//			i = in_single_quote(&line[i], &flag, status);//シングルクオートの処理部分
-//		}
 		else
 		{
 			ft_printf("%c : else\n", *line);
