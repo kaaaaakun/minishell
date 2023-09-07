@@ -101,7 +101,7 @@ char	*check_dollar(t_info *status, char *line)
 			ft_printf("[eline:%d;%c]\n", i, &line[i]);
 		}
 
-ft_printf("\n[間line:%d;%c]\n", i, line[i]);
+	ft_printf("\n[間line:%d;%c]\n", i, line[i]);
 		if (line[i] == '$' && (line[i + 1] == '\0' && line[i + 1] == ' '))
 		{
 			result = ft_strjoin(result, "$");

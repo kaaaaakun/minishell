@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/07 20:09:41 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/07 19:26:51 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,18 +17,13 @@ SRCS_DIR = srcs
 OBJS_DIR = objs
 OPERARIONS_DIR = operations
 BUILTIN_DIR = builtin
-INCLUDES =  -I./libft-puls -I./srcs -I $(RL_DIR)/include
 
 RL_DIR = $(shell brew --prefix readline)
+
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
 		add_sigaction.c \
-		execve.c \
-		list.c \
-		utils.c \
-		debug.c \
-		pipex_utils.c \
 		$(addprefix builtin/, \
 			exit.c \
 			echo.c \
@@ -48,13 +43,19 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			chck_flag_error.c \
 			getpath.c \
 			) \
+		execve.c \
+		list.c \
+		utils.c \
+		debug.c \
+		pipex_utils.c \
 		)
 
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-OFLAGS  = -Wall -Wextra -Werror $(INCLUDES)
-CFLAGS  = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS  = -I./libft-puls -I./srcs 
+CFLAGS	+= -Wall -Wextra -Werror -I $(RL_DIR)/include
+# CFLAGS	+= -g -fsanitaze=address
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -72,8 +73,8 @@ endif
 
 all: $(NAME)
 
-.c.o:
-	@ $(CC) $(OFLAGS) -o $@ -c $<
+#.c.o:
+#	@ $(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) -lreadline $(CFLAGS) $(LIBFT) -o $@ -L $(RL_DIR)/lib 

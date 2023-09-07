@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/24 19:12:27 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/07 20:20:17 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	sighandla(int sig)
     }
     if (rl_on_new_line() == -1)
         exit(1);
-    // rl_replace_line("", 1);
+    rl_replace_line("", 1);
+	rl_on_new_line();
     rl_redisplay();
 }
