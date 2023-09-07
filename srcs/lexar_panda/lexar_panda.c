@@ -136,7 +136,10 @@ char	*check_dollar(t_info *status, char *line)
 				pre_word = ft_substr(&line[i], 0, k);
 				pre_word = serch_env(status, pre_word);
 				if (pre_word != NULL)
-					result = pre_word;
+				{
+					result = ft_strjoin("\'", pre_word);
+					result = ft_strjoin(result, "\'");
+				}
 				ft_printf("\n[result=0:%s]",result);
 			}
 			else
@@ -146,7 +149,11 @@ char	*check_dollar(t_info *status, char *line)
 		ft_printf("\n[pre-word:%s]",pre_word);
 		ft_printf("\n[result:%s]",result);
 				if (pre_word != NULL)
+				{
+					result = ft_strjoin(result, "\'");
 					result = ft_strjoin(result, pre_word);
+					result = ft_strjoin(result, "\'");
+				}
 			ft_printf("\n[af join esult:%s]",result);
 			}
 			ft_printf("[i:%d/k:%d]",i,k);
@@ -181,33 +188,34 @@ void	panda(char *line, t_info *status)
 		i = 0;
 		value = -1;
 		value = analysis_char(*line);
-		if (value == 1) // noflags
+		if (value == 1 || value == 0)// noflags
 		{
 //			i = check_noflag_word(&line[i], &flag, status);
 			while ((analysis_char(line[i]) == value || flag & IN_QUOTE) && line[i] != '\0')
 			{
-				ft_printf("%c", line[i]);
-				i++;
+				ft_printf("[[%c]]", line[i]);
 				if (line[i] == '\'' && flag & S_QUOTE)
 				{
 					flag-= S_QUOTE;
 					i++;
 				}
-				if (line[i] == '\"' && flag & D_QUOTE)
+				else if (line[i] == '\"' && flag & D_QUOTE)
 				{
 					flag -= D_QUOTE;
 					i++;
 				}
-				if (line[i] == '\'' && !(flag & IN_QUOTE))
+				else if (line[i] == '\'' && !(flag & IN_QUOTE))
 				{
 					flag += S_QUOTE;
 					i++;
 				}
-				if (line[i] == '\"' && !(flag & IN_QUOTE))
+				else if (line[i] == '\"' && !(flag & IN_QUOTE))
 				{
 					flag += D_QUOTE;
 					i++;
 				}
+				else
+					i++;
 			}
 			if (flag & INPUT_REDIRECT)
 			{
@@ -251,12 +259,12 @@ void	panda(char *line, t_info *status)
 				check_flag(status, str, &flag);
 			}
 		}
-		else if (value == 2)// ' '
+		if (value == 2)// ' '
 		{
 			while (analysis_char(line[i]) == value)
 				i++;
 		}
-		else if (value == 3)// < << <<<　ここは完成
+		else if (value == 3 && !(flag & IN_QUOTE))// < << <<<　ここは完成
 		{
 //			i = check_less_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
@@ -280,7 +288,7 @@ void	panda(char *line, t_info *status)
 				flag = flag | INPUT_REDIRECT;
 			}
 		}
-		else if (value == 4)// > >> >> ここは完成
+		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
 		{
 //			i = check_more_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
@@ -304,7 +312,7 @@ void	panda(char *line, t_info *status)
 				flag = flag | OUTPUT_REDIRECT;
 			}
 		}
-		else if (value == 6)// |
+		else if (value == 6 && !(flag & IN_QUOTE))// |
 		{
 //			i = check_pipe_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
@@ -322,11 +330,6 @@ void	panda(char *line, t_info *status)
 				ft_putendl_fd(" : pipe", 1);
 				flag = AT_PIPE;
 			}
-		}
-		else
-		{
-			ft_printf("%c : else\n", *line);
-			line++;
 		}
 		line += i;
 	}
