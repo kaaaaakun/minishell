@@ -21,7 +21,8 @@ int	ft_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	fd = STDOUT_FILENO;
+	fd = 2;//エラー検知の場合は２番
+//	fd = STDOUT_FILENO;
 	count = 0;
 	va_start (ap, format);
 	if (!format)
