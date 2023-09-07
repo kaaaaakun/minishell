@@ -45,7 +45,7 @@ char	*serch_env(t_info *status, char *str);
 char	*check_access(char *command, t_info *status);
 
 
-void	ex_heredoc(char *line);
+//void	ex_heredoc(char *line);
 void	ex_env(void);
 void	ex_unset(char **split);
 void	ex_export(t_info *status, t_stack *data);

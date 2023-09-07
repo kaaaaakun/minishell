@@ -12,7 +12,7 @@
 
 #include "lexar_panda.h"
 #include "minishell.h"
-#include "pipex.h"
+#include <errno.h>
 
 void	check_infile(t_info *status, char *result)
 {
@@ -26,11 +26,81 @@ void	check_infile(t_info *status, char *result)
 	(void)status;
 }
 
+
+char	*make_tmp_file(t_info *status, int *tmp_fd)
+{
+	int		nbr;
+	char	*char_nbr;
+	char	*origin_file_name;
+	char	*tmp_file_name;
+
+	*tmp_fd = 0;
+	nbr = 0;
+	origin_file_name = ft_strdup(".tmp");
+	tmp_file_name = origin_file_name;
+	*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
+	ft_printf("[%d]",*tmp_fd);
+	while (*tmp_fd != -1 && errno != ENOENT && nbr < 5000)
+	{
+		char_nbr = ft_itoa(nbr);
+		tmp_file_name = ft_strjoin(origin_file_name, char_nbr);
+		*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
+		nbr++;
+	}
+	//*tmp_fd がファイルが存在しないので開けない場合
+	//ファイルをtmpファイルを作成する
+	*tmp_fd = open_ee(tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
+		S_IRWXU | S_IRGRP| S_IROTH);
+	if (*tmp_fd < 0)
+		return (NULL);
+	return (tmp_file_name);
+	(void)status;
+}
+
+void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
+{
+	char	*line;
+	int		eof_len;
+
+	eof_len = ft_strlen(eof_word) + 1;
+	while (1)
+	{
+		line = readline(">");
+		if (line == NULL || ft_strncmp(line, eof_word, eof_len) == 0)
+			break ;
+		ft_putendl_fd(line, tmp_fd);
+		free(line);
+	}
+	(void)status;
+}
+
+void	check_heredoc(t_info *status, char *eof_word)
+{
+	char	*tmp_file_name;
+	int		tmp_fd;
+
+	tmp_file_name = make_tmp_file(status, &tmp_fd);
+	ex_heredoc(status, eof_word, tmp_fd);
+	check_infile(status, tmp_file_name);
+	(void)status;
+}
+
 void	check_outfile(t_info *status, char *result)
 {
 	int fd;
 
 	fd = open_ee(result, O_CREAT | O_TRUNC | O_WRONLY, \
+		S_IRWXU | S_IRGRP| S_IROTH);
+	dup2_ee(fd, STDOUT_FILENO);
+	close_ee(fd);
+	(void)status;
+}
+
+void	check_appendfile(t_info *status, char *result)
+{
+	int fd;
+
+	fd = open_ee(result, O_CREAT | O_APPEND | O_WRONLY, \
 		S_IRWXU | S_IRGRP| S_IROTH);
 	dup2_ee(fd, STDOUT_FILENO);
 	close_ee(fd);
@@ -59,9 +129,9 @@ void	check_flag(t_info *status, char *result, int *flag)
 	else if (*flag & OUTPUT_REDIRECT)
 		check_outfile(status, result);
 	else if (*flag & HEREDOC)
-		;
+		check_heredoc(status, result);
 	else if (*flag & APPENDDOC)
-		;
+		check_appendfile(status, result);
 	else if (!(*flag & COMMAND))
 	{
 	//	data->content = check_command_path(status, ft_strjoin("/", result));

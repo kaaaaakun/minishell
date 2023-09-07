@@ -15,10 +15,6 @@ NAME = minishell
 # Files & Command +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 SRCS_DIR = srcs
 OBJS_DIR = objs
-OPERARIONS_DIR = operations
-BUILTIN_DIR = builtin
-INCLUDES =  -I./libft-puls -I./srcs -I $(RL_DIR)/include
-
 RL_DIR = $(shell brew --prefix readline)
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
@@ -42,43 +38,40 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			make_env_list.c \
 			replace_env.c \
 			lexar_panda.c \
-			heredoc.c \
 			make_list.c \
 			make_stack.c \
 			chck_flag_error.c \
 			getpath.c \
 			) \
 		)
-
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-OFLAGS  = -Wall -Wextra -Werror $(INCLUDES)
-CFLAGS  = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS  = -Wall -Wextra -Werror
+INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
+LDFLAGS	= -lreadline -L $(RL_DIR)/lib 
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 LIBFT_DIR	=	libft-puls
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
-DEBUG			= debug
-
 ifdef WITH_DEBUG
 	CFLAGS += -g -O0 -fsanitize=address
 endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug
 
 all: $(NAME)
 
 .c.o:
-	@ $(CC) $(OFLAGS) -o $@ -c $<
+	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(OBJS) -lreadline $(CFLAGS) $(LIBFT) -o $@ -L $(RL_DIR)/lib 
+	$(CC) $(OBJS) $(INCLUDE) $(LDFLAGS) $(CFLAGS) $(LIBFT) -o $@
 	@ echo "compiled!"
-#	make clean
+	make clean
 
 clean:
 	@ make -C $(LIBFT_DIR) clean
@@ -93,10 +86,10 @@ fclean: clean
 re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-$(DEBUG):
-	make WITH_DEBUG=1
-
 $(LIBFT):
-	make bonus -C $(LIBFT_DIR) all -lreadline
+	make bonus -C $(LIBFT_DIR) all
+
+debug:
+	make WITH_DEBUG=1
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
