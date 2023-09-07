@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/06 19:34:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:38:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,14 @@ void	check_line(char *line, t_info *status)
 		return ;
 	}
 	int			cpy_stdin = dup(0);
+	int			cpy_stdout = dup(1);
 	panda(line, status);
 	debug(status,"panda to check");
 	check_command(status, status->stack);
 	free_stack(status);//
 //	wait_process(status);
 	dup2(cpy_stdin, 0);
-//	split_free(splited_pipe);
+	dup2(cpy_stdout, 1);
 }
 
 int	main(int argc, char *argv[], char *env[])

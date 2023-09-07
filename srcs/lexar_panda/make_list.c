@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   make_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/06 18:51:41 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:07:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexar_panda.h"
 #include "minishell.h"
 #include "pipex.h"
+
 void	check_infile(t_info *status, char *result)
 {
 	int fd;
 
 	fd = open_ee(result, O_RDONLY, 0);
+	if (fd < 0)
+		return ;
 	dup2_ee(fd, STDIN_FILENO);
 	close_ee(fd);
 	(void)status;
@@ -49,7 +52,7 @@ char	*check_command_path(t_info *status, char *result)
 
 void	check_flag(t_info *status, char *result, int *flag)
 {
-	return ;//ここで一回止めてる
+//	return ;//ここで一回止めてる
 	ft_printf("[check_flag]");
 	if (*flag & INPUT_REDIRECT)
 		check_infile(status, result);
