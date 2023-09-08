@@ -129,16 +129,19 @@ char	*check_dollar(t_info *status, char *line)
 				ft_printf("%c", line[i + k]);
 				k++;
 			}
-			//if (k == 0)
-			//	break ;
 			if (*result == '\0')
 			{
 				pre_word = ft_substr(&line[i], 0, k);
 				pre_word = serch_env(status, pre_word);
 				if (pre_word != NULL)
 				{
-					result = ft_strjoin("\'", pre_word);
-					result = ft_strjoin(result, "\'");
+					if (flag & D_QUOTE)
+						result = pre_word;
+					else
+					{
+						result = ft_strjoin("\'", pre_word);
+						result = ft_strjoin(result, "\'");
+					}
 				}
 				ft_printf("\n[result=0:%s]",result);
 			}
@@ -150,9 +153,14 @@ char	*check_dollar(t_info *status, char *line)
 		ft_printf("\n[result:%s]",result);
 				if (pre_word != NULL)
 				{
-					result = ft_strjoin(result, "\'");
-					result = ft_strjoin(result, pre_word);
-					result = ft_strjoin(result, "\'");
+					if (flag & D_QUOTE)
+						result = ft_strjoin(result, pre_word);
+					else
+					{
+						result = ft_strjoin(result, "\'");
+						result = ft_strjoin(result, pre_word);
+						result = ft_strjoin(result, "\'");
+					}
 				}
 			ft_printf("\n[af join esult:%s]",result);
 			}
