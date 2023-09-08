@@ -23,31 +23,68 @@ int	analysis_char(char c)
 		return (3);
 	if (c == '>')
 		return (4);
-//	if (c == '$')
-//		return (5);
 	if (c == '|')
 		return (6);
-//	if (c == '\"')
-//		return (7);
-//	if (c == '\'')
-//		return (8);
-//	if (c == ';')
-//		return (10);
 	return (0);
 }
 
-int	is_function_word(char c)
+void	serch_env_variable(char *line, int *i, int *flag)
 {
-	int	value;
+	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
+	{
+		ft_printf("\n%c",line[*i]);
+		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
+		{
+			if (line[*i] == '\'')
+				*flag += S_QUOTE;
+			else if (line[*i] == '\"')
+				*flag += D_QUOTE;
+			*i += 1;
+		}
+		else if ((line[*i] == '\'' && *flag & S_QUOTE) || (line[*i] == '\"' && *flag & D_QUOTE))
+		{
+			if (line[*i] == '\'')
+				*flag -= S_QUOTE;
+			else if (line[*i] == '\"')
+				*flag -= D_QUOTE;
+			*i += 1;
+		}
+		else
+			*i += 1;
+	}
+}
 
-	value = analysis_char(c);
-	if (value == 3)
-		return (1);
-	if (value == 4)
-		return (1);
-	if (value == 6)
-		return (1);
-	return (0);
+int	find_next_token(char *line, int i, int flag)
+{
+	int	k;
+
+	k = 0;
+	while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && \
+		((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<' && \
+		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
+		k++;
+	ft_printf("[find_next_token:%d %c]",k,line[i+k]);
+	return (k);
+}
+
+char	*process_dollar_symbol(t_info *status, char *line, int *i, char *result)
+{
+	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
+	{
+		result = ft_strjoin(result, "$");
+		*i += 1;
+	}
+	else if (line[*i] == '$' && line[*i + 1] == '$')
+	{
+		result = ft_strjoin(result, "PID");
+		*i += 2;
+	}
+	return (result);
+	(void)status;
+}
+
+char	serch_and_append_env(t_info *status, char line[i], char result, int *flag)
+{
 }
 
 char	*check_dollar(t_info *status, char *line)
@@ -62,116 +99,62 @@ char	*check_dollar(t_info *status, char *line)
 	j = 0;
 	flag = 0;
 	result = line;
-	while (1)
+	while (line[i] != '\0')
 	{
-		while (line[i] != '$' || flag & S_QUOTE)
-		{
-			if (line[i] == '\0')//null文字break;
-				break ;
-			else if ((line[i] == '\'' || line[i] == '\"') && !(flag & IN_QUOTE))
-			{
-				if (line[i] == '\'')
-					flag += S_QUOTE;
-				else if (line[i] == '\"')
-					flag += D_QUOTE;
-				i++;
-			}
-			else if ((line[i] == '\'' && flag & S_QUOTE) || (line[i] == '\"' && flag & D_QUOTE))
-			{
-				if (line[i] == '\'')
-					flag -= S_QUOTE;
-				else if (line[i] == '\"')
-					flag -= D_QUOTE;
-				i++;
-			}
-			else
-				i++;
-			ft_printf("[fline:%d;%c]\n", i, line[i]);
-		}
+		serch_env_variable(line, &i, &flag);
+		
 		if (j == 0)
-		{
 			result = ft_substr(line, j, i - j);
-			ft_printf("\n\n\n[j = 0result:%s]",ft_substr(line, j, i - j));
-		}
 		else
-		{
 			result = ft_strjoin(result, ft_substr(line, j, i - j));
-			ft_printf("\n\n\n[j != 0result:%s]",ft_substr(line, j, i - j));
-			ft_printf("[i:%d/j:%d]",i,i - j);
-			ft_printf("[eline:%d;%c]\n", i, &line[i]);
-		}
+///////////
+		if (line[i] == '$' && (line[i + 1] == '\0' || line[i + 1] == ' ' || line[i + 1] == '$'))
+			result = process_dollar_symbol(status, line, &i, result);
+////////////
+//		if (line[i] == '$' && (line[i + 1] == '\0' || line[i + 1] == ' '))
+//		{
+//			result = ft_strjoin(result, "$");
+//			i++;
+//		}
+//		else if (line[i] == '$' && line[i + 1] == '$')
+//		{
+//			result = ft_strjoin(result, "PID");
+//			i += 2;
+//		}
 
-	ft_printf("\n[間line:%d;%c]\n", i, line[i]);
-		if (line[i] == '$' && (line[i + 1] == '\0' && line[i + 1] == ' '))
-		{
-			result = ft_strjoin(result, "$");
-			ft_printf("\n\n\n[j != 0result:%s]",ft_substr(line, j, i - j));
-			ft_printf("[dline:%d;%c]\n", i, line[i]);
-			i++;
-		}
-		else if (line[i] == '$' && line[i + 1] == '$')
-		{
-			result = ft_strjoin(result, "PID");
-			ft_printf("[cline:%d;%c]\n", i, line[i]);
-			i += 2;
-		}
+//		else if (line[i] == '$')
+//		{
+//			i++;
+//			result = serch_and_append_env(status, &line[i], result, &flag);
+//		}
 		else if (line[i] == '$')
 		{
+			result = process_dollar_symbol(status, line, &i, result);
+	//		process_env_Variable()
 			i++;
-			ft_printf("\n\n\n[result:%s]",result);
-			ft_printf("[bline:%d;%c]\n", i, line[i]);
 			char	*pre_word;
 			int		k;
 
-			k = 0;
-			while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && ((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<' && line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
+			k = find_next_token(line, i, flag);
+			pre_word = ft_substr(&line[i], 0, k);
+			pre_word = serch_env(status, pre_word);
+			if (pre_word != NULL)
 			{
-				ft_printf("%c", line[i + k]);
-				k++;
-			}
-			if (*result == '\0')
-			{
-				pre_word = ft_substr(&line[i], 0, k);
-				pre_word = serch_env(status, pre_word);
-				if (pre_word != NULL)
+				if (flag & D_QUOTE)
+					result = ft_strjoin(result, pre_word);
+				else
 				{
-					if (flag & D_QUOTE)
-						result = pre_word;
-					else
-					{
-						result = ft_strjoin("\'", pre_word);
-						result = ft_strjoin(result, "\'");
-					}
+					result = ft_strjoin(result, "\'");
+					result = ft_strjoin(result, pre_word);
+					result = ft_strjoin(result, "\'");
 				}
-				ft_printf("\n[result=0:%s]",result);
 			}
-			else
-			{
-				pre_word = ft_substr(&line[i], 0, k);
-				pre_word = serch_env(status, pre_word);
-		ft_printf("\n[pre-word:%s]",pre_word);
-		ft_printf("\n[result:%s]",result);
-				if (pre_word != NULL)
-				{
-					if (flag & D_QUOTE)
-						result = ft_strjoin(result, pre_word);
-					else
-					{
-						result = ft_strjoin(result, "\'");
-						result = ft_strjoin(result, pre_word);
-						result = ft_strjoin(result, "\'");
-					}
-				}
-			ft_printf("\n[af join esult:%s]",result);
-			}
-			ft_printf("[i:%d/k:%d]",i,k);
+/////-------////---------------------------
 			i += k;
-			ft_printf("[aline:%d;%c]\n", i, &line[i]);
 		}
-		if (line[i] == '\0')//null文字break;
-			break ;
 		j = i;
 	}
+	ft_printf("\n[end dollar :%s]\n", result);
 	return (result);
 }
 
@@ -187,7 +170,7 @@ void	panda(char *line, t_info *status)
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
-	ft_printf("\n[%s]\n", line);
+	ft_printf("\n[pre dollar :%s]\n", line);
 	data = make_stack(status, NULL);
 	line = check_dollar(status, line);
 	ft_printf("\n[%s]\n", line);
