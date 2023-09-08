@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/06 21:01:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/08 16:51:34 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,8 +249,9 @@ void	panda(char *line, t_info *status)
 			else if (flag & APPENDDOC)
 			{
 				ft_putendl_fd(" : append", 1);
-				str = make_list(&flag, line, i, &data->appendlist);
-				check_flag(status, str, &flag);
+				str = mini_substr(line, 0, i);
+				str = check_flag(status, str, &flag);
+				push_back(&data->appendlist, str);
 				flag -= APPENDDOC;
 			}
 			else if (!(flag & COMMAND))

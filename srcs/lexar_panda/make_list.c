@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 16:07:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:35:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,18 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	(void)status;
 }
 
-void	check_heredoc(t_info *status, char *eof_word)
+char	*check_heredoc(t_info *status, char *eof_word)
 {
 	char	*tmp_file_name;
+	char	*file_name;
 	int		tmp_fd;
 
 	tmp_file_name = make_tmp_file(status, &tmp_fd);
 	ex_heredoc(status, eof_word, tmp_fd);
-	check_infile(status, tmp_file_name);
+	//check_infile(status, tmp_file_name);
 	(void)status;
+	file_name = ft_strdup(tmp_file_name);
+	return (file_name);
 }
 
 void	check_outfile(t_info *status, char *result)
@@ -120,7 +123,7 @@ char	*check_command_path(t_info *status, char *result)
 	(void)status;
 }
 
-void	check_flag(t_info *status, char *result, int *flag)
+char	*check_flag(t_info *status, char *result, int *flag)
 {
 //	return ;//ここで一回止めてる
 	ft_printf("[check_flag]");
@@ -129,7 +132,9 @@ void	check_flag(t_info *status, char *result, int *flag)
 	else if (*flag & OUTPUT_REDIRECT)
 		check_outfile(status, result);
 	else if (*flag & HEREDOC)
-		check_heredoc(status, result);
+	{
+		result = (check_heredoc(status, result));
+	}
 	else if (*flag & APPENDDOC)
 		check_appendfile(status, result);
 	else if (!(*flag & COMMAND))
@@ -137,6 +142,8 @@ void	check_flag(t_info *status, char *result, int *flag)
 	//	data->content = check_command_path(status, ft_strjoin("/", result));
 		check_command_path(status, ft_strjoin("/", result));
 	}
+	ft_printf("\n[[%s]]", result);
+	return (result);
 }
 
 void	*mini_memcpy(void *dst, const void *src, size_t n)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexar_panda.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/09/08 15:35:14 by tokazaki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEXER_MANDA_H
 # define LEXER_MANDA_H
 
@@ -26,8 +38,9 @@ char	*make_list(int *flag, char *line, int len, t_list **list);
 char	*serch_env(t_info *status, char *str);
 void	lexar_panda_error_check(int *flag, t_info *status);
 t_stack	*make_stack(t_info *status, t_stack *pre_data);
-void	check_flag(t_info *status, char *result, int *flag);
-
+char	*check_flag(t_info *status, char *result, int *flag);
+char	*mini_substr(char const *s, unsigned int start, size_t len);
+	
 //utils
 void	free_null(void *ptr);
 
