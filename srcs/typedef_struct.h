@@ -35,7 +35,7 @@ typedef struct s_info
 	int				error;
 	int				exec_count;
 	t_list			*env; //exportの中身をpush_backする, unsetで消す
-	t_libft_list	*line;
+	char			*line;
 	struct s_stack	*stack;
 }	t_info;
 

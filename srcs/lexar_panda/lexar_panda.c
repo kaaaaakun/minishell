@@ -67,7 +67,7 @@ int	find_next_token(char *line, int i, int flag)
 	return (k);
 }
 
-char	*process_dollar_symbol(t_info *status, char *line, int *i, char *result)
+char	*process_single_double_dollar(t_info *status, char *line, int *i, char *result)
 {
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
@@ -83,10 +83,43 @@ char	*process_dollar_symbol(t_info *status, char *line, int *i, char *result)
 	(void)status;
 }
 
-char	serch_and_append_env(t_info *status, char line[i], char result, int *flag)
-{
+char	*serch_and_append_env(t_info *status, char *result, char *pre_word, int *flag)
+{	
+	pre_word = serch_env(status, pre_word);
+	if (pre_word != NULL)
+	{
+		if (*flag & D_QUOTE)
+			result = ft_strjoin(result, pre_word);
+		else
+		{
+			result = ft_strjoin(result, "\'");
+			result = ft_strjoin(result, pre_word);
+			result = ft_strjoin(result, "\'");
+		}
+	}
+	return (result);
 }
 
+char	*prosess_dollar(t_info *status, char *result, int *i, int *flag)
+{
+	char	*pre_word;
+	char	*line;
+	int		k;
+
+	line = status->line;
+	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' ' || line[*i + 1] == '$'))
+		result = process_single_double_dollar(status, line, i, result);
+	else// if (line[*i] == '$')
+	{
+		*i += 1;
+		k = find_next_token(line, *i, *flag);
+		pre_word = ft_substr(&line[*i], 0, k);
+		result = serch_and_append_env(status, result, pre_word, flag);
+		*i += k;
+	}
+	ft_printf("\n[%s]\n",result);
+	return (result);
+}
 char	*check_dollar(t_info *status, char *line)
 {
 	ft_printf("[check_dollar]");
@@ -95,63 +128,20 @@ char	*check_dollar(t_info *status, char *line)
 	int	j;
 	char	*result;
 
+	status->line = line;
 	i = 0;
 	j = 0;
 	flag = 0;
-	result = line;
+//	result = line;
 	while (line[i] != '\0')
 	{
-		serch_env_variable(line, &i, &flag);
-		
+		serch_env_variable(line, &i, &flag);	
 		if (j == 0)
 			result = ft_substr(line, j, i - j);
 		else
 			result = ft_strjoin(result, ft_substr(line, j, i - j));
-///////////
-		if (line[i] == '$' && (line[i + 1] == '\0' || line[i + 1] == ' ' || line[i + 1] == '$'))
-			result = process_dollar_symbol(status, line, &i, result);
-////////////
-//		if (line[i] == '$' && (line[i + 1] == '\0' || line[i + 1] == ' '))
-//		{
-//			result = ft_strjoin(result, "$");
-//			i++;
-//		}
-//		else if (line[i] == '$' && line[i + 1] == '$')
-//		{
-//			result = ft_strjoin(result, "PID");
-//			i += 2;
-//		}
-
-//		else if (line[i] == '$')
-//		{
-//			i++;
-//			result = serch_and_append_env(status, &line[i], result, &flag);
-//		}
-		else if (line[i] == '$')
-		{
-			result = process_dollar_symbol(status, line, &i, result);
-	//		process_env_Variable()
-			i++;
-			char	*pre_word;
-			int		k;
-
-			k = find_next_token(line, i, flag);
-			pre_word = ft_substr(&line[i], 0, k);
-			pre_word = serch_env(status, pre_word);
-			if (pre_word != NULL)
-			{
-				if (flag & D_QUOTE)
-					result = ft_strjoin(result, pre_word);
-				else
-				{
-					result = ft_strjoin(result, "\'");
-					result = ft_strjoin(result, pre_word);
-					result = ft_strjoin(result, "\'");
-				}
-			}
-/////-------////---------------------------
-			i += k;
-		}
+		if (line[i] == '$')
+			result = prosess_dollar(status, result, &i, &flag);
 		j = i;
 	}
 	ft_printf("\n[end dollar :%s]\n", result);
