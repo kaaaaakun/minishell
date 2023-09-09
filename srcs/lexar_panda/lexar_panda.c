@@ -221,6 +221,7 @@ void	process_input_operation(t_info *status, t_stack *data, int j, int *flag)
 		check_flag(status, str, flag);
 	}
 }
+
 void	panda(char *line, t_info *status)
 {
 	ft_printf("[panda]");

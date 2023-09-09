@@ -87,7 +87,7 @@ char	*check_heredoc(t_info *status, char *eof_word)
 
 	tmp_file_name = make_tmp_file(status, &tmp_fd);
 	ex_heredoc(status, eof_word, tmp_fd);
-//	check_infile(status, tmp_file_name);
+	check_infile(status, tmp_file_name);
 	(void)status;
 	file_name = ft_strdup(tmp_file_name);
 	return (file_name);
