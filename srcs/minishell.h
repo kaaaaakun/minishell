@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 18:04:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/10 18:57:59 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	ex_exit(int i);
 
 //export_utils
 void	insert_doublequotes(char *str);
+int		plus_equal_or_not(char *str);
+int		valid_left(char *str, int flag);
 
 //debug.c
 void	debug(t_info *status,char *str);

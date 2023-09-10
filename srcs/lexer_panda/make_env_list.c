@@ -29,7 +29,7 @@ char	*search_env(t_info *status, char *str)
 	//status->error
 	len = ft_strlen(searched_word);
 	d_printf("[%s:%d]",searched_word,len);
-	while (env->next != NULL)
+	while (env->next != NULL) //最後まで行った時を考えて->nextではない方がいい？
 	{
 		if (ft_strncmp(env->content, searched_word, len) == 0)
 			break ;
@@ -54,7 +54,7 @@ t_list	*search_envlist(t_info *status, char *str)
 	//status->error
 	len = ft_strlen(searched_word);
 	d_printf("[%s:%d]",searched_word,len);
-	while (env->next != NULL)
+	while (env != NULL)
 	{
 		if (ft_strncmp(env->content, searched_word, len) == 0)
 			break ;

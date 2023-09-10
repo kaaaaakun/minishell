@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/10 17:08:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/10 19:02:06 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,38 @@ void	insert_doublequotes(char *str)
 	str[len + 2] = '\0';
 }
 
+int	valid_left(char *str, int flag)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] != ft_isalpha(str[i]) || str[i] != '_')
+		return (0);
+	i++;
+	if (flag == 1)
+	{
+		while (str[i] != '=' || str[i] != '\0')
+		{
+			if (!(ft_isalnum(str[i]) || str[i] == '_'))
+				return (0);
+			i++;
+		}
+	}
+	else if (flag == 0)
+	{
+		while (str[i] != '+')
+		{
+			if (!(ft_isalnum(str[i]) || str[i] == '_'))
+				return (0);
+			i++;
+		}
+	}
+	return (1);
+}
+
+int	plus_equal_or_not(char *str)
+{
+	if (ft_strnstr(str, "+=", ft_strlen(str)) != NULL)
+		return (1);
+	return (0);
+}
