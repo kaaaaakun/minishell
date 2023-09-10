@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexar_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/09 20:19:00 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	serch_env_variable(char *line, int *i, int *flag)
 {
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
-		ft_printf("\n%c",line[*i]);
+		d_printf("\n%c",line[*i]);
 		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
 		{
 			if (line[*i] == '\'')
@@ -63,7 +63,7 @@ int	find_next_token(char *line, int i, int flag)
 		((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 		k++;
-	ft_printf("[find_next_token:%d %c]",k,line[i+k]);
+	d_printf("[find_next_token:%d %c]",k,line[i+k]);
 	return (k);
 }
 
@@ -117,13 +117,13 @@ char	*prosess_dollar(t_info *status, char *result, int *i, int *flag)
 		result = serch_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
-//	ft_printf("\n[%s]\n",result);
+//	d_printf("\n[%s]\n",result);
 	return (result);
 }
 
 char	*check_dollar(t_info *status, char *line)
 {
-	ft_printf("[check_dollar]");
+	d_printf("[check_dollar]");
 	int	i;
 	int	flag;
 	int	j;
@@ -145,7 +145,7 @@ char	*check_dollar(t_info *status, char *line)
 			result = prosess_dollar(status, result, &i, &flag);
 		j = i;
 	}
-//	ft_printf("\n[end dollar :%s]\n", result);
+//	d_printf("\n[end dollar :%s]\n", result);
 	return (result);
 }
 
@@ -222,23 +222,75 @@ void	process_input_operation(t_info *status, t_stack *data, int j, int *flag)
 	}
 }
 
+void make_input_redirect(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	ft_putendl_fd(" : no*flag redirect", 1);
+	char *str = make_list(flag, line, j, &data->inputlist);
+	check_flag(status, str, flag);
+	*flag = *flag - INPUT_REDIRECT;
+}
+
+void make_output_redirect(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	char *str;
+	ft_putendl_fd(" : RE redirect", 1);
+	str = make_list(flag, line, j, &data->outputlist);
+	check_flag(status, str, flag);
+	*flag -= OUTPUT_REDIRECT;
+}
+
+void make_heredoc_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	char *str;
+	ft_putendl_fd(" : heredoc", 1);
+	str = make_list(flag, line, j, &data->heredoclist);
+	check_flag(status, str, flag);
+	*flag -= HEREDOC;
+}
+
+void make_append_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	char *str;
+	ft_putendl_fd(" : append", 1);
+	str = mini_substr(line, 0, j);
+	str = check_flag(status, str, flag);
+	push_back(&data->appendlist, str);
+	*flag -= APPENDDOC;
+}
+
+void make_command_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	char *str;
+	ft_putendl_fd(" : no*flag command", 1);
+	str = make_list(flag, line, j, &data->cmdlist);
+	check_flag(status, str, flag);
+	*flag = *flag | COMMAND;
+}
+
+void make_other_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+{
+	char *str;
+	ft_putendl_fd(" : *flag or file", 1);
+	str = make_list(flag, line, j, &data->cmdlist);
+	check_flag(status, str, flag);
+}
+
 void	panda(char *line, t_info *status)
 {
-	ft_printf("[panda]");
+	d_printf("[panda]");
 	int	i;
 	int	j;
 	int	value;
 	int	flag;
-	char *str;
 	t_stack	*data;
 
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
-	ft_printf("\n[pre dollar :%s]\n", line);
+	d_printf("\n[pre dollar :%s]\n", line);
 	data = make_stack(status, NULL);
 	line = check_dollar(status, line);
-	ft_printf("\n[%s]\n", line);
+	d_printf("\n[%s]\n", line);
 	while(*line != '\0')
 	{
 		i = 0;
@@ -250,45 +302,51 @@ void	panda(char *line, t_info *status)
 //			process_input_operation(status, data, j, &flag);
 			if (flag & INPUT_REDIRECT)
 			{
-				ft_putendl_fd(" : noflag redirect", 1);
-				str = make_list(&flag, line, j, &data->inputlist);
-				check_flag(status, str, &flag);
-				flag = flag - INPUT_REDIRECT;
+				make_input_redirect(&flag, line,  j,  data, status);
+			//ft_putendl_fd(" : noflag redirect", 1);
+			//	str = make_list(&flag, line, j, &data->inputlist);
+			//	check_flag(status, str, &flag);
+			//	flag = flag - INPUT_REDIRECT;
 			}
 			else if (flag & OUTPUT_REDIRECT)
 			{
-				ft_putendl_fd(" : RE redirect", 1);
-				str = make_list(&flag, line, j, &data->outputlist);
-				check_flag(status, str, &flag);
-				flag -= OUTPUT_REDIRECT;
+				make_output_redirect(&flag, line,  j,  data, status);
+//				ft_putendl_fd(" : RE redirect", 1);
+//				str = make_list(&flag, line, j, &data->outputlist);
+//				check_flag(status, str, &flag);
+//				flag -= OUTPUT_REDIRECT;
 			}
 			else if (flag & HEREDOC)
 			{
-				ft_putendl_fd(" : heredoc", 1);
-				str = make_list(&flag, line, j, &data->heredoclist);
-				check_flag(status, str, &flag);
-				flag -= HEREDOC;
+				make_heredoc_list(&flag, line,  j,  data, status);
+//				ft_putendl_fd(" : heredoc", 1);
+//				str = make_list(&flag, line, j, &data->heredoclist);
+//				check_flag(status, str, &flag);
+//				flag -= HEREDOC;
 			}
 			else if (flag & APPENDDOC)
 			{
-				ft_putendl_fd(" : append", 1);
-				str = mini_substr(line, 0, j);
-				str = check_flag(status, str, &flag);
-				push_back(&data->appendlist, str);
-				flag -= APPENDDOC;
+				make_append_list(&flag, line,  j,  data, status);
+//				ft_putendl_fd(" : append", 1);
+//				str = mini_substr(line, 0, j);
+//				str = check_flag(status, str, &flag);
+//				push_back(&data->appendlist, str);
+//				flag -= APPENDDOC;
 			}
 			else if (!(flag & COMMAND))
 			{
-				ft_putendl_fd(" : noflag command", 1);
-				str = make_list(&flag, line, j, &data->cmdlist);
-				check_flag(status, str, &flag);
-				flag = flag | COMMAND;
+				make_command_list(&flag, line,  j,  data, status);
+//				ft_putendl_fd(" : noflag command", 1);
+//				str = make_list(&flag, line, j, &data->cmdlist);
+//				check_flag(status, str, &flag);
+//				flag = flag | COMMAND;
 			}
 			else
 			{
-				ft_putendl_fd(" : flag or file", 1);
-				str = make_list(&flag, line, j, &data->cmdlist);
-				check_flag(status, str, &flag);
+				make_other_list(&flag, line,  j,  data, status);
+//				ft_putendl_fd(" : flag or file", 1);
+//				str = make_list(&flag, line, j, &data->cmdlist);
+//				check_flag(status, str, &flag);
 			}
 		}
 		if (value == 2)// ' '
@@ -301,7 +359,7 @@ void	panda(char *line, t_info *status)
 //			i = check_less_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
 			{
-				ft_printf("%c", line[i]);
+				d_printf("%c", line[i]);
 				i++;
 			}
 			if (2 < i || (flag & NEED_FILE))
@@ -325,7 +383,7 @@ void	panda(char *line, t_info *status)
 //			i = check_more_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
 			{
-				ft_printf("%c", line[i]);
+				d_printf("%c", line[i]);
 				i++;
 			}
 			if (2 < i || (flag & NEED_FILE))
@@ -349,7 +407,7 @@ void	panda(char *line, t_info *status)
 //			i = check_pipe_word(&line[i], &flag, status);
 			while (analysis_char(line[i]) == value)
 			{
-				ft_printf("%c", line[i]);
+				d_printf("%c", line[i]);
 				i++;
 			}
 			if (1 < i || (flag & NEED_FILE) || !(flag & COMMAND))
@@ -368,5 +426,5 @@ void	panda(char *line, t_info *status)
 	lexar_panda_error_check(&flag, status);//errorチェック
 	(void)status;
 	(void)i;
-	ft_printf("\n%u\n",flag);
+	d_printf("\n%u\n",flag);
 }

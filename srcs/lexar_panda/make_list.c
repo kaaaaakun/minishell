@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/08 15:35:12 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 	origin_file_name = ft_strdup(".tmp");
 	tmp_file_name = origin_file_name;
 	*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
-	ft_printf("[%d]",*tmp_fd);
+	d_printf("[%d]",*tmp_fd);
 	while (*tmp_fd != -1 && errno != ENOENT && nbr < 5000)
 	{
 		char_nbr = ft_itoa(nbr);
@@ -131,7 +131,7 @@ char	*check_command_path(t_info *status, char *result)
 char	*check_flag(t_info *status, char *result, int *flag)
 {
 //	return ;//ここで一回止めてる
-	ft_printf("[check_flag]");
+	d_printf("[check_flag]");
 	if (*flag & INPUT_REDIRECT)
 		check_infile(status, result);
 	else if (*flag & OUTPUT_REDIRECT)
@@ -147,7 +147,7 @@ char	*check_flag(t_info *status, char *result, int *flag)
 	//	data->content = check_command_path(status, ft_strjoin("/", result));
 		check_command_path(status, ft_strjoin("/", result));
 	}
-	ft_printf("\n[[%s]]", result);
+	d_printf("\n[[%s]]", result);
 	return (result);
 }
 
@@ -201,12 +201,12 @@ int	serch_dollar(char *line)
 		i++;
 		if (line[i] == '\0' || line[i] == ' ')
 		{
-			ft_printf("$ : $ only\n");
+			d_printf("$ : $ only\n");
 			i++;
 		}
 		else if (line[i] == '$')
 		{
-			ft_printf("$$ : PID\n");
+			d_printf("$$ : PID\n");
 			i++;
 		}
 

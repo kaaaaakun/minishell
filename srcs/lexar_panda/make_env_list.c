@@ -17,7 +17,7 @@ void	make_env_list(t_info *status, char *env[])
 
 char	*serch_env(t_info *status, char *str)
 {
-	ft_printf("[serch_env]");
+	d_printf("[serch_env]");
 	t_list	*env;
 	char	*serched_word;
 	int		len;
@@ -28,7 +28,7 @@ char	*serch_env(t_info *status, char *str)
 	serched_word = ft_strjoin(str, "=");
 	//status->error
 	len = ft_strlen(serched_word);
-	ft_printf("[%s:%d]",serched_word,len);
+	d_printf("[%s:%d]",serched_word,len);
 	while (env->next != NULL)
 	{
 		if (ft_strncmp(env->content, serched_word, len) == 0)

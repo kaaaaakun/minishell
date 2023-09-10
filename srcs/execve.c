@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/02 18:32:31 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ex_execve(char **command, int pipe_flag, t_info *status)
 
 void	before_pipe(char **command, t_info *status)
 {
-	ft_printf("[before_pipe:%s]",command[0]);
+	d_printf("[before_pipe:%s]",command[0]);
 	char		*path;
 	int			pid;
 //	int			cpy_stdin = dup(0);
@@ -57,7 +57,7 @@ void	before_pipe(char **command, t_info *status)
 
 void	last_command(char **command, t_info *status)
 {
-	ft_printf("[las_command:%s]",command[0]);
+	d_printf("[las_command:%s]",command[0]);
 	char		*path;
 	int			pid;
 	extern char	**environ;

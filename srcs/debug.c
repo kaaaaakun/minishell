@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 14:46:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 14:40:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void print_data(void *data)
 {
-    ft_printf("%s\n", (char *)data);
+    d_printf("%s\n", (char *)data);
 }
 
 void	lstiter(t_list *lst, void (*f)(void *))
@@ -29,37 +29,37 @@ void	lstiter(t_list *lst, void (*f)(void *))
 }
 void	debug(t_info *status,char *str)
 {
-	ft_printf("\n---------[%s]---------\n",str);
+	d_printf("\n---------[%s]---------\n",str);
 	t_stack *data;
 	data = status->stack;
 	while (data != NULL)
 	{
-		ft_printf("\n[outputlist]\n");
+		d_printf("\n[outputlist]\n");
 		lstiter(data->outputlist, print_data);//
-		ft_printf("\n[appendlist]\n");
+		d_printf("\n[appendlist]\n");
 		lstiter(data->appendlist, print_data);//
-		ft_printf("\n[inputlist]\n");
+		d_printf("\n[inputlist]\n");
 		lstiter(data->inputlist, print_data);//
-		ft_printf("\n[heredoclist]\n");
+		d_printf("\n[heredoclist]\n");
 		lstiter(data->heredoclist, print_data);//
-		ft_printf("\n[cmdlist]\n");
+		d_printf("\n[cmdlist]\n");
 		lstiter(data->cmdlist, print_data);//
 		data = data->next;
 		if (data != NULL)
-			ft_printf("\n---------pipe----------\n");
+			d_printf("\n---------pipe----------\n");
 	}
-	ft_printf("-----------------------\n\n");
+	d_printf("-----------------------\n\n");
 }
 
 void	debug_env(t_info *status,char *str)
 {
-	ft_printf("\n---------[env]---------\n",str);
+	d_printf("\n---------[env]---------\n",str);
 	t_stack *data;
 	data = status->stack;
 	while (data != NULL)
 	{
-		ft_printf("envの中身を全て表示\n");
+		d_printf("envの中身を全て表示\n");
 		lstiter(status->env, print_data);//listの中身を表示
 	}
-	ft_printf("-----------------------\n\n");
+	d_printf("-----------------------\n\n");
 }
