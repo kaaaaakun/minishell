@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 11:12:32 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,16 +222,32 @@ void	process_input_operation(t_info *status, t_stack *data, int j, int *flag)
 	}
 }
 
-void make_input_redirect(int *flag, char *line, int j, t_stack *data, t_info *status)
+t_stack	*serch_last_stack(t_info *status)//最後のstackを探して返す
 {
+	t_stack	*data;
+
+	data = status->stack;
+	while (data->next != NULL)
+		data = data->next;
+	return (data);
+}
+
+void make_input_redirect(int *flag, char *line, int j, t_info *status)
+{
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	ft_putendl_fd(" : no*flag redirect", 1);
 	char *str = make_list(flag, line, j, &data->inputlist);
 	check_flag(status, str, flag);
 	*flag = *flag - INPUT_REDIRECT;
 }
 
-void make_output_redirect(int *flag, char *line, int j, t_stack *data, t_info *status)
+void make_output_redirect(int *flag, char *line, int j, t_info *status)
 {
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	char *str;
 	ft_putendl_fd(" : RE redirect", 1);
 	str = make_list(flag, line, j, &data->outputlist);
@@ -239,18 +255,24 @@ void make_output_redirect(int *flag, char *line, int j, t_stack *data, t_info *s
 	*flag -= OUTPUT_REDIRECT;
 }
 
-void make_heredoc_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+void make_heredoc_list(int *flag, char *line, int j, t_info *status)
 {
 	char *str;
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	ft_putendl_fd(" : heredoc", 1);
 	str = make_list(flag, line, j, &data->heredoclist);
 	check_flag(status, str, flag);
 	*flag -= HEREDOC;
 }
 
-void make_append_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+void make_append_list(int *flag, char *line, int j, t_info *status)
 {
 	char *str;
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	ft_putendl_fd(" : append", 1);
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
@@ -258,18 +280,24 @@ void make_append_list(int *flag, char *line, int j, t_stack *data, t_info *statu
 	*flag -= APPENDDOC;
 }
 
-void make_command_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+void make_command_list(int *flag, char *line, int j, t_info *status)
 {
 	char *str;
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	ft_putendl_fd(" : no*flag command", 1);
 	str = make_list(flag, line, j, &data->cmdlist);
 	check_flag(status, str, flag);
 	*flag = *flag | COMMAND;
 }
 
-void make_other_list(int *flag, char *line, int j, t_stack *data, t_info *status)
+void make_other_list(int *flag, char *line, int j, t_info *status)
 {
 	char *str;
+	t_stack	*data;
+
+	data = serch_last_stack(status);
 	ft_putendl_fd(" : *flag or file", 1);
 	str = make_list(flag, line, j, &data->cmdlist);
 	check_flag(status, str, flag);
@@ -302,51 +330,27 @@ void	panda(char *line, t_info *status)
 //			process_input_operation(status, data, j, &flag);
 			if (flag & INPUT_REDIRECT)
 			{
-				make_input_redirect(&flag, line,  j,  data, status);
-			//ft_putendl_fd(" : noflag redirect", 1);
-			//	str = make_list(&flag, line, j, &data->inputlist);
-			//	check_flag(status, str, &flag);
-			//	flag = flag - INPUT_REDIRECT;
+				make_input_redirect(&flag, line,  j, status);
 			}
 			else if (flag & OUTPUT_REDIRECT)
 			{
-				make_output_redirect(&flag, line,  j,  data, status);
-//				ft_putendl_fd(" : RE redirect", 1);
-//				str = make_list(&flag, line, j, &data->outputlist);
-//				check_flag(status, str, &flag);
-//				flag -= OUTPUT_REDIRECT;
+				make_output_redirect(&flag, line,  j, status);
 			}
 			else if (flag & HEREDOC)
 			{
-				make_heredoc_list(&flag, line,  j,  data, status);
-//				ft_putendl_fd(" : heredoc", 1);
-//				str = make_list(&flag, line, j, &data->heredoclist);
-//				check_flag(status, str, &flag);
-//				flag -= HEREDOC;
+				make_heredoc_list(&flag, line,  j, status);
 			}
 			else if (flag & APPENDDOC)
 			{
-				make_append_list(&flag, line,  j,  data, status);
-//				ft_putendl_fd(" : append", 1);
-//				str = mini_substr(line, 0, j);
-//				str = check_flag(status, str, &flag);
-//				push_back(&data->appendlist, str);
-//				flag -= APPENDDOC;
+				make_append_list(&flag, line,  j, status);
 			}
 			else if (!(flag & COMMAND))
 			{
-				make_command_list(&flag, line,  j,  data, status);
-//				ft_putendl_fd(" : noflag command", 1);
-//				str = make_list(&flag, line, j, &data->cmdlist);
-//				check_flag(status, str, &flag);
-//				flag = flag | COMMAND;
+				make_command_list(&flag, line,  j, status);
 			}
 			else
 			{
-				make_other_list(&flag, line,  j,  data, status);
-//				ft_putendl_fd(" : flag or file", 1);
-//				str = make_list(&flag, line, j, &data->cmdlist);
-//				check_flag(status, str, &flag);
+				make_other_list(&flag, line,  j, status);
 			}
 		}
 		if (value == 2)// ' '
