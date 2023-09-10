@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 14:38:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:04:18 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include "pipex.h"
 // # include "builtin.h"
-// # include "lexar_panda.h"
+// # include "lexer_panda.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -36,10 +36,10 @@ void	free_stack(t_info *status);
 void	add_sigaction(void);
 void	line_read(void);
 
-//lexar.c
+//lexer.c
 void	panda(char *line, t_info *status);
 void	make_env_list(t_info *status, char *env[]);
-char	*serch_env(t_info *status, char *str);
+char	*search_env(t_info *status, char *str);
 
 //getpath.c
 char	*check_access(char *command, t_info *status);
@@ -54,6 +54,9 @@ void	ex_cd(t_info *status, t_stack *data);
 void	ex_pwd(void);
 void	ex_execve(char **command, int pipe_flag, t_info *status);
 void	ex_exit(int i);
+
+//export_utils
+void	insert_doublequotes(char *str);
 
 //debug.c
 void	debug(t_info *status,char *str);

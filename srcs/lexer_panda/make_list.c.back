@@ -1,16 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   make_list.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/08 15:35:12 by tokazaki         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    make_list.c.back                                   :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#              #
+#    Updated: 2023/09/10 17:42:24 by hhino            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-#include "lexar_panda.h"
+#include "lexer_panda.h"
 #include "minishell.h"
 #include <errno.h>
 
@@ -120,7 +120,7 @@ char	*check_command_path(t_info *status, char *result)
 	char	*path;
 	char	**splited_path;
 
-	path = serch_env(status, "PATH");
+	path = search_env(status, "PATH");
 	splited_path = ft_split(path, ':');
 	path = check_path(result, splited_path);
 	return (path);
@@ -185,7 +185,7 @@ void	*mini_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-int	serch_dollar(char *line)
+int	search_dollar(char *line)
 {
 	int	i;
 
@@ -238,7 +238,7 @@ char	*make_list(int *flag, char *line, int len, t_list **list)
 {
 	char	*result;
 
-//	len = serch_dollar(line);
+//	len = search_dollar(line);
 	result = mini_substr(line, 0, len);
 	if (!result)
 	{

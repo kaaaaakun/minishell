@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexar_panda.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/08 15:35:14 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:12:00 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define D_QUOTE 0x004
 # define S_QUOTE 0x008
-# define IN_QUOTE S_QUOTE + D_QUOTE 
+# define IN_QUOTE S_QUOTE + D_QUOTE
 
 # define INPUT_REDIRECT 0x010
 # define HEREDOC 0x020
@@ -35,12 +35,13 @@
 //
 
 char	*make_list(int *flag, char *line, int len, t_list **list);
-char	*serch_env(t_info *status, char *str);
-void	lexar_panda_error_check(int *flag, t_info *status);
+char	*search_env(t_info *status, char *str);
+t_list	*search_envlist(t_info *status, char *str);
+void	lexer_panda_error_check(int *flag, t_info *status);
 t_stack	*make_stack(t_info *status, t_stack *pre_data);
 char	*check_flag(t_info *status, char *result, int *flag);
 char	*mini_substr(char const *s, unsigned int start, size_t len);
-	
+
 //utils
 void	free_null(void *ptr);
 

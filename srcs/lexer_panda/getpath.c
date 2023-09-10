@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/05 20:11:21 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:41:47 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**getpath(t_info *status)
 	char	**path;
 	char	*long_path;
 
-	long_path = serch_env(status, "PATH");
+	long_path = search_env(status, "PATH");
 	path = ft_split(long_path, ':');
 	if (!path)
 		return (NULL);

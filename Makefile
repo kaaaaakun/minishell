@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/10 10:59:10 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/10 18:06:22 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,14 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			pwd.c \
 			env.c \
 			export.c \
+			export_utils.c\
 			unset.c \
 			) \
-		$(addprefix lexar_panda/, \
+		$(addprefix lexer_panda/, \
 			make_env_list.c \
-			replace_env.c \
-			lexar_panda.c \
 			make_list.c \
+			replace_env.c \
+			lexer_panda.c \
 			make_stack.c \
 			chck_flag_error.c \
 			getpath.c \
@@ -49,7 +50,7 @@ OBJS = $(SRCS:.c=.o)
 CC		= cc
 CFLAGS  = -Wall -Wextra -Werror
 INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
-LDFLAGS	= -lreadline -L $(RL_DIR)/lib 
+LDFLAGS	= -lreadline -L $(RL_DIR)/lib
 RM		= rm -f
 
 # Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

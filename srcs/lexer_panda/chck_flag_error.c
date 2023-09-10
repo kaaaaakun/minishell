@@ -1,7 +1,7 @@
 #include "minishell.h"
-#include "lexar_panda.h"
+#include "lexer_panda.h"
 
-void	lexar_panda_error_check(int *flag, t_info *status)
+void	lexer_panda_error_check(int *flag, t_info *status)
 {
 	if (*flag & D_QUOTE)
 				ft_putendl_fd(" \"syntax error `\"'", 1);

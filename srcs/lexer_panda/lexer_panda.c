@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexar_panda.c                                      :+:      :+:    :+:   */
+/*   lexer_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 17:22:03 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:19:54 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "lexar_panda.h"
+#include "lexer_panda.h"
 
 int	analysis_char(char c)
 {
@@ -28,7 +28,7 @@ int	analysis_char(char c)
 	return (0);
 }
 
-void	serch_env_variable(char *line, int *i, int *flag)
+void	search_env_variable(char *line, int *i, int *flag)
 {
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
@@ -83,9 +83,9 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 	(void)status;
 }
 
-char	*serch_and_append_env(t_info *status, char *result, char *pre_word, int *flag)
-{	
-	pre_word = serch_env(status, pre_word);
+char	*search_and_append_env(t_info *status, char *result, char *pre_word, int *flag)
+{
+	pre_word = search_env(status, pre_word);
 	if (pre_word != NULL)
 	{
 		if (*flag & D_QUOTE)
@@ -114,7 +114,7 @@ char	*prosess_dollar(t_info *status, char *result, int *i, int *flag)
 		*i += 1;
 		k = find_next_token(line, *i, *flag);
 		pre_word = ft_substr(&line[*i], 0, k);
-		result = serch_and_append_env(status, result, pre_word, flag);
+		result = search_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
 //	d_printf("\n[%s]\n",result);
@@ -136,7 +136,7 @@ char	*check_dollar(t_info *status, char *line)
 //	result = line;
 	while (line[i] != '\0')
 	{
-		serch_env_variable(line, &i, &flag);	
+		search_env_variable(line, &i, &flag);
 		if (j == 0)
 			result = ft_substr(line, j, i - j);
 		else
@@ -172,7 +172,7 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 	return (j);
 }
 
-t_stack	*serch_last_stack(t_info *status)//最後のstackを探して返す
+t_stack	*search_last_stack(t_info *status)//最後のstackを探して返す
 {
 	t_stack	*data;
 
@@ -186,7 +186,7 @@ void make_input_redirect(int *flag, char *line, int j, t_info *status)
 {
 	t_stack	*data;
 
-	data = serch_last_stack(status);
+	data = search_last_stack(status);
 	ft_putendl_fd(" : no*flag redirect", 1);
 	char *str = make_list(flag, line, j, &data->inputlist);
 	check_flag(status, str, flag);
@@ -197,7 +197,7 @@ void make_output_redirect(int *flag, char *line, int j, t_info *status)
 {
 	t_stack	*data;
 
-	data = serch_last_stack(status);
+	data = search_last_stack(status);
 	char *str;
 	ft_putendl_fd(" : RE redirect", 1);
 	str = make_list(flag, line, j, &data->outputlist);
@@ -210,7 +210,7 @@ void make_heredoc_list(int *flag, char *line, int j, t_info *status)
 	char *str;
 	t_stack	*data;
 
-	data = serch_last_stack(status);
+	data = search_last_stack(status);
 	ft_putendl_fd(" : heredoc", 1);
 	str = make_list(flag, line, j, &data->heredoclist);
 	check_flag(status, str, flag);
@@ -222,7 +222,7 @@ void make_append_list(int *flag, char *line, int j, t_info *status)
 	char *str;
 	t_stack	*data;
 
-	data = serch_last_stack(status);
+	data = search_last_stack(status);
 	ft_putendl_fd(" : append", 1);
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
@@ -235,8 +235,7 @@ void make_command_list(int *flag, char *line, int j, t_info *status)
 	char *str;
 	t_stack	*data;
 
-	data = serch_last_stack(status);
-	ft_putendl_fd(" : no*flag command", 1);
+	data = search_last_stack(status);
 	str = make_list(flag, line, j, &data->cmdlist);
 	check_flag(status, str, flag);
 	*flag = *flag | COMMAND;
@@ -247,7 +246,7 @@ void make_other_list(int *flag, char *line, int j, t_info *status)
 	char *str;
 	t_stack	*data;
 
-	data = serch_last_stack(status);
+	data = search_last_stack(status);
 	ft_putendl_fd(" : *flag or file", 1);
 	str = make_list(flag, line, j, &data->cmdlist);
 	check_flag(status, str, flag);
@@ -357,6 +356,7 @@ void	panda(char *line, t_info *status)
 {
 	d_printf("[panda]");
 	t_stack	*data;
+	int	flag;
 
 	flag = INITIAL;
 	if (*line == '\0')
@@ -366,7 +366,6 @@ void	panda(char *line, t_info *status)
 	int	i;
 	int	j;
 	int	value;
-	int	flag;
 	while(*line != '\0')
 	{
 		i = 0;
@@ -386,5 +385,5 @@ void	panda(char *line, t_info *status)
 			i += process_pipe_operation(status, line, &flag);
 		line += i;
 	}
-	lexar_panda_error_check(&flag, status);//errorチェック
+	lexer_panda_error_check(&flag, status);//errorチェック
 }
