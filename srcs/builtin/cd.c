@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:41:47 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	ex_cd(t_info *status, t_stack *data)
 {
 	char	*path_name;
 
-	// d_printf("\n[HOME:%s]\n", serch_env(status, "HOME"));
+	// d_printf("\n[HOME:%s]\n", search_env(status, "HOME"));
 	// d_printf("\n[current:%s]\n", data->cmdlist->content);
 	// d_printf("[next:%s]\n", data->cmdlist->next->content);
 	// d_printf("[next next:%s]\n", data->cmdlist->next->next->content);
 	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
-		chdir(serch_env(status, "HOME"));
+		chdir(search_env(status, "HOME"));
 	else if (check_access(data->cmdlist->next->content, status))
 		chdir(data->cmdlist->next->content);
 	else

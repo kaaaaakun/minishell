@@ -6,27 +6,11 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/07 20:20:20 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/10 17:08:53 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	insert_doublequotes(char *str)
-{
-	int		len;
-	char	*flag;
-
-	flag = ft_strchr(str, '=');
-	len = ft_strlen(str);
-	if (flag != NULL)
-	{
-		ft_memmove(flag + 2, flag + 1, len - (flag - str));
-		flag[1] = '"';
-	}
-	str[len + 1] = '"';
-	str[len + 2] = '\0';
-}
 
 void	print_export_env(t_list *env)
 {
