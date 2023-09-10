@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 11:12:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 17:22:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,56 +172,6 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 	return (j);
 }
 
-void	process_input_operation(t_info *status, t_stack *data, int j, int *flag)
-{
-	char *line;
-	char *str;
-
-	line = status->line;
-	if (*flag & INPUT_REDIRECT)
-	{
-		ft_putendl_fd(" : noflag redirect", 1);
-		str = make_list(flag, line, j, &data->inputlist);
-		check_flag(status, str, flag);
-		*flag -= INPUT_REDIRECT;
-	}
-	else if (*flag & OUTPUT_REDIRECT)
-	{
-		ft_putendl_fd(" : RE redirect", 1);
-		str = make_list(flag, line, j, &data->outputlist);
-		check_flag(status, str, flag);
-		*flag -= OUTPUT_REDIRECT;
-	}
-	else if (*flag & HEREDOC)
-	{
-		ft_putendl_fd(" : heredoc", 1);
-		str = make_list(flag, line, j, &data->heredoclist);
-		check_flag(status, str, flag);
-		*flag -= HEREDOC;
-	}
-	else if (*flag & APPENDDOC)
-	{
-		ft_putendl_fd(" : append", 1);
-		str = mini_substr(line, 0, j);
-		str = check_flag(status, str, flag);
-		push_back(&data->appendlist, str);
-		*flag -= APPENDDOC;
-	}
-	else if (!(*flag & COMMAND))
-	{
-		ft_putendl_fd(" : noflag command", 1);
-		str = make_list(flag, line, j, &data->cmdlist);
-		check_flag(status, str, flag);
-		*flag = *flag | COMMAND;
-	}
-	else
-	{
-		ft_putendl_fd(" : flag or file", 1);
-		str = make_list(flag, line, j, &data->cmdlist);
-		check_flag(status, str, flag);
-	}
-}
-
 t_stack	*serch_last_stack(t_info *status)//最後のstackを探して返す
 {
 	t_stack	*data;
@@ -303,132 +253,138 @@ void make_other_list(int *flag, char *line, int j, t_info *status)
 	check_flag(status, str, flag);
 }
 
+void	process_input_operation(t_info *status, char *line, int j, int *flag)
+{
+	if (*flag & INPUT_REDIRECT)
+		make_input_redirect(flag, line,  j, status);
+	else if (*flag & OUTPUT_REDIRECT)
+		make_output_redirect(flag, line,  j, status);
+	else if (*flag & HEREDOC)
+		make_heredoc_list(flag, line,  j, status);
+	else if (*flag & APPENDDOC)
+		make_append_list(flag, line,  j, status);
+	else if (!(*flag & COMMAND))
+		make_command_list(flag, line,  j, status);
+	else
+		make_other_list(flag, line,  j, status);
+}
+
+int	process_input_redirect_operation(t_info *status, char *line, int *flag)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] == '<')
+	{
+		d_printf("%c", line[i]);
+		i++;
+	}
+	if (2 < i || (*flag & NEED_FILE))
+	{
+		ft_putendl_fd(" : syntax error near unexpected token `<'", 1);
+		*flag += ERROR;
+	}
+	else if (i == 2)
+	{
+		ft_putendl_fd(" : heredoc", 1);
+		*flag = *flag | HEREDOC;
+	} else if (i == 1) {
+		ft_putendl_fd(" : redirect", 1);
+		*flag = *flag | INPUT_REDIRECT;
+	}
+	return (i);
+	(void)status;
+}
+
+int	process_output_redirect_operation(t_info *status, char *line, int *flag)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] == '>')
+	{
+		d_printf("%c", line[i]);
+		i++;
+	}
+	if (2 < i || (*flag& NEED_FILE))
+	{
+		ft_putendl_fd(" : syntax error near unexpected token `>'", 1);
+		*flag+= ERROR;
+	}
+	else if (i == 2)
+	{
+		ft_putendl_fd(" : re:heredoc", 1);
+		*flag= *flag| APPENDDOC;
+	}
+	else if (i == 1)
+	{
+		ft_putendl_fd(" : re:redirect", 1);
+		*flag= *flag| OUTPUT_REDIRECT;
+	}
+	return (i);
+	(void)status;
+}
+
+int	process_pipe_operation(t_info *status, char *line, int *flag)
+{
+	int		i;
+	t_stack	*data;
+
+	i = 0;
+	data = status->stack;
+	while (line[i] == '|')
+	{
+		d_printf("%c", line[i]);
+		i++;
+	}
+	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
+	{
+		ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+		*flag += ERROR;
+	}
+	else if (i == 1)
+	{
+		ft_putendl_fd(" : pipe", 1);
+		*flag = AT_PIPE;
+		data = make_stack(status, data);
+	}
+
+	return (i);
+	(void)status;
+}
+
 void	panda(char *line, t_info *status)
 {
 	d_printf("[panda]");
-	int	i;
-	int	j;
-	int	value;
-	int	flag;
 	t_stack	*data;
 
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
-	d_printf("\n[pre dollar :%s]\n", line);
 	data = make_stack(status, NULL);
 	line = check_dollar(status, line);
-	d_printf("\n[%s]\n", line);
+	int	i;
+	int	j;
+	int	value;
+	int	flag;
 	while(*line != '\0')
 	{
 		i = 0;
-		value = -1;
 		value = analysis_char(*line);
-		if (value == 1 || value == 0)// noflags
+		if (value == 1 || value == 0)// command系の処理
 		{
 			j = process_quotes(line, &value, &i, &flag);
-//			process_input_operation(status, data, j, &flag);
-			if (flag & INPUT_REDIRECT)
-			{
-				make_input_redirect(&flag, line,  j, status);
-			}
-			else if (flag & OUTPUT_REDIRECT)
-			{
-				make_output_redirect(&flag, line,  j, status);
-			}
-			else if (flag & HEREDOC)
-			{
-				make_heredoc_list(&flag, line,  j, status);
-			}
-			else if (flag & APPENDDOC)
-			{
-				make_append_list(&flag, line,  j, status);
-			}
-			else if (!(flag & COMMAND))
-			{
-				make_command_list(&flag, line,  j, status);
-			}
-			else
-			{
-				make_other_list(&flag, line,  j, status);
-			}
+			process_input_operation(status, line, j, &flag);
 		}
 		if (value == 2)// ' '
-		{
-			while (analysis_char(line[i]) == value)
-				i++;
-		}
+			i++;
 		else if (value == 3 && !(flag & IN_QUOTE))// < << <<<　ここは完成
-		{
-//			i = check_less_word(&line[i], &flag, status);
-			while (analysis_char(line[i]) == value)
-			{
-				d_printf("%c", line[i]);
-				i++;
-			}
-			if (2 < i || (flag & NEED_FILE))
-			{
-				ft_putendl_fd(" : syntax error near unexpected token `<'", 1);
-				flag += ERROR;
-			}
-			else if (i == 2)
-			{
-				ft_putendl_fd(" : heredoc", 1);
-				flag = flag | HEREDOC;
-			}
-			else if (i == 1)
-			{
-				ft_putendl_fd(" : redirect", 1);
-				flag = flag | INPUT_REDIRECT;
-			}
-		}
+			i += process_input_redirect_operation(status, line, &flag);
 		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
-		{
-//			i = check_more_word(&line[i], &flag, status);
-			while (analysis_char(line[i]) == value)
-			{
-				d_printf("%c", line[i]);
-				i++;
-			}
-			if (2 < i || (flag & NEED_FILE))
-			{
-				ft_putendl_fd(" : syntax error near unexpected token `>'", 1);
-				flag += ERROR;
-			}
-			else if (i == 2)
-			{
-				ft_putendl_fd(" : re:heredoc", 1);
-				flag = flag | APPENDDOC;
-			}
-			else if (i == 1)
-			{
-				ft_putendl_fd(" : re:redirect", 1);
-				flag = flag | OUTPUT_REDIRECT;
-			}
-		}
+			i += process_output_redirect_operation(status, line, &flag);
 		else if (value == 6 && !(flag & IN_QUOTE))// |
-		{
-//			i = check_pipe_word(&line[i], &flag, status);
-			while (analysis_char(line[i]) == value)
-			{
-				d_printf("%c", line[i]);
-				i++;
-			}
-			if (1 < i || (flag & NEED_FILE) || !(flag & COMMAND))
-			{
-				ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
-				flag += ERROR;
-			}
-			else if (i == 1)
-			{
-				ft_putendl_fd(" : pipe", 1);
-				flag = AT_PIPE;
-			}
-		}
+			i += process_pipe_operation(status, line, &flag);
 		line += i;
 	}
 	lexar_panda_error_check(&flag, status);//errorチェック
-	(void)status;
-	(void)i;
-	d_printf("\n%u\n",flag);
 }
