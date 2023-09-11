@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/10 19:02:06 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 19:28:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,22 @@ int	valid_left(char *str, int flag)
 	int	i;
 
 	i = 0;
-	if (str[i] != ft_isalpha(str[i]) || str[i] != '_')
+	if (ft_isalpha(str[i]) == 0 && str[i] != '_')
 		return (0);
-	i++;
-	if (flag == 1)
+	if (flag == 0)
 	{
-		while (str[i] != '=' || str[i] != '\0')
+		while (str[i] != '=' && str[i] != '\0')
 		{
-			if (!(ft_isalnum(str[i]) || str[i] == '_'))
+			if (ft_isalnum(str[i]) == 0 && str[i] != '_')
 				return (0);
 			i++;
 		}
 	}
-	else if (flag == 0)
+	else if (flag == 1)
 	{
 		while (str[i] != '+')
 		{
-			if (!(ft_isalnum(str[i]) || str[i] == '_'))
+			if (ft_isalnum(str[i]) == 0 && str[i] != '_')
 				return (0);
 			i++;
 		}
@@ -59,7 +58,19 @@ int	valid_left(char *str, int flag)
 
 int	plus_equal_or_not(char *str)
 {
+	int	i;
+
+	i = 0;
 	if (ft_strnstr(str, "+=", ft_strlen(str)) != NULL)
+	{
+		while (str[i] != '+')
+		{
+			if (str[i] == '=')
+				return (0);
+			i++;
+		}
 		return (1);
-	return (0);
+	}
+	else
+		return (0);
 }

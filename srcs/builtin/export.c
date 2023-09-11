@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/11 17:41:49 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 20:11:14 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,33 @@ void	print_export_env(t_list *env)
 	}
 }
 
-void	rewrite_envlist(t_list *env, char *str)
+void	append_envlist(t_list *env, char *str)
 {
-	t_list	*new;
+	char	*temp;
 
-	new = create_list(str);
-	new->next = env->next;
-	//new->prev = env->prev;
-	free_list(env);
+	temp = env->content;
+	env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
+//	d_printf("ap[%p]\n",env->content);
+	free(temp);
 }
 
+void	overwrite_envlist(t_list *env, char *str)
+{
+	char	*temp;
+
+	temp = env->content;
+	env->content = str;
+//	d_printf("ow[%p]\n",env->content);
+	free(temp);
+}
+
+//0911一番初めに+=された時のことを考えていない
 void	ex_export(t_info *status, t_stack *data)
 {
 	int	flag;
 	int	i;
 
 	flag = 0;
-	i = 0;
 	if (data->cmdlist->next == NULL)
 		print_export_env(status->env);
 	else
@@ -55,18 +65,24 @@ void	ex_export(t_info *status, t_stack *data)
 				ft_printf("%s not a valid identifier\n", data->cmdlist->content);
 			else
 			{
-				if (flag == 0)
+				i = 0;
+				if (flag == 1)
 				{
 					while (data->cmdlist->content[i] != '+')
 						i++;
 				}
-				else if (flag == 1)
+				else if (flag == 0)
 				{
-					while (data->cmdlist->content[i] != '=' || data->cmdlist->content[i] != '\0')
+					while (data->cmdlist->content[i] != '=' && data->cmdlist->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist(status, ft_substr(data->cmdlist->content, 0, i))) //0911ここから
-					rewrite_envlist(status->env, data->cmdlist->content);
+				if (search_envlist(status, ft_substr(data->cmdlist->content, 0, i)))
+				{
+					if (flag == 1)
+						append_envlist(search_envlist(status, ft_substr(data->cmdlist->content, 0, i)), ft_strdup(data->cmdlist->content));
+					else if (flag == 0)
+						overwrite_envlist(search_envlist(status, ft_substr(data->cmdlist->content, 0, i)), ft_strdup(data->cmdlist->content));
+				}
 				else
 					push_back(&status->env, ft_strdup(data->cmdlist->content));
 			}
