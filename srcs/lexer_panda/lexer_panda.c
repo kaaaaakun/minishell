@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/11 19:28:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/11 19:36:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='.'|| c =='+' || c =='=')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='.'|| c =='+' || c =='_')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -25,7 +25,9 @@ int	analysis_char(char c)
 		return (4);
 	if (c == '|')
 		return (6);
-	return (0);
+	if (c == '\0')
+		return (7);
+	return (1);
 }
 
 void	search_env_variable(char *line, int *i, int *flag)
