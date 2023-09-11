@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 18:19:54 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 19:28:35 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='=')
+	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='.'|| c =='+' || c =='=')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -100,7 +100,7 @@ char	*search_and_append_env(t_info *status, char *result, char *pre_word, int *f
 	return (result);
 }
 
-char	*prosess_dollar(t_info *status, char *result, int *i, int *flag)
+char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 {
 	char	*pre_word;
 	char	*line;
@@ -142,7 +142,7 @@ char	*check_dollar(t_info *status, char *line)
 		else
 			result = ft_strjoin(result, ft_substr(line, j, i - j));
 		if (line[i] == '$')
-			result = prosess_dollar(status, result, &i, &flag);
+			result = process_dollar(status, result, &i, &flag);
 		j = i;
 	}
 //	d_printf("\n[end dollar :%s]\n", result);
@@ -205,15 +205,21 @@ void make_output_redirect(int *flag, char *line, int j, t_info *status)
 	*flag -= OUTPUT_REDIRECT;
 }
 
-void make_heredoc_list(int *flag, char *line, int j, t_info *status)
+void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 {
-	char *str;
+	char	*str;
 	t_stack	*data;
 
 	data = search_last_stack(status);
 	ft_putendl_fd(" : heredoc", 1);
-	str = make_list(flag, line, j, &data->heredoclist);
-	check_flag(status, str, flag);
+	str = mini_substr(line, 0, j);
+	str = check_flag(status, str, flag);
+	if (data->heredoclist != NULL)
+	{
+		unlink(data->heredoclist->content);
+		data->heredoclist = NULL;
+	}
+	push_back(&data->heredoclist, str);
 	*flag -= HEREDOC;
 }
 

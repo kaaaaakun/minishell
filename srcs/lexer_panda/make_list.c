@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 17:42:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 19:25:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,22 @@ char	*check_flag(t_info *status, char *result, int *flag)
 	return (result);
 }
 
+void	plusle_quote(char s, int *flag)
+{
+	if (s == '\'')
+		*flag += S_QUOTE;
+	else if (s == '\"')
+		*flag += D_QUOTE;
+}
+
+void	minun_quote(char s, int *flag)
+{
+	if (s == '\'')
+		flag -= S_QUOTE;
+	else if (s == '\"')
+		flag -= D_QUOTE;
+}
+
 void	*mini_memcpy(void *dst, const void *src, size_t n)
 {
 	char		*d;
@@ -166,18 +182,12 @@ void	*mini_memcpy(void *dst, const void *src, size_t n)
 	{
 		if ((*s == '\'' || *s == '\"') && !(flag & IN_QUOTE))
 		{
-			if (*s == '\'')
-				flag += S_QUOTE;
-			else if (*s == '\"')
-				flag += D_QUOTE;
+			plusle_quote(*s, &flag);
 			s++;
 		}
 		if ((*s == '\'' && flag & S_QUOTE) || (*s == '\"' && flag & D_QUOTE))
 		{
-			if (*s == '\'')
-				flag -= S_QUOTE;
-			else if (*s == '\"')
-				flag -= D_QUOTE;
+			minun_quote(*s, &flag);
 			s++;
 		}
 		*d++ = *s++;
