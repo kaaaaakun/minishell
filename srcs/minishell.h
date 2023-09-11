@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 18:57:59 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 17:42:27 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	line_read(void);
 void	panda(char *line, t_info *status);
 void	make_env_list(t_info *status, char *env[]);
 char	*search_env(t_info *status, char *str);
+t_list	*search_envlist(t_info *status, char *str);
 
 //getpath.c
 char	*check_access(char *command, t_info *status);

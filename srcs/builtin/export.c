@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/10 19:29:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/11 17:41:49 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ex_export(t_info *status, t_stack *data)
 				ft_printf("%s not a valid identifier\n", data->cmdlist->content);
 			else
 			{
-				if (flag = 0)
+				if (flag == 0)
 				{
 					while (data->cmdlist->content[i] != '+')
 						i++;
@@ -65,7 +65,7 @@ void	ex_export(t_info *status, t_stack *data)
 					while (data->cmdlist->content[i] != '=' || data->cmdlist->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist(status, ft_substr(data->cmdlist->content, 0, i))) //0910ここまで、次の行からよろ
+				if (search_envlist(status, ft_substr(data->cmdlist->content, 0, i))) //0911ここから
 					rewrite_envlist(status->env, data->cmdlist->content);
 				else
 					push_back(&status->env, ft_strdup(data->cmdlist->content));
