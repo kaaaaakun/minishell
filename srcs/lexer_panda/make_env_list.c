@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_env_list.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/11 19:41:29 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/09/11 19:42:19 by tokazaki         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	make_env_list(t_info *status, char *env[])
@@ -9,7 +21,7 @@ void	make_env_list(t_info *status, char *env[])
 	envlist = NULL;
 	while (env[i] != NULL)
 	{
-		push_back(&envlist, env[i]);
+		push_back(&envlist, ft_strdup(env[i]));
 		i++;
 	}
 	status->env = envlist;
