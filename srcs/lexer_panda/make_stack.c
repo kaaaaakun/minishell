@@ -12,6 +12,7 @@ t_stack	*make_stack(t_info *status, t_stack *pre_data)
 	data->inputlist = NULL;
 	data->heredoclist = NULL;
 	data->cmdlist = NULL;
+	data->fork = 0;
 	data->next = NULL;
 	if (status->stack == NULL)
 		status->stack = data;

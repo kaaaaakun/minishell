@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 14:41:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/12 15:41:48 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_stack
 	struct s_list		*inputlist;		//<
 	struct s_list		*heredoclist;	//<<
 	struct s_list		*cmdlist;
+	int					fork;
 	struct s_stack		*next;
 }	t_stack;
 

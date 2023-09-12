@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/11 19:36:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/12 15:57:27 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,7 +376,7 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 		*flag = AT_PIPE;
 		data = make_stack(status, data);
 	}
-
+	data->fork = 1;
 	return (i);
 	(void)status;
 }
