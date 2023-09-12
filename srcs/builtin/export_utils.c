@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/11 19:28:38 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/12 19:36:17 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,30 @@ int	plus_equal_or_not(char *str)
 		while (str[i] != '+')
 		{
 			if (str[i] == '=')
-				return (0);
+				return (0); //=
 			i++;
 		}
-		return (1);
+		return (1); //+=
 	}
 	else
-		return (0);
+		return (0); //= or '\0'
 }
+
+char	*no_left_but_plus(char *str)
+{
+	int		i;
+	char	*s1;
+	char	*s2;
+	char	*ans;
+
+	i = 0;
+	while (str[i] != '+')
+		i++;
+	s1 = ft_substr(str, 0, i);
+	s2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+	ans = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (ans);
+}
+

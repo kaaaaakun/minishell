@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/12 16:53:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/12 19:23:50 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
-		line = readline("[readline]>> ");
+		line = readline("\n\n[readline]>> ");
 		d_printf("[%s]", line);
 		check_line(line, status);
 		free (line);

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/11 20:11:14 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/12 19:49:01 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	append_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
-//	d_printf("ap[%p]\n",env->content);
 	free(temp);
 }
 
@@ -42,11 +41,10 @@ void	overwrite_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	env->content = str;
-//	d_printf("ow[%p]\n",env->content);
 	free(temp);
 }
 
-//0911一番初めに+=された時のことを考えていない
+//0912左辺が存在している時に+=をした次の"export"で死ぬ
 void	ex_export(t_info *status, t_stack *data)
 {
 	int	flag;
@@ -84,13 +82,19 @@ void	ex_export(t_info *status, t_stack *data)
 						overwrite_envlist(search_envlist(status, ft_substr(data->cmdlist->content, 0, i)), ft_strdup(data->cmdlist->content));
 				}
 				else
-					push_back(&status->env, ft_strdup(data->cmdlist->content));
+				{
+					if (flag == 1)
+						push_back(&status->env, no_left_but_plus(ft_strdup(data->cmdlist->content)));
+					else
+						push_back(&status->env, ft_strdup(data->cmdlist->content));
+				}
 			}
 			data->cmdlist = data->cmdlist->next;
 		}
 	}
 	return ;
 }
+
 
 // bash-3.2$ export aaa=bbb
 // bash-3.2$ export ccc="echo $aaa"
