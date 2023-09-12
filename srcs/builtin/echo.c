@@ -33,7 +33,7 @@ void	ex_echo(t_info *status, t_stack *data)
 
 	flag = 0;
 	nflag = 0;
-	list = data->cmdlist;
+	list = data->cmdlist->next;
 	(void)status;
 	while (list != NULL)
 	{
