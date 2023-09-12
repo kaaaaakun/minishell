@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/12 16:53:13 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/12 20:02:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,21 +101,29 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 			result = ft_strjoin(result, post_word);
 		else
 		{
+			while(post_word[i] == ' ')
+				i++;
 			while(post_word[i] != '\0')
 			{
 				while(post_word[i] != '\0' && post_word[i] != ' ')
 					i++;
+				if (j == 0)
+				{
+					result = ft_strjoin(result, "\'");
+					space_splited_word = ft_substr(post_word, 0, i - j);
+					result = ft_strjoin(result, "\'");
+				}
 				result = ft_strjoin(result, "\'");
 				space_splited_word = ft_substr(post_word, j, i - j);
 				result = ft_strjoin(result, space_splited_word);
-
-				if (post_word[i] == ' ')
+				while(post_word[i] == ' ')
+					i++;
+				if (post_word[i - 1] == ' ')
 					result = ft_strjoin(result, "\' ");
 				else
 					result = ft_strjoin(result, "\'");
 	d_printf("[space_splited_word:%s]\n",space_splited_word);
 	d_printf("[result:%s]\n",result);
-				i++;
 				j = i;
 			}
 		}
