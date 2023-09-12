@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 16:38:40 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	wait_process(t_info *info_status)
 	int	i;
 	int	status;
 
-	ft_printf("[wait;%d]", info_status->exec_count);
+	d_printf("[wait;%d]", info_status->exec_count);
 	i = 1;
 	while (i < info_status->exec_count)
 	{
@@ -41,7 +41,7 @@ void	check_command(t_info *status, t_stack *data)
 	if (data->cmdlist == NULL)
 		return ;
 	line = data->cmdlist->content;
-	ft_printf("[line:%s]",line);
+	d_printf("[line:%s]",line);
 	if (ft_memcmp(line, "exit", 5) == 0)
 		ex_exit(0);
 	else if (ft_memcmp(line, "echo", 5) == 0)
@@ -70,7 +70,7 @@ void	check_line(char *line, t_info *status)
 
 	if (line && *line)
 		add_history(line);
-	ft_printf("[check_line:%d]", status->exec_count);
+	d_printf("[check_line:%d]", status->exec_count);
 	if (!line)
 		ex_exit(0);
 	status->exec_count = 0;
@@ -109,7 +109,7 @@ int	main(int argc, char *argv[], char *env[])
 	while (1)
 	{
 		line = readline("[readline]>> ");
-		ft_printf("[%s]", line);
+		d_printf("[%s]", line);
 		check_line(line, status);
 		free (line);
 	}
