@@ -162,9 +162,9 @@ void	plusle_quote(char s, int *flag)
 void	minun_quote(char s, int *flag)
 {
 	if (s == '\'')
-		flag -= S_QUOTE;
+		*flag -= S_QUOTE;
 	else if (s == '\"')
-		flag -= D_QUOTE;
+		*flag -= D_QUOTE;
 }
 
 void	*mini_memcpy(void *dst, const void *src, size_t n)

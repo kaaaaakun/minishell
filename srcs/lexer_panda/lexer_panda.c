@@ -85,18 +85,39 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 	(void)status;
 }
 
-char	*search_and_append_env(t_info *status, char *result, char *pre_word, int *flag)
+char	*search_and_append_env(t_info *status, char *result, char *post_word, int *flag)
 {
-	pre_word = search_env(status, pre_word);
-	if (pre_word != NULL)
+	d_printf("[s_a_ap_env]\n");
+	int	i;
+	int	j;
+	char	*space_splited_word;
+
+	i = 0;
+	j = 0;
+	post_word = search_env(status, post_word);
+	if (post_word != NULL)
 	{
 		if (*flag & D_QUOTE)
-			result = ft_strjoin(result, pre_word);
+			result = ft_strjoin(result, post_word);
 		else
 		{
-			result = ft_strjoin(result, "\'");
-			result = ft_strjoin(result, pre_word);
-			result = ft_strjoin(result, "\'");
+			while(post_word[i] != '\0')
+			{
+				while(post_word[i] != '\0' && post_word[i] != ' ')
+					i++;
+				result = ft_strjoin(result, "\'");
+				space_splited_word = ft_substr(post_word, j, i - j);
+				result = ft_strjoin(result, space_splited_word);
+
+				if (post_word[i] == ' ')
+					result = ft_strjoin(result, "\' ");
+				else
+					result = ft_strjoin(result, "\'");
+	d_printf("[space_splited_word:%s]\n",space_splited_word);
+	d_printf("[result:%s]\n",result);
+				i++;
+				j = i;
+			}
 		}
 	}
 	return (result);
@@ -394,4 +415,5 @@ void	panda(char *line, t_info *status)
 		line += i;
 	}
 	lexer_panda_error_check(&flag, status);//errorチェック
+	(void)data;
 }
