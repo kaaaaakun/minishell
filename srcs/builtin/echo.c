@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/12 18:52:21 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/13 16:44:36 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	ex_echo(t_info *status, t_stack *data)
 	int		flag;
 	t_list	*list;
 
+	(void)status;
 	flag = 0;
 	nflag = 0;
 	list = data->cmdlist->next;
-	(void)status;
 	while (list != NULL)
 	{
 		if (checkflag(list->content) != 0 && flag == 0)

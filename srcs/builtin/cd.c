@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/10 17:41:47 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/13 16:51:15 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 void	ex_cd(t_info *status, t_stack *data)
 {
-	char	*path_name;
+	char	path_name[PATH_MAX];
 
-	// d_printf("\n[HOME:%s]\n", search_env(status, "HOME"));
-	// d_printf("\n[current:%s]\n", data->cmdlist->content);
-	// d_printf("[next:%s]\n", data->cmdlist->next->content);
-	// d_printf("[next next:%s]\n", data->cmdlist->next->next->content);
-	path_name = malloc(sizeof(char) * PATH_MAX);
 	if (data->cmdlist->next == NULL)
 		chdir(search_env(status, "HOME"));
 	else if (check_access(data->cmdlist->next->content, status))
@@ -28,10 +23,7 @@ void	ex_cd(t_info *status, t_stack *data)
 	else
 		return ; //本当はエラーにして子プロセス終了させたい
 	getcwd(path_name, PATH_MAX);
-	// d_printf("\n%s\n", path_name);
 	free(path_name);
-	// free_stack(data); //freeできてた
-	// d_printf("\n------------\n");
 	return ;
 }
 
