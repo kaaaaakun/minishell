@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:13:55 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/13 20:56:49 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/13 20:58:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ex_unset(t_info *status, t_stack *data)
 	{
 		if (search_envlist(status, ft_strdup(list->content)))
 		{
-			
-			free;
+
+			//free;
 		}
 		list = list->next;
 	}
