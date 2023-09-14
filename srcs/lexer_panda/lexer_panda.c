@@ -6,12 +6,18 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 15:17:03 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:18:32 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer_panda.h"
+
+//未対応
+//1,環境変数内に""がある場合
+//$ export a='"aaa"'
+//$ "$a"
+//
 
 void	plusle_quote(char s, int *flag);
 void	minun_quote(char s, int *flag);
@@ -404,7 +410,7 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
-	int		i;
+int		i;
 	t_stack	*data;
 
 	i = 0;
@@ -440,8 +446,15 @@ void	panda(char *line, t_info *status)
 	if (*line == '\0')
 		return ;
 	data = make_stack(status, NULL);
-	line = check_dollar(status, line);
 	pipe = check_pipe(status, line);
+//	while(pipe--)
+//	{
+//		int pid;
+//		int pipefd[2];
+//		pipe(pipefd);
+//		pid = fork();
+//	}
+	line = check_dollar(status, line);
 	d_printf("\n{pipe;%d}\n",pipe);
 	int	i;
 	int	j;

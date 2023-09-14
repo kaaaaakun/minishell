@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/13 20:10:02 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/14 19:32:00 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	check_command(t_info *status, t_stack *data)
 	{
 		usleep(100);
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
+//		char *cat[] = {"cat", "-n", NULL};
+//		execve("/bin/cat", cat ,NULL);
 //		ex_execve(split, pipe_flag, status);
 	}
 	rl_on_new_line();
@@ -82,14 +84,14 @@ void	check_line(char *line, t_info *status)
 		rl_on_new_line();
 		return ;
 	}
-	int			cpy_stdin = dup(0);
+	status->cpy_stdin = dup(0);
 	int			cpy_stdout = dup(1);
 	panda(line, status);
 	debug(status,"panda to check");
 	check_command(status, status->stack);
 	free_stack(status);//
 //	wait_process(status);
-	dup2(cpy_stdin, 0);
+	dup2(status->cpy_stdin, 0);
 	dup2(cpy_stdout, 1);
 }
 

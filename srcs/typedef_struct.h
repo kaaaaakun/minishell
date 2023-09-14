@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/12 15:41:48 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:07:51 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_info
 	t_list			*env; //exportの中身をpush_backする, unsetで消す
 	char			*line;
 	struct s_stack	*stack;
+	int					cpy_stdin;
 }	t_info;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 14:17:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:17:54 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	char	*line;
 	int		eof_len;
 
+	dup2(status->cpy_stdin, 0);
+	int	cpy_stdin = dup(0);
+	close(status->cpy_stdin);
+	status->cpy_stdin = cpy_stdin;
 	eof_len = ft_strlen(eof_word) + 1;
 	while (1)
 	{
@@ -76,6 +80,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		ft_putendl_fd(line, tmp_fd);
 		free(line);
 	}
+	close(tmp_fd);
 	(void)status;
 }
 
@@ -87,7 +92,7 @@ char	*check_heredoc(t_info *status, char *eof_word)
 
 	tmp_file_name = make_tmp_file(status, &tmp_fd);
 	ex_heredoc(status, eof_word, tmp_fd);
-//	check_infile(status, tmp_file_name);
+	check_infile(status, tmp_file_name);
 	(void)status;
 	file_name = ft_strdup(tmp_file_name);
 	return (file_name);
