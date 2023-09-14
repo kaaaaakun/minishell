@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:18:32 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:36:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,11 +292,6 @@ void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 	ft_putendl_fd(" : heredoc", 1);
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
-	if (data->heredoclist != NULL)
-	{
-		unlink(data->heredoclist->content);
-		data->heredoclist = NULL;
-	}
 	push_back(&data->heredoclist, str);
 	*flag -= HEREDOC;
 }

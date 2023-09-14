@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 10:49:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:53:19 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,19 @@
 void	before_pipe(char **command, t_info *status);
 void	last_command(char **command, t_info *status);
 
-void	ex_execve(char **command, int pipe_flag, t_info *status)
+void	ex_execve(t_info *status)
 {
-	if (pipe_flag == 1)
-		before_pipe(command, status);
-	else
-		last_command(command, status);
+	int	pid;
+	int	pipefd[2];
+
+	pipe(pipefd);
+	pid = fork();
+	if(pid == 0)
+	{
+		char *cat[] = {"cat", "-n", NULL};
+		execve("/bin/cat", cat ,NULL);
+		(void)status;
+	}
 }
 
 void	before_pipe(char **command, t_info *status)

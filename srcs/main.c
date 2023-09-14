@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:32:00 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:46:50 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	check_command(t_info *status, t_stack *data)
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
 //		char *cat[] = {"cat", "-n", NULL};
 //		execve("/bin/cat", cat ,NULL);
-//		ex_execve(split, pipe_flag, status);
+		ex_execve(status);
 	}
 	rl_on_new_line();
 //	split_free(split);
