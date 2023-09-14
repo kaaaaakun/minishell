@@ -6,12 +6,15 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/13 21:01:04 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 15:17:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer_panda.h"
+
+void	plusle_quote(char s, int *flag);
+void	minun_quote(char s, int *flag);
 
 int	analysis_char(char c)
 {
@@ -98,7 +101,19 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 	if (post_word != NULL)
 	{
 		if (*flag & D_QUOTE)
-			result = ft_strjoin(result, post_word);
+		{
+//			char *dquote = ft_strchr(post_word, '\'');
+//			char *squote = ft_strchr(post_word, '\"');
+//		d_printf("[d:%s s:%s]\n",dquote,squote);
+//			if (dquote == NULL || (squote < dquote && squote != NULL))
+				result = ft_strjoin(result, post_word);
+//			else
+//			{
+//				char *chageptr = ft_strrchr(result, '\"');
+//				*chageptr = '\'';
+//				result = ft_strjoin(result, post_word);
+//			}
+		}
 		else
 		{
 			while(post_word[i] == ' ')
@@ -122,12 +137,11 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 					result = ft_strjoin(result, "\' ");
 				else
 					result = ft_strjoin(result, "\'");
-	d_printf("[space_splited_word:%s]\n",space_splited_word);
-	d_printf("[result:%s]\n",result);
 				j = i;
 			}
 		}
 	}
+	d_printf("[result:%s]\n",result);
 	return (result);
 }
 
@@ -150,6 +164,33 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 	}
 //	d_printf("\n[%s]\n",result);
 	return (result);
+}
+
+int	check_pipe(t_info *status, char *line)
+{
+	d_printf("[checkpipe]");
+	int	count;
+	int	i;
+	int	flag;
+
+	count = 0;
+	flag =0;
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '\'' || line[i] == '\"')
+		{
+			if (flag & IN_QUOTE)
+				minun_quote(line[i], &flag);
+			if (!(flag & IN_QUOTE))
+				plusle_quote(line[i], &flag);
+		}
+		if (flag & IN_QUOTE && line[i] == '|')
+			count++;
+		i++;
+	}
+	return (count);
+	(void)status;
 }
 
 char	*check_dollar(t_info *status, char *line)
@@ -393,12 +434,15 @@ void	panda(char *line, t_info *status)
 	d_printf("[panda]");
 	t_stack	*data;
 	int	flag;
+	int	pipe;
 
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
 	data = make_stack(status, NULL);
 	line = check_dollar(status, line);
+	pipe = check_pipe(status, line);
+	d_printf("\n{pipe;%d}\n",pipe);
 	int	i;
 	int	j;
 	int	value;
@@ -421,6 +465,8 @@ void	panda(char *line, t_info *status)
 			i += process_pipe_operation(status, line, &flag);
 		line += i;
 	}
+	if (flag & NEED_FILE || flag & IN_QUOTE || flag & ERROR)
+		d_printf("ERROR!!!!!!!!!!!");
 	lexer_panda_error_check(&flag, status);//errorチェック
 	(void)data;
 }

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/11 19:25:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:17:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ char	*make_list(int *flag, char *line, int len, t_list **list)
 	char	*result;
 
 //	len = search_dollar(line);
-	result = mini_substr(line, 0, len);
+	result = ft_substr(line, 0, len);
 	if (!result)
 	{
 //		status->error == 1;
