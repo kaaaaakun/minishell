@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/13 19:28:44 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/14 16:20:26 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	panda(char *line, t_info *status);
 void	make_env_list(t_info *status, char *env[]);
 char	*search_env(t_info *status, char *str);
 t_list	*search_envlist(t_info *status, char *str);
+t_list	*search_envlist_for_export(t_info *status, char *str);
 
 //getpath.c
 char	*check_access(char *command, t_info *status);

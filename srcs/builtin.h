@@ -9,4 +9,5 @@ void	put_to_list(char *line, t_stack *stack);
 char	*put_space(char *line);
 void	check_line(char *line, t_info *status);
 
+
 #endif
