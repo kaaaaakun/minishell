@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_env_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:41:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 16:17:00 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 16:28:12 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*search_env(t_info *status, char *str)
 
 t_list	*search_envlist_for_export(t_info *status, char *str)
 {
-	d_printf("[search_envlist]");
+	d_printf("[search_envlist_forexport]");
 	t_list	*env;
 	int		len;
 	char	*searched_word;

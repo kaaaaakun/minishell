@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/13 16:31:33 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/14 17:10:24 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ void	append_envlist(t_list *env, char *str)
 	char	*temp;
 
 	temp = env->content;
-	env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
+	if (ft_strchr(env->content, '='))
+		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
+	else
+		env->content = ft_strjoin(env->content, "=");
+		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
 	free(temp);
 }
 
@@ -45,6 +49,8 @@ void	overwrite_envlist(t_list *env, char *str)
 }
 
 //0912左辺が存在している時に+=をした次の"export"で死ぬ
+//export cc=cc -> export cc ->export すると cc になる。でもbashはcc=ccのまま
+
 void	ex_export(t_info *status, t_stack *data)
 {
 	int		flag;
@@ -78,12 +84,12 @@ void	ex_export(t_info *status, t_stack *data)
 					while (list->content[i] != '=' && list->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist(status, ft_substr(list->content, 0, i)))
+				if (search_envlist_for_export(status, ft_substr(list->content, 0, i)))
 				{
 					if (flag == 1)
-						append_envlist(search_envlist(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+						append_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
 					else if (flag == 0)
-						overwrite_envlist(search_envlist(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+						overwrite_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
 				}
 				else
 				{
