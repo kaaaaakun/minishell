@@ -1,100 +1,485 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/11 17:53:16 by tokazaki         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-NAME = minishell
-
-# Files & Command +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-SRCS_DIR = srcs
-OBJS_DIR = objs
-RL_DIR = $(shell brew --prefix readline)
-
-SRCS = $(addprefix $(SRCS_DIR)/, \
-		main.c \
-		add_sigaction.c \
-		execve.c \
-		list.c \
-		utils.c \
-		debug.c \
-		pipex_utils.c \
-		$(addprefix builtin/, \
-			exit.c \
-			echo.c \
-			cd.c \
-			pwd.c \
-			env.c \
-			export.c \
-			export_utils.c\
-			unset.c \
-			) \
-		$(addprefix lexer_panda/, \
-			make_env_list.c \
-			make_list.c \
-			replace_env.c \
-			lexer_panda.c \
-			make_stack.c \
-			chck_flag_error.c \
-			getpath.c \
-			) \
-		)
-OBJS = $(SRCS:.c=.o)
-
-CC		= cc
-CFLAGS  = -Wall -Wextra -Werror
-INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
-LDFLAGS	= -lreadline -L $(RL_DIR)/lib
-RM		= rm -f
-
-# Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-LIBFT_DIR	=	libft-puls
-LIBFT		=	$(LIBFT_DIR)/libft.a
-
-ifdef WITH_DEBUG
-	CFLAGS += -g -O0 -fsanitize=address
-endif
-
-# Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-.PHONY: all clean fclean re debug
-
-all: $(NAME)
-
-.c.o:
-	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
-
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(OBJS) $(INCLUDE) $(LDFLAGS) $(CFLAGS) $(LIBFT) -o $@
-	@ echo "compiled!"
-	make clean
-
-clean:
-	@ make -C $(LIBFT_DIR) clean
-	@ $(RM) $(OBJS) #$(B_OBJS)
-	@ echo "cleaned!"
-
-fclean: clean
-	@ make -C $(LIBFT_DIR) fclean
-	@ $(RM) $(NAME)
-	@ echo "all cleaned!"
-
-re: fclean all
-
-# Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
-$(LIBFT):
-	make bonus -C $(LIBFT_DIR) all
-
-debug:
-	make WITH_DEBUG=1
-
-del:
-	rm -rf .tmp*
-	rm -rf in*
-	rm -rf out*
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+diff --git a/out b/out
+index 074c6ad..e69de29 100755
+--- a/out
++++ b/out
+@@ -1,100 +0,0 @@
+-# **************************************************************************** #
+-#                                                                              #
+-#                                                         :::      ::::::::    #
+-#    Makefile                                           :+:      :+:    :+:    #
+-#                                                     +:+ +:+         +:+      #
+-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+-#                                                 +#+#+#+#+#+   +#+            #
+-#    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
+-#    Updated: 2023/09/11 17:53:16 by tokazaki         ###   ########.fr        #
+-#                                                                              #
+-# **************************************************************************** #
+-
+-NAME = minishell
+-
+-# Files & Command +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+-SRCS_DIR = srcs
+-OBJS_DIR = objs
+-RL_DIR = $(shell brew --prefix readline)
+-
+-SRCS = $(addprefix $(SRCS_DIR)/, \
+-		main.c \
+-		add_sigaction.c \
+-		execve.c \
+-		list.c \
+-		utils.c \
+-		debug.c \
+-		pipex_utils.c \
+-		$(addprefix builtin/, \
+-			exit.c \
+-			echo.c \
+-			cd.c \
+-			pwd.c \
+-			env.c \
+-			export.c \
+-			export_utils.c\
+-			unset.c \
+-			) \
+-		$(addprefix lexer_panda/, \
+-			make_env_list.c \
+-			make_list.c \
+-			replace_env.c \
+-			lexer_panda.c \
+-			make_stack.c \
+-			chck_flag_error.c \
+-			getpath.c \
+-			) \
+-		)
+-OBJS = $(SRCS:.c=.o)
+-
+-CC		= cc
+-CFLAGS  = -Wall -Wextra -Werror
+-INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
+-LDFLAGS	= -lreadline -L $(RL_DIR)/lib
+-RM		= rm -f
+-
+-# Libft & Debug +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+-LIBFT_DIR	=	libft-puls
+-LIBFT		=	$(LIBFT_DIR)/libft.a
+-
+-ifdef WITH_DEBUG
+-	CFLAGS += -g -O0 -fsanitize=address
+-endif
+-
+-# Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+-.PHONY: all clean fclean re debug
+-
+-all: $(NAME)
+-
+-.c.o:
+-	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+-
+-$(NAME): $(OBJS) $(LIBFT)
+-	$(CC) $(OBJS) $(INCLUDE) $(LDFLAGS) $(CFLAGS) $(LIBFT) -o $@
+-	@ echo "compiled!"
+-	make clean
+-
+-clean:
+-	@ make -C $(LIBFT_DIR) clean
+-	@ $(RM) $(OBJS) #$(B_OBJS)
+-	@ echo "cleaned!"
+-
+-fclean: clean
+-	@ make -C $(LIBFT_DIR) fclean
+-	@ $(RM) $(NAME)
+-	@ echo "all cleaned!"
+-
+-re: fclean all
+-
+-# Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+-$(LIBFT):
+-	make bonus -C $(LIBFT_DIR) all
+-
+-debug:
+-	make WITH_DEBUG=1
+-
+-del:
+-	rm -rf .tmp*
+-	rm -rf in*
+-	rm -rf out*
+-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+diff --git a/srcs/builtin/cd.c b/srcs/builtin/cd.c
+index 45fa75f..226077c 100644
+--- a/srcs/builtin/cd.c
++++ b/srcs/builtin/cd.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
+-/*   Updated: 2023/09/10 17:41:47 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 16:51:15 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,13 +14,8 @@
+ 
+ void	ex_cd(t_info *status, t_stack *data)
+ {
+-	char	*path_name;
++	char	path_name[PATH_MAX];
+ 
+-	// d_printf("\n[HOME:%s]\n", search_env(status, "HOME"));
+-	// d_printf("\n[current:%s]\n", data->cmdlist->content);
+-	// d_printf("[next:%s]\n", data->cmdlist->next->content);
+-	// d_printf("[next next:%s]\n", data->cmdlist->next->next->content);
+-	path_name = malloc(sizeof(char) * PATH_MAX);
+ 	if (data->cmdlist->next == NULL)
+ 		chdir(search_env(status, "HOME"));
+ 	else if (check_access(data->cmdlist->next->content, status))
+@@ -28,10 +23,7 @@ void	ex_cd(t_info *status, t_stack *data)
+ 	else
+ 		return ; //本当はエラーにして子プロセス終了させたい
+ 	getcwd(path_name, PATH_MAX);
+-	// d_printf("\n%s\n", path_name);
+ 	free(path_name);
+-	// free_stack(data); //freeできてた
+-	// d_printf("\n------------\n");
+ 	return ;
+ }
+ 
+diff --git a/srcs/builtin/echo.c b/srcs/builtin/echo.c
+index 24b3c55..06b16a8 100644
+--- a/srcs/builtin/echo.c
++++ b/srcs/builtin/echo.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
+-/*   Updated: 2023/09/12 18:52:21 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 16:44:36 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -31,10 +31,10 @@ void	ex_echo(t_info *status, t_stack *data)
+ 	int		flag;
+ 	t_list	*list;
+ 
++	(void)status;
+ 	flag = 0;
+ 	nflag = 0;
+ 	list = data->cmdlist->next;
+-	(void)status;
+ 	while (list != NULL)
+ 	{
+ 		if (checkflag(list->content) != 0 && flag == 0)
+diff --git a/srcs/builtin/env.c b/srcs/builtin/env.c
+index 52dec99..57a4ef4 100644
+--- a/srcs/builtin/env.c
++++ b/srcs/builtin/env.c
+@@ -6,28 +6,24 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
+-/*   Updated: 2023/09/02 21:48:31 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 20:08:49 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+ #include "minishell.h"
+ 
+-void	write_env(void);
+-
+-void	ex_env(void)
++void	write_env(t_list *env)
+ {
+-	write_env();
++	while (env != NULL)
++	{
++		if (ft_strchr(env->content, '=') != NULL)
++			ft_putendl_fd(env->content, 1);
++		env = env->next;
++	}
+ }
+ 
+-void	write_env(void)
++void	ex_env(t_info *status, t_stack *data)
+ {
+-	int			i;
+-	extern char	**environ;
+-
+-	i = 0;
+-	while (environ[i] != NULL)
+-	{
+-		ft_putendl_fd(environ[i], 1);
+-		i++;
+-	}
++	(void)data;
++	write_env(status->env);
+ }
+diff --git a/srcs/builtin/export.c b/srcs/builtin/export.c
+index bd86922..dd269b3 100644
+--- a/srcs/builtin/export.c
++++ b/srcs/builtin/export.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
+-/*   Updated: 2023/09/12 19:49:01 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 16:31:33 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -47,49 +47,53 @@ void	overwrite_envlist(t_list *env, char *str)
+ //0912左辺が存在している時に+=をした次の"export"で死ぬ
+ void	ex_export(t_info *status, t_stack *data)
+ {
+-	int	flag;
+-	int	i;
++	int		flag;
++	int		i;
++	t_list	*list;
++	char	*listcontent;
+ 
+ 	flag = 0;
+-	if (data->cmdlist->next == NULL)
++	list = data->cmdlist;
++	listcontent = list->content;
++	if (list->next == NULL)
+ 		print_export_env(status->env);
+ 	else
+ 	{
+-		data->cmdlist = data->cmdlist->next;
+-		while (data->cmdlist != NULL)
++		list = list->next;
++		while (list != NULL)
+ 		{
+-			flag = plus_equal_or_not(data->cmdlist->content);
+-			if (valid_left(data->cmdlist->content, flag) == 0)
+-				ft_printf("%s not a valid identifier\n", data->cmdlist->content);
++			flag = plus_equal_or_not(list->content);
++			if (valid_left(list->content, flag) == 0)
++				ft_printf("%s not a valid identifier\n", list->content);
+ 			else
+ 			{
+ 				i = 0;
+ 				if (flag == 1)
+ 				{
+-					while (data->cmdlist->content[i] != '+')
++					while (list->content[i] != '+')
+ 						i++;
+ 				}
+ 				else if (flag == 0)
+ 				{
+-					while (data->cmdlist->content[i] != '=' && data->cmdlist->content[i] != '\0')
++					while (list->content[i] != '=' && list->content[i] != '\0')
+ 						i++;
+ 				}
+-				if (search_envlist(status, ft_substr(data->cmdlist->content, 0, i)))
++				if (search_envlist(status, ft_substr(list->content, 0, i)))
+ 				{
+ 					if (flag == 1)
+-						append_envlist(search_envlist(status, ft_substr(data->cmdlist->content, 0, i)), ft_strdup(data->cmdlist->content));
++						append_envlist(search_envlist(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+ 					else if (flag == 0)
+-						overwrite_envlist(search_envlist(status, ft_substr(data->cmdlist->content, 0, i)), ft_strdup(data->cmdlist->content));
++						overwrite_envlist(search_envlist(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+ 				}
+ 				else
+ 				{
+ 					if (flag == 1)
+-						push_back(&status->env, no_left_but_plus(ft_strdup(data->cmdlist->content)));
++						push_back(&status->env, no_left_but_plus(ft_strdup(list->content)));
+ 					else
+-						push_back(&status->env, ft_strdup(data->cmdlist->content));
++						push_back(&status->env, ft_strdup(list->content));
+ 				}
+ 			}
+-			data->cmdlist = data->cmdlist->next;
++			list = list->next;
+ 		}
+ 	}
+ 	return ;
+diff --git a/srcs/builtin/export_utils.c b/srcs/builtin/export_utils.c
+index 8fceb6b..99689ad 100644
+--- a/srcs/builtin/export_utils.c
++++ b/srcs/builtin/export_utils.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
+-/*   Updated: 2023/09/12 19:36:17 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 16:28:38 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -89,7 +89,7 @@ char	*no_left_but_plus(char *str)
+ 	s2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
+ 	ans = ft_strjoin(s1, s2);
+ 	free(s1);
+-	free(s2);
++	free(s2); //strjoinが修正されたら消した方がいい
+ 	return (ans);
+ }
+ 
+diff --git a/srcs/builtin/pwd.c b/srcs/builtin/pwd.c
+index e8f2ad2..6693c55 100644
+--- a/srcs/builtin/pwd.c
++++ b/srcs/builtin/pwd.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/21 15:44:23 by tokazaki          #+#    #+#             */
+-/*   Updated: 2023/09/04 20:13:22 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 16:54:17 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -14,11 +14,13 @@
+ 
+ void	ex_pwd(void)
+ {
+-	char	*i;
++	char	*path;
+ 	char	buf[PATH_MAX];
+ 
+-	i = getcwd(buf, PATH_MAX);
+-	if (i == NULL) //PATH_MAXより長いディレクトリだった場合error
++	path = getcwd(buf, PATH_MAX);
++	if (path == NULL) //PATH_MAXより長いディレクトリだった場合error
+ 		return ;
+ 	ft_printf("%s\n", buf);
+ }
++
++//buf,pathをfreeすると死ぬのでいらない
+diff --git a/srcs/builtin/unset.c b/srcs/builtin/unset.c
+index eea1c1e..531e650 100644
+--- a/srcs/builtin/unset.c
++++ b/srcs/builtin/unset.c
+@@ -6,8 +6,26 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/31 18:13:55 by hhino             #+#    #+#             */
+-/*   Updated: 2023/08/31 18:14:03 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 20:58:38 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+ #include "minishell.h"
++
++void	ex_unset(t_info *status, t_stack *data)
++{
++	t_list	*list;
++	t_list	*envlist;
++
++	list = data->cmdlist->next;
++	envlist = status->env;
++	while (list != NULL)
++	{
++		if (search_envlist(status, ft_strdup(list->content)))
++		{
++
++			//free;
++		}
++		list = list->next;
++	}
++}
+diff --git a/srcs/main.c b/srcs/main.c
+index 935ff5e..d20be09 100644
+--- a/srcs/main.c
++++ b/srcs/main.c
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
+-/*   Updated: 2023/09/12 19:23:50 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 20:10:02 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -47,13 +47,15 @@ void	check_command(t_info *status, t_stack *data)
+ 	else if (ft_memcmp(line, "echo", 5) == 0)
+ 		ex_echo(status, data);
+ 	else if (ft_memcmp(line, "env", 4) == 0)
+-		ex_env();
++		ex_env(status, data);
+ 	else if (ft_memcmp(line, "cd", 3) == 0)
+ 		ex_cd(status, data);
+ 	else if (ft_memcmp(line, "pwd", 4) == 0)
+ 		ex_pwd();
+ 	else if (ft_memcmp(line, "export", 7) == 0)
+ 		ex_export(status, data);
++	else if (ft_memcmp(line, "unset", 6) == 0)
++		ex_unset(status, data);
+ 	else
+ 	{
+ 		usleep(100);
+diff --git a/srcs/minishell.h b/srcs/minishell.h
+index b8aa2b8..a75f77f 100644
+--- a/srcs/minishell.h
++++ b/srcs/minishell.h
+@@ -6,7 +6,7 @@
+ /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+ /*                                                +#+#+#+#+#+   +#+           */
+ /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
+-/*   Updated: 2023/09/12 19:35:16 by hhino            ###   ########.fr       */
++/*   Updated: 2023/09/13 19:28:44 by hhino            ###   ########.fr       */
+ /*                                                                            */
+ /* ************************************************************************** */
+ 
+@@ -47,8 +47,8 @@ char	*check_access(char *command, t_info *status);
+ 
+ 
+ //void	ex_heredoc(char *line);
+-void	ex_env(void);
+-void	ex_unset(char **split);
++void	ex_env(t_info *status, t_stack *data);
++void	ex_unset(t_info *status, t_stack *data);
+ void	ex_export(t_info *status, t_stack *data);
+ void	ex_echo(t_info *status, t_stack *data);
+ void	ex_cd(t_info *status, t_stack *data);
+@@ -63,6 +63,6 @@ int		valid_left(char *str, int flag);
+ char	*no_left_but_plus(char *str);
+ 
+ //debug.c
+-void	debug(t_info *status,char *str);
+-void	debug_env(t_info *status,char *str);
++void	debug(t_info *status, char *str);
++void	debug_env(t_info *status, char *str);
+ #endif
+diff --git a/test b/test
+new file mode 100644
+index 0000000..e9641d8
+--- /dev/null
++++ b/test
+@@ -0,0 +1,36 @@
++TERM_PROGRAM=vscode
++TERM=xterm-256color
++HOMEBREW_TEMP=/tmp/hhino/Homebrew/Temp
++SHELL=/bin/zsh
++TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n00012nc0008nb/T/
++Apple_PubSub_Socket_Render=/private/tmp/com.apple.launchd.HMrYdVGWeF/Render
++TERM_PROGRAM_VERSION=1.78.2
++ZDOTDIR=/Users/hhino
++ORIGINAL_XDG_CURRENT_DESKTOP=undefined
++MallocNanoZone=0
++USER=hhino
++COMMAND_MODE=unix2003
++SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.iiSYNqZ32Y/Listeners
++TMOUT=86400
++__CF_USER_TEXT_ENCODING=0x22AB:0x1:0xE
++HOMEBREW_CACHE=/tmp/hhino/Homebrew/Caches
++PATH=/Users/hhino/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/munki:/opt/X11/bin:/Users/hhino/.brew/bin
++USER_ZDOTDIR=/Users/hhino
++a=ls
++PWD=/Users/hhino/Rank3/minishell
++LANG=en_US.UTF-8
++VSCODE_GIT_ASKPASS_EXTRA_ARGS=--ms-enable-electron-run-as-node
++XPC_FLAGS=0x0
++XPC_SERVICE_NAME=0
++VSCODE_INJECTION=1
++SHLVL=2
++HOME=/Users/hhino
++VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
++LOGNAME=hhino
++VSCODE_GIT_IPC_HANDLE=/var/folders/zz/zyxvpxvq6csfxvn_n00012nc0008nb/T/vscode-git-2e2b8a9ffa.sock
++VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)
++GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
++DISPLAY=/private/tmp/com.apple.launchd.TbXevYmJXl/org.xquartz:0
++SECURITYSESSIONID=186b0
++COLORTERM=truecolor
++_=/usr/bin/env
