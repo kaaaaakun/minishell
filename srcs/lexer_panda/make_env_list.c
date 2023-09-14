@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:41:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/12 17:23:09 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/14 16:17:00 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,31 @@ char	*search_env(t_info *status, char *str)
 	if (ft_strncmp(env->content, searched_word, len) != 0)
 		return (NULL);
 	return (&env->content[len]);
+}
+
+t_list	*search_envlist_for_export(t_info *status, char *str)
+{
+	d_printf("[search_envlist]");
+	t_list	*env;
+	int		len;
+	char	*searched_word;
+
+	env = status->env;
+	if (!env)
+		return (NULL);
+	//status->error
+	searched_word = ft_strjoin(str, "=");
+	len = ft_strlen(searched_word);
+	d_printf("[%s:%d]",searched_word,len);
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->content, searched_word, len) == 0)
+			break ;
+		if (ft_strncmp(env->content, str, len) == 0)
+			break ;
+		env = env->next;
+	}
+	return (env);
 }
 
 t_list	*search_envlist(t_info *status, char *str)
