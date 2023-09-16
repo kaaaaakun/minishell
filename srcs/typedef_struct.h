@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:07:51 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/16 17:55:35 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 typedef struct s_list
 {
-	char				*content;
-	struct s_list		*next;
+	char			*content;
+	int				flag;
+	struct s_list	*next;
 }	t_list;
 
 typedef struct s_stack
@@ -38,6 +39,7 @@ typedef struct s_info
 	t_list			*env; //exportの中身をpush_backする, unsetで消す
 	char			*line;
 	struct s_stack	*stack;
+	struct s_flist	*flist;
 	int					cpy_stdin;
 }	t_info;
 
