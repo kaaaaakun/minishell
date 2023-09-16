@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/11 17:53:16 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/16 15:50:42 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ RL_DIR = $(shell brew --prefix readline)
 
 SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
+		panda_to_builtin.c \
 		add_sigaction.c \
 		execve.c \
 		list.c \
@@ -97,4 +98,6 @@ del:
 	rm -rf .tmp*
 	rm -rf in*
 	rm -rf out*
+	rm -rf **.back
+	rm -rf **.c.un*
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:53:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/15 15:14:58 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ void	ex_execve(t_info *status)
 	pid = fork();
 	if(pid == 0)
 	{
+		dup2_ee(pipefd[0], STDIN_FILENO);
+		close_ee(pipefd[0]);
+		close_ee(pipefd[1]);
 		char *cat[] = {"cat", "-n", NULL};
 		execve("/bin/cat", cat ,NULL);
 		(void)status;
 	}
+	dup2_ee(pipefd[1], STDOUT_FILENO);
+	close_ee(pipefd[0]);
 }
 
 void	before_pipe(char **command, t_info *status)
