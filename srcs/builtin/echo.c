@@ -6,13 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/13 16:44:36 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/17 16:19:55 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	checkflag(char *str)
+static int	checkflag(char *str)
 {
 	if (*str == '-')
 	{

@@ -13,6 +13,7 @@
 
 #include "minishell.h"
 #include "pipex.h"
+#include "builtin.h"
 
 
 void	wait_process(t_info *info_status)

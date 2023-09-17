@@ -6,46 +6,33 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/14 17:10:24 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/17 16:56:00 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "builtin.h"
 
-void	print_export_env(t_list *env)
-{
-	char	*str;
-
-	while (env != NULL)
-	{
-		str = ft_strjoin("declare -x ", env->content);
-		insert_doublequotes(str);
-		ft_printf("%s\n", str);
-		free(str);
-		env = env->next;
-	}
-}
-
-void	append_envlist(t_list *env, char *str)
+static void	append_envlist(t_list *env, char *str)
 {
 	char	*temp;
 
 	temp = env->content;
-	if (ft_strchr(env->content, '='))
+	if (ft_strchr(env->content, '=') != NULL)
 		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
 	else
+	{
 		env->content = ft_strjoin(env->content, "=");
 		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
-	free(temp);
+	}
 }
 
-void	overwrite_envlist(t_list *env, char *str)
+static void	overwrite_envlist(t_list *env, char *str)
 {
 	char	*temp;
 
 	temp = env->content;
 	env->content = str;
-	free(temp);
 }
 
 //0912左辺が存在している時に+=をした次の"export"で死ぬ
@@ -79,16 +66,16 @@ void	ex_export(t_info *status, t_stack *data)
 					while (list->content[i] != '+')
 						i++;
 				}
-				else if (flag == 0)
+				else
 				{
 					while (list->content[i] != '=' && list->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist_for_export(status, ft_substr(list->content, 0, i)))
+				if (search_envlist_for_export(status, ft_substr(list->content, 0, i)) != NULL)
 				{
 					if (flag == 1)
 						append_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
-					else if (flag == 0)
+					else
 						overwrite_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
 				}
 				else

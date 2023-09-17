@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/14 17:05:20 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/17 17:46:20 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,22 @@ char	*no_left_but_plus(char *str)
 	s1 = ft_substr(str, 0, i);
 	s2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
 	ans = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2); //strjoinが修正されたら消した方がいい
+	// free(s1);
+	//free(s2); //strjoinが修正されたら消した方がいい
 	return (ans);
+}
+
+void	print_export_env(t_list *env)
+{
+	char	*str;
+
+	while (env != NULL)
+	{
+		str = ft_strjoin("declare -x ", env->content);
+		insert_doublequotes(str);
+		ft_printf("%s\n", str);
+		// free(str);
+		env = env->next;
+	}
 }
 

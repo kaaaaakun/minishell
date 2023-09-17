@@ -6,13 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/13 20:08:49 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/17 16:20:08 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	write_env(t_list *env)
+static void	write_env(t_list *env)
 {
 	while (env != NULL)
 	{
