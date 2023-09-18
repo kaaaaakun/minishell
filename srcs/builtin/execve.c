@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:53:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:17:28 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
+
+//線形リストを**に変換
+//pipeは気にしなくていい
+//PATHの検索はここでやった方がいい
+// unset PATHの時
 
 void	before_pipe(char **command, t_info *status);
 void	last_command(char **command, t_info *status);

@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/11 17:53:16 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/18 13:21:04 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,19 @@ RL_DIR = $(shell brew --prefix readline)
 SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
 		add_sigaction.c \
-		execve.c \
 		list.c \
 		utils.c \
 		debug.c \
 		pipex_utils.c \
 		$(addprefix builtin/, \
-			exit.c \
-			echo.c \
 			cd.c \
-			pwd.c \
+			echo.c \
 			env.c \
-			export.c \
+			execve.c \
+			exit.c \
 			export_utils.c\
+			export.c \
+			pwd.c \
 			unset.c \
 			) \
 		$(addprefix lexer_panda/, \
