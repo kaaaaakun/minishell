@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/06 20:18:20 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/18 12:57:32 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_list	*create_list(char *str)
 	if (!newlist)
 		return (NULL);
 	newlist->content = str;
+	newlist->flag = 0;
 	newlist->next = NULL;
 	return (newlist);
 }
