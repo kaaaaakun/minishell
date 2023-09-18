@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/16 15:50:42 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/18 18:24:05 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		main.c \
 		panda_to_builtin.c \
 		add_sigaction.c \
-		execve.c \
 		list.c \
 		utils.c \
 		debug.c \
@@ -29,6 +28,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		$(addprefix builtin/, \
 			exit.c \
 			echo.c \
+			execve.c \
 			cd.c \
 			pwd.c \
 			env.c \
@@ -39,7 +39,6 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		$(addprefix lexer_panda/, \
 			make_env_list.c \
 			make_list.c \
-			replace_env.c \
 			lexer_panda.c \
 			make_stack.c \
 			chck_flag_error.c \

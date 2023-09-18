@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   panda_to_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/16 15:47:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/18 13:28:48 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
+#include "builtin.h"
 
 void	check_command(t_info *status, t_stack *data)
 {

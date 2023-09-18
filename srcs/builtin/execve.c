@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/15 15:14:58 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:14:34 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 void	before_pipe(char **command, t_info *status);
 void	last_command(char **command, t_info *status);
+
+//線形リストを**にする
+//unset PATHされた時
+
+char	*check_access(char *command, t_info *status);
 
 void	ex_execve(t_info *status)
 {
