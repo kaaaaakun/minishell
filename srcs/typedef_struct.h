@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef_struct.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/16 17:55:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/18 17:25:58 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_info
 	char			*line;
 	struct s_stack	*stack;
 	struct s_flist	*flist;
-	int					cpy_stdin;
+	int				cpy_stdin;
 }	t_info;
 
 #endif
