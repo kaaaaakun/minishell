@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/13 16:51:15 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/17 16:15:02 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,20 @@
 
 void	ex_cd(t_info *status, t_stack *data)
 {
-	char	path_name[PATH_MAX];
+	t_list	*list;
 
-	if (data->cmdlist->next == NULL)
-		chdir(search_env(status, "HOME"));
-	else if (check_access(data->cmdlist->next->content, status))
-		chdir(data->cmdlist->next->content);
-	else
-		return ; //本当はエラーにして子プロセス終了させたい
-	getcwd(path_name, PATH_MAX);
-	free(path_name);
+	list = data->cmdlist->next;
+	if (list == NULL)
+	{
+		if (search_env(status, "HOME") != NULL)
+			chdir(search_env(status, "HOME"));
+		else
+			ft_printf("cd: HOME not set\n");
+	}
+	else if (check_access(list->content, status) != NULL)
+		chdir(list->content);
+	else if (check_access(list->content, status) == NULL)
+		ft_printf("%s: No such file or directory\n", list->content);
 	return ;
 }
 

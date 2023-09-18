@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 19:57:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/17 16:26:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,8 @@ char	*check_access(char *command, t_info *status);
 
 
 //void	ex_heredoc(char *line);
-void	ex_env(t_info *status, t_stack *data);
-void	ex_unset(t_info *status, t_stack *data);
-void	ex_export(t_info *status, t_stack *data);
-void	ex_echo(t_info *status, t_stack *data);
-void	ex_cd(t_info *status, t_stack *data);
-void	ex_pwd(void);
 void	ex_execve(t_info *status);
-void	ex_exit(int i);
 
-//export_utils
-void	insert_doublequotes(char *str);
-int		plus_equal_or_not(char *str);
-int		valid_left(char *str, int flag);
-char	*no_left_but_plus(char *str);
 
 //debug.c
 void	debug(t_info *status, char *str);
