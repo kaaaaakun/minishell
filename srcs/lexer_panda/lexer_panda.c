@@ -422,6 +422,8 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
 	int		i;
 	t_stack	*data;
+//	pid_t	pid;
+//	int		pipefd[2];
 
 	i = 0;
 	data = status->stack;
@@ -439,6 +441,19 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	{
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
+//		if (pipe(pipefd) < 0)
+//			error_exit("pipe");
+//		pid = fork();
+//		if (pid < 0)
+//			error_exit("fork");
+//		if (pid == 0)
+//		{
+//			//check_commandなどのコマンド実行系
+//			//firstfork(argv, pipefd, env);
+//		}
+//		//status->pid = pid;
+//		dup2_ee(pipefd[0], STDIN_FILENO);
+//		close_ee(pipefd[1]);
 		data = make_stack(status, data);
 	}
 	return (i);
