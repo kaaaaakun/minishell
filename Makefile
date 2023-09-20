@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/18 18:24:05 by hhino            ###   ########.fr        #
+#    Updated: 2023/09/20 11:54:34 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			make_stack.c \
 			chck_flag_error.c \
 			getpath.c \
+			panda_utils.c \
 			) \
 		)
 OBJS = $(SRCS:.c=.o)

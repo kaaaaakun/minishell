@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 16:19:50 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/20 11:27:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ char	*mini_substr(char const *s, unsigned int start, size_t len);
 
 //utils
 void	free_null(void *ptr);
+void	minun_quote(char s, int *flag);
+void	plusle_quote(char s, int *flag);
 
 #endif

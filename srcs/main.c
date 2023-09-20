@@ -6,8 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-
-/*   Updated: 2023/09/14 19:35:36 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/20 13:24:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +15,24 @@
 #include "builtin.h"
 
 
-void	wait_process(t_info *info_status)
+void	wait_process(t_info *status)
 {
 	int	i;
-	int	status;
+	int	exit_status;
 
-	d_printf("[wait;%d]", info_status->exec_count);
-	i = 1;
-	while (i < info_status->exec_count)
+	d_printf("[wait;%d]", status->pipe);
+	if (status->pipe == 0)
+		return ;
+	i = 0;
+	while (i < status->pipe)
 	{
-		waitpid(-1, &status, 0);
-		if (WEXITSTATUS(status) != 0)
+		waitpid(-1, &exit_status, 0);
+		if (WEXITSTATUS(exit_status) != 0)
 			;
 		i++;
 	}
-	waitpid(info_status->pid, &status, 0);
-	if (WEXITSTATUS(status) != 0)
+	waitpid(status->pid, &exit_status, 0);
+	if (WEXITSTATUS(exit_status) != 0)
 		;
 }
 
@@ -56,10 +57,27 @@ void	check_line(char *line, t_info *status)
 	status->cpy_stdin = dup(0);
 	int			cpy_stdout = dup(1);
 	panda(line, status);
+	if (status->error)
+		return ;
 	debug(status,"panda to check");
-	check_command(status, status->stack);
-	free_stack(status);//
-//	wait_process(status);
+	if (status->pipe != 0)
+	{
+		int	pid;
+
+		d_printf("last-fork");
+		pid = fork();
+		if (pid < 0)
+			error_exit("fork");
+		if (pid == 0)
+		{
+			status->pid = 1;
+			check_command(status, status->stack);
+		}
+	}
+	else
+		check_command(status, status->stack);
+	free_stack(status);
+	wait_process(status);
 	dup2(status->cpy_stdin, 0);
 	dup2(cpy_stdout, 1);
 }
@@ -76,12 +94,12 @@ int	main(int argc, char *argv[], char *env[])
 	if (!status)
 		ex_exit(0);
 	status->exec_count = 0;
-	status->error = 0;
-	status->stack = 0;
 	make_env_list(status, env);
 	while (1)
 	{
 		line = readline("\n\n[readline]>> ");
+		status->error = 0;
+		status->stack = NULL;
 		d_printf("[%s]", line);
 		check_line(line, status);
 		free (line);

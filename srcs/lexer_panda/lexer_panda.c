@@ -6,11 +6,12 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/16 17:00:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:59:55 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "builtin.h"
 #include "lexer_panda.h"
 
 //未対応
@@ -19,6 +20,7 @@
 //$ "$a"
 //
 
+void	check_command(t_info *status, t_stack *data);
 void	plusle_quote(char s, int *flag);
 void	minun_quote(char s, int *flag);
 
@@ -41,24 +43,28 @@ int	analysis_char(char c)
 
 void	search_env_variable(char *line, int *i, int *flag)
 {
+	d_printf("[search_env_variable]");
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
 		d_printf("\n%c",line[*i]);
 		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
 		{
-			if (line[*i] == '\'')
-				*flag += S_QUOTE;
-			else if (line[*i] == '\"')
-				*flag += D_QUOTE;
+			plusle_quote(line[*i], flag);
 			*i += 1;
 		}
 		else if ((line[*i] == '\'' && *flag & S_QUOTE) || (line[*i] == '\"' && *flag & D_QUOTE))
 		{
-			if (line[*i] == '\'')
-				*flag -= S_QUOTE;
-			else if (line[*i] == '\"')
-				*flag -= D_QUOTE;
+			minun_quote(line[*i], flag);
 			*i += 1;
+		}
+		else if (line[*i] == '<' && line[*i + 1] == '<' && !(*flag & IN_QUOTE))
+		{
+			*flag += HEREDOC;
+			*i += 2;
+			while (analysis_char(line[*i]) == 2)
+				*i += 1;
+			while (analysis_char(line[*i]) == 1)
+				*i += 1;
 		}
 		else
 			*i += 1;
@@ -80,6 +86,9 @@ int	find_next_token(char *line, int i, int flag)
 
 char	*process_single_double_dollar(t_info *status, char *line, int *i, char *result)
 {
+	char	*exit_nbr;
+
+	
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
 		result = ft_strjoin(result, "$");
@@ -88,6 +97,12 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 	else if (line[*i] == '$' && line[*i + 1] == '$')
 	{
 		result = ft_strjoin(result, "PID");
+		*i += 2;
+	}
+	else if (line[*i] == '$' && line[*i + 1] == '?')
+	{
+		exit_nbr = ft_itoa(status->exit_status);
+		result = ft_strjoin(result, exit_nbr);
 		*i += 2;
 	}
 	return (result);
@@ -158,7 +173,12 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 	int		k;
 
 	line = status->line;
-	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' ' || line[*i + 1] == '$'))
+	if (*flag & HEREDOC)
+	{
+		k = find_next_token(line, *i, *flag);
+		pre_word = ft_substr(&line[*i], 0, k);
+	}
+	else if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' ' || line[*i + 1] == '$' || line[*i + 1] == '?'))
 		result = process_single_double_dollar(status, line, i, result);
 	else// if (line[*i] == '$')
 	{
@@ -168,13 +188,9 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 		result = search_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
-//	d_printf("\n[%s]\n",result);
 	return (result);
 }
 
-//void	check_pipe(status, line)
-//{
-//}
 
 int	count_pipe(t_info *status,char *line)
 {
@@ -195,7 +211,7 @@ int	count_pipe(t_info *status,char *line)
 			if (!(flag & IN_QUOTE))
 				plusle_quote(line[i], &flag);
 		}
-		if (flag & IN_QUOTE && line[i] == '|')
+		if (!(flag & IN_QUOTE) && line[i] == '|')
 			count++;
 		i++;
 	}
@@ -208,8 +224,8 @@ int	check_and_count_pipe(t_info *status, char *line)
 	int	count;
 
 	d_printf("[check_and_count_pipe]");
-//	check_pipe(status, line);
 	count = count_pipe(status, line);
+	d_printf("[pipe:count:%d]",count);
 	return (count);
 	(void)status;
 }
@@ -346,20 +362,21 @@ void make_other_list(int *flag, char *line, int j, t_info *status)
 	check_flag(status, str, flag);
 }
 
-void	process_input_operation(t_info *status, char *line, int j, int *flag)
+void	check_input_operation(t_info *status, char *line, int j, int *flag)
 {
 	if (*flag & INPUT_REDIRECT)
-		make_input_redirect(flag, line,  j, status);
+		*flag -= INPUT_REDIRECT;
 	else if (*flag & OUTPUT_REDIRECT)
-		make_output_redirect(flag, line,  j, status);
+		*flag -= OUTPUT_REDIRECT;
 	else if (*flag & HEREDOC)
-		make_heredoc_list(flag, line,  j, status);
+		*flag -= HEREDOC;
 	else if (*flag & APPENDDOC)
-		make_append_list(flag, line,  j, status);
+		*flag -= APPENDDOC;
 	else if (!(*flag & COMMAND))
-		make_command_list(flag, line,  j, status);
-	else
-		make_other_list(flag, line,  j, status);
+		*flag += COMMAND;
+	(void)j;
+	(void)status;
+	(void)line;
 }
 
 int	process_input_redirect_operation(t_info *status, char *line, int *flag)
@@ -422,8 +439,8 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
 	int		i;
 	t_stack	*data;
-//	pid_t	pid;
-//	int		pipefd[2];
+	pid_t	pid;
+	int		pipefd[2];
 
 	i = 0;
 	data = status->stack;
@@ -441,20 +458,51 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	{
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
-//		if (pipe(pipefd) < 0)
-//			error_exit("pipe");
-//		pid = fork();
-//		if (pid < 0)
-//			error_exit("fork");
-//		if (pid == 0)
-//		{
-//			//check_commandなどのコマンド実行系
-//			//firstfork(argv, pipefd, env);
-//		}
-//		//status->pid = pid;
-//		dup2_ee(pipefd[0], STDIN_FILENO);
-//		close_ee(pipefd[1]);
+		if (pipe(pipefd) < 0)
+			error_exit("pipe");
+		d_printf("do-fork");
+		pid = fork();
+		if (pid < 0)
+			error_exit("fork");
+		if (pid == 0)
+		{
+			dup2_ee(pipefd[1], STDOUT_FILENO);//ここが変になるかも
+			close_ee(pipefd[1]);
+			close_ee(pipefd[0]);
+			status->pid = 1;
+			check_command(status, status->stack);
+		}
+		status->pid = pid;
+		dup2_ee(pipefd[0], STDIN_FILENO);//ここが変になるかも
+		close_ee(pipefd[1]);
+//		close_ee(pipefd[0]); これなくていいんだっけ？
 		data = make_stack(status, data);
+	}
+	return (i);
+	(void)status;
+}
+
+int	check_pipe_operation(t_info *status, char *line, int *flag)
+{
+	int		i;
+	t_stack	*data;
+
+	i = 0;
+	data = status->stack;
+	while (line[i] == '|')
+	{
+		d_printf("%c", line[i]);
+		i++;
+	}
+	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
+	{
+		ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+		*flag += ERROR;
+	}
+	else if (i == 1)
+	{
+		ft_putendl_fd(" : pipe", 1);
+		*flag = AT_PIPE;
 	}
 	return (i);
 	(void)status;
@@ -479,6 +527,58 @@ char	*mini_ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
+void	check_error(t_info *status, char *line, int *e_flag)
+{
+	int	i;
+	int	j;
+	int	flag;
+	int	value;
+
+	flag = 0;
+	while(*line != '\0')
+	{
+		i = 0;
+		value = analysis_char(*line);
+		if (value == 1 || value == 0)// command系の処理
+		{
+			j = process_quotes(line, &value, &i, &flag);
+			check_input_operation(status, line, j, &flag);
+		}
+		if (value == 2)// ' '
+			i++;
+		else if (value == 3 && !(flag & IN_QUOTE))// < << <<<　ここは完成
+			i += process_input_redirect_operation(status, line, &flag);
+		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
+			i += process_output_redirect_operation(status, line, &flag);
+		else if (value == 6 && !(flag & IN_QUOTE))// |
+			i += check_pipe_operation(status, line, &flag);
+		line += i;
+	}
+	if (flag & NEED_FILE || flag & IN_QUOTE || flag & ERROR)
+	{
+		if (!(flag & ERROR))
+			flag += ERROR;
+		d_printf("\n\\\\ERROR!!!!!!!!!!!//\n");
+	}
+	*e_flag = flag;
+}
+
+void	process_input_operation(t_info *status, char *line, int j, int *flag)
+{
+	if (*flag & INPUT_REDIRECT)
+		make_input_redirect(flag, line,  j, status);
+	else if (*flag & OUTPUT_REDIRECT)
+		make_output_redirect(flag, line,  j, status);
+	else if (*flag & HEREDOC)
+		make_heredoc_list(flag, line,  j, status);
+	else if (*flag & APPENDDOC)
+		make_append_list(flag, line,  j, status);
+	else if (!(*flag & COMMAND))
+		make_command_list(flag, line,  j, status);
+	else
+		make_other_list(flag, line,  j, status);
+}
+
 void	panda(char *line, t_info *status)
 {
 	d_printf("[panda]");
@@ -489,19 +589,21 @@ void	panda(char *line, t_info *status)
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
+	check_error(status, line, &flag);
+	if (flag & ERROR)
+	{
+		lexer_panda_error_check(&flag, status);//errorチェック
+		d_printf("errorだ！おかえり〜\n");
+		status->error = -1;
+		return ;
+	}
+	flag = INITIAL;
+	d_printf("[panda]");
 	data = make_stack(status, NULL);
-//	pipe = check_and_count_pipe(status, line);
-//	while (pipe--)
-//	{
-//		pipe(pipefd);
-//		pid = fork();
-//		mini_ft_strchr(&line[i], '|');
-//		if (pid = 0)
-//			break ;
-//		line = line[i];
-//	}
+	status->pipe = check_and_count_pipe(status, line);
 	line = check_dollar(status, line);
-	d_printf("\n{pipe;%d}\n",pipe);
+	d_printf("\n{pipe;%d}\n",status->pipe);
+	d_printf("[panda]");
 	int	i;
 	int	j;
 	int	value;
@@ -524,8 +626,5 @@ void	panda(char *line, t_info *status)
 			i += process_pipe_operation(status, line, &flag);
 		line += i;
 	}
-	if (flag & NEED_FILE || flag & IN_QUOTE || flag & ERROR)
-		d_printf("ERROR!!!!!!!!!!!");
-	lexer_panda_error_check(&flag, status);//errorチェック
 	(void)data;
 }
