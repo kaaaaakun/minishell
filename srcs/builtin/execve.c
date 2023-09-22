@@ -6,40 +6,82 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/18 18:14:34 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:54:50 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
+#include "typedef_struct.h"
 
 void	before_pipe(char **command, t_info *status);
 void	last_command(char **command, t_info *status);
+char	*check_access(char *command, t_info *status);
 
 //線形リストを**にする
 //unset PATHされた時
 
-char	*check_access(char *command, t_info *status);
+char	**generate_cmdstr(t_info *status)
+{
+	char	**cmdstr;
+	t_list	*list;
+	int		i;
+
+	i = 0;
+	list = status->stack->cmdlist;
+	cmdstr = (char **)malloc(sizeof(char *) * listsize(list));
+	while (list != NULL)
+	{
+		cmdstr[i] = ft_strdup(list->content);
+		list = list->next;
+		i++;
+	}
+	cmdstr[i] = NULL;
+	return (cmdstr);
+}
 
 void	ex_execve(t_info *status)
 {
-	int	pid;
-	int	pipefd[2];
+	int		pid;
+	int		pipefd[2];
+	char	*path;
+	char	**cmd;
 
+	cmd = generate_cmdstr(status);
+	path = check_access(status->stack->cmdlist->content, status);
 	pipe(pipefd);
 	pid = fork();
-	if(pid == 0)
+	if (pid == 0)
 	{
 		dup2_ee(pipefd[0], STDIN_FILENO);
 		close_ee(pipefd[0]);
 		close_ee(pipefd[1]);
-		char *cat[] = {"cat", "-n", NULL};
-		execve("/bin/cat", cat ,NULL);
-		(void)status;
+		execve(path, cmd, NULL);
 	}
 	dup2_ee(pipefd[1], STDOUT_FILENO);
 	close_ee(pipefd[0]);
 }
+
+
+// void	ex_execve(t_info *status)
+// {
+// 	int	pid;
+// 	int	pipefd[2];
+
+// 	pipe(pipefd);
+// 	pid = fork();
+// 	if(pid == 0)
+// 	{
+// 		dup2_ee(pipefd[0], STDIN_FILENO);
+// 		close_ee(pipefd[0]);
+// 		close_ee(pipefd[1]);
+// 		char *cat[] = {"cat", "-n", NULL};
+// 		execve("/bin/cat", cat ,NULL);
+// 		(void)status;
+// 	}
+// 	dup2_ee(pipefd[1], STDOUT_FILENO);
+// 	close_ee(pipefd[0]);
+// }
 
 void	before_pipe(char **command, t_info *status)
 {
