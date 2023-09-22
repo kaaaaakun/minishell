@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/20 13:24:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/22 17:30:33 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ void	wait_process(t_info *status)
 	if (status->pipe == 0)
 		return ;
 	i = 0;
-	while (i < status->pipe)
+	while (i <= status->pipe)
 	{
 		waitpid(-1, &exit_status, 0);
 		if (WEXITSTATUS(exit_status) != 0)
 			;
 		i++;
 	}
+	return ;
 	waitpid(status->pid, &exit_status, 0);
 	if (WEXITSTATUS(exit_status) != 0)
 		;
