@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/22 16:54:50 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/22 20:20:35 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,24 @@ void	ex_execve(t_info *status)
 
 	cmd = generate_cmdstr(status);
 	path = check_access(status->stack->cmdlist->content, status);
-	pipe(pipefd);
-	pid = fork();
-	if (pid == 0)
+	if (status->pipe == 0)
 	{
-		dup2_ee(pipefd[0], STDIN_FILENO);
+		pipe(pipefd);
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2_ee(pipefd[0], STDIN_FILENO);
+			close_ee(pipefd[0]);
+			close_ee(pipefd[1]);
+			execve(path, cmd, NULL);
+		}
+		waitpid(pid, NULL, 0);
+		dup2_ee(pipefd[1], STDOUT_FILENO);
 		close_ee(pipefd[0]);
-		close_ee(pipefd[1]);
-		execve(path, cmd, NULL);
 	}
-	dup2_ee(pipefd[1], STDOUT_FILENO);
-	close_ee(pipefd[0]);
+	else
+		execve(path, cmd, NULL);
+	(void)pid;
 }
 
 
@@ -114,23 +121,28 @@ void	before_pipe(char **command, t_info *status)
 //	close(cpy_stdin);
 }
 
-void	last_command(char **command, t_info *status)
-{
-	d_printf("[las_command:%s]",command[0]);
-	char		*path;
-	int			pid;
-	extern char	**environ;
+// void	last_command(char **command, t_info *status)
+// {
+// 	d_printf("[las_command:%s]",command[0]);
+// 	char		*path;
+// 	int			pid;
+// 	extern char	**environ;
 
-	pid = fork();
-	if (pid < 0)
-		fork_error_exit("fork");
-	if (pid == 0)
-	{
-		path = check_access(command[0], status);
-		if (!path)
-			malloc_error();
-		execve(path, command, NULL);
-	}
-	status->exec_count++;
-	status->pid = pid;
-}
+// 	if (status->pipe == 0)
+// 	{
+// 		pid = fork();
+// 		if (pid < 0)
+// 			fork_error_exit("fork");
+// 		if (pid == 0)
+// 		{
+// 			path = check_access(command[0], status);
+// 			if (!path)
+// 				malloc_error();
+// 			execve(path, command, NULL);
+// 		}
+// 	}
+// 	else
+// 		execve(path, command, NULL);
+// 	status->exec_count++;
+// 	status->pid = pid;
+// }
