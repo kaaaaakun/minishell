@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/18 13:29:12 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/22 16:46:18 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_list	*create_list(char *str);
 void	push_back(t_list **head, char *str);
 void	free_list(t_list *head);
 void	free_stack(t_info *status);
+size_t	listsize(t_list *lst);
 
 void	add_sigaction(void);
 void	line_read(void);
