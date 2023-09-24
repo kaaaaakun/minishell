@@ -37,7 +37,8 @@ SRCS =	ft_strlen.c \
 		get_next_line_bonus.c \
 		ft_printf.c \
 		ftp_putnbr_fd.c \
-		ftp_putstr_fd.c
+		ftp_putstr_fd.c \
+		ft_str_is_num.c
 B_SRCS=	ft_lstnew.c \
 		ft_lstadd_front.c \
 		ft_lstsize.c \
@@ -69,7 +70,7 @@ $(NAME): $(OBJS)
 	@ $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@ $(RM) $(OBJS) $(B_OBJS)	
+	@ $(RM) $(OBJS) $(B_OBJS)
 
 fclean: clean
 	@ $(RM) $(NAME)
