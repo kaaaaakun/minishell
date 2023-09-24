@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 15:26:16 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/24 15:31:41 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 16:37:58 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_str_is_num(char *str)
 		i++;
 	while (str[i] != '\0')
 	{
-		if (ft_isdigit(str[i]) == 0)
+		if (ft_isdigit(str[i]) == 1)
 			i++;
 		else
 			return (0);

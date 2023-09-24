@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 13:38:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 15:32:31 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 16:28:00 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-int		ft_str_is_num(char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
@@ -62,6 +61,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int c, int fd);
 void	ft_putendl_fd(char *s, int fd);
 char	**ft_split(const char *str, char charset);
+int		ft_str_is_num(char *str);
 
 t_libft_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_libft_list *lst);

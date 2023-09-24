@@ -70,7 +70,7 @@ $(NAME): $(OBJS)
 	@ $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@ $(RM) $(OBJS) $(B_OBJS)	
+	@ $(RM) $(OBJS) $(B_OBJS)
 
 fclean: clean
 	@ $(RM) $(NAME)
