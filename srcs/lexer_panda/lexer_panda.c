@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 16:21:57 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:25:45 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -437,6 +437,11 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 # define PIPE_IN 0
 # define PIPE_OUT 1
+void close_pipe(int pipefd_in, int pipefd_out)
+{
+        close(pipefd_in);
+        close(pipefd_out);
+}
 void dup2_close_pipe(int pipefd_in, int pipefd_out, int flag)
 {
 	if (flag == PIPE_IN)
@@ -444,11 +449,6 @@ void dup2_close_pipe(int pipefd_in, int pipefd_out, int flag)
 	else if (flag == PIPE_OUT)
         dup2(pipefd_out, flag);
 	close_pipe(pipefd_in, pipefd_out);
-}
-void close_pipe(int pipefd_in, int pipefd_out)
-{
-        close(pipefd_in);
-        close(pipefd_out);
 }
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
