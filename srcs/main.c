@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 15:57:10 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 17:14:47 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,17 @@ void	check_line(char *line, t_info *status)
 	dup2(cpy_stdout, 1);
 }
 
+void	reset_status(t_info *status)
+{
+	status->pid = 0;
+	status->pipe = 0;
+	status->pre_pipe1 = -1;
+	status->pre_pipe0 = -1;
+	status->error = 0;
+	status->line = NULL;
+	status->cpy_stdin = -1;
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
 	char	*line;
@@ -103,6 +114,7 @@ int	main(int argc, char *argv[], char *env[])
 		status->stack = NULL;
 		d_printf("[%s]", line);
 		check_line(line, status);
+		reset_status(status);
 		free (line);
 	}
 	(void)argv;

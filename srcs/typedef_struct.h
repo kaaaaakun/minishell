@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/20 14:16:54 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:13:34 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_info
 {
 	int				pid;
 	int				pipe;
+	int				pre_pipe1;
+	int				pre_pipe0;
 	int				error;
 	int				exit_status;
 	int				exec_count;
