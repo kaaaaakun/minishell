@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 17:25:45 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:07:32 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -448,7 +448,8 @@ void dup2_close_pipe(int pipefd_in, int pipefd_out, int flag)
         dup2(pipefd_in, flag);
 	else if (flag == PIPE_OUT)
         dup2(pipefd_out, flag);
-	close_pipe(pipefd_in, pipefd_out);
+//    close(pipefd_in);
+    close(pipefd_out);
 }
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
@@ -482,16 +483,17 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 			error_exit("fork");
 		if (pid == 0)
 		{
-			dup2_ee(pipefd[1], STDOUT_FILENO);//ここが変になるかも
-			close_ee(pipefd[1]);
-			close_ee(pipefd[0]);
+			if (status->pre_pipe1 != -1)
+				dup2_close_pipe(status->pre_pipe0, status->pre_pipe1, STDIN_FILENO);
+			dup2_close_pipe(pipefd[0], pipefd[1], STDOUT_FILENO);
 			status->pid = 1;
 			check_command(status, status->stack);
 		}
+		if (status->pre_pipe1 != -1)
+			close_pipe(status->pre_pipe0, status->pre_pipe1);
+		status->pre_pipe1 = pipefd[1];
+		status->pre_pipe0 = pipefd[0];
 		status->pid = pid;
-		dup2_ee(pipefd[0], STDIN_FILENO);//ここが変になるかも
-		close_ee(pipefd[1]);
-//		close_ee(pipefd[0]); これなくていいんだっけ？
 		data = make_stack(status, data);
 	}
 	return (i);
