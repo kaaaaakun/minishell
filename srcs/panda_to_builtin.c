@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/19 18:35:34 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/24 13:43:37 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	check_command(t_info *status, t_stack *data)
 	line = data->cmdlist->content;
 	d_printf("[line:%s]",line);
 	if (ft_memcmp(line, "exit", 5) == 0)
-		ex_exit(0);
+		ex_exit(status, data);
 	else if (ft_memcmp(line, "echo", 5) == 0)
 		ex_echo(status, data);
 	else if (ft_memcmp(line, "env", 4) == 0)

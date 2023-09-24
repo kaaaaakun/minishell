@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/22 20:20:35 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 11:50:09 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 void	before_pipe(char **command, t_info *status);
 void	last_command(char **command, t_info *status);
 char	*check_access(char *command, t_info *status);
-
-//線形リストを**にする
-//unset PATHされた時
 
 char	**generate_cmdstr(t_info *status)
 {

@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_str_is_num.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 15:52:34 by hhino            ###   ########.fr       */
+/*   Created: 2023/09/24 15:26:16 by hhino             #+#    #+#             */
+/*   Updated: 2023/09/24 15:31:41 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	write_env(t_list *env)
+int	ft_str_is_num(char *str)
 {
-	while (env != NULL)
+	int	i;
+
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i] != '\0')
 	{
-		if (ft_strchr(env->content, '=') != NULL)
-			ft_putendl_fd(env->content, 1);
-		env = env->next;
+		if (ft_isdigit(str[i]) == 0)
+			i++;
+		else
+			return (0);
 	}
+	return (1);
 }
-
-void	ex_env(t_info *status, t_stack *data)
-{
-	(void)data;
-	write_env(status->env);
-}
-
-// env - ->何もしない

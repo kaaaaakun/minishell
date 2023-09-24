@@ -12,7 +12,7 @@ void	check_line(char *line, t_info *status);
 void	ex_cd(t_info *status, t_stack *data);
 void	ex_echo(t_info *status, t_stack *data);
 void	ex_env(t_info *status, t_stack *data);
-void	ex_exit(int i);
+void	ex_exit(t_info *status, t_stack *data);
 void	ex_export(t_info *status, t_stack *data);
 void	ex_pwd(void);
 void	ex_unset(t_info *status, t_stack *data);
