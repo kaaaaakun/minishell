@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:11:54 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 15:38:00 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 16:03:29 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@ void	ex_exit(t_info *status, t_stack *data)
 {
 	t_list	*list;
 
-	list = data->cmdlist->next;
-	if (list == NULL || ft_memcmp(list->content, "--", 3))
+	list = data->cmdlist;
+	if (list == NULL || status == NULL || list->next == NULL
+		|| ft_memcmp(list->next->content, "--", 3))
 	{
 		ft_putendl_fd("exit", 1);
-		exit (0);
+		exit(0);
 	}
-	else if (ft_str_is_num(list->content) == 1)
+	else if (ft_str_is_num(list->next->content) == 1)
 	{
-		status->exit_status = ft_atoi(list->content);
+		status->exit_status = ft_atoi(list->next->content);
 		ft_putendl_fd("exit", 1);
-		exit (0);
+		exit(0);
 	}
-	else if (!ft_str_is_num(list->content) == 0)
+	else if (!ft_str_is_num(list->next->content) == 0)
 	{
-		ft_printf("%s: ", list->content);
+		ft_printf("%s: ", list->next->content);
 		ft_putendl_fd("numeric argument required", 1);
 		ft_putendl_fd("exit", 1);
 		exit(0);
 	}
 }
-
 
 // atoi
 // str_is_num

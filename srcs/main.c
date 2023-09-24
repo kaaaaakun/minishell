@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/22 17:30:33 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:57:10 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	check_line(char *line, t_info *status)
 		add_history(line);
 	d_printf("[check_line:%d]", status->exec_count);
 	if (!line)
-		ex_exit(0);
+		ex_exit(status, NULL);
 	status->exec_count = 0;
 	if (*line == '\0')
 	{
@@ -93,7 +93,7 @@ int	main(int argc, char *argv[], char *env[])
 	add_sigaction();
 	status = (t_info *)malloc(sizeof(t_info) * 1);
 	if (!status)
-		ex_exit(0);
+		ex_exit(status, NULL);
 	status->exec_count = 0;
 	make_env_list(status, env);
 	while (1)

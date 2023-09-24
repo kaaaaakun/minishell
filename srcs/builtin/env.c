@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 15:52:34 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/24 16:18:56 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ static void	write_env(t_list *env)
 
 void	ex_env(t_info *status, t_stack *data)
 {
-	(void)data;
-	write_env(status->env);
-}
+	t_list	*list;
 
-// env - ->何もしない
+	list = data->cmdlist->next;
+	if (list == NULL || ft_memcmp(list->content, "--", 3))
+		write_env(status->env);
+	else
+		ft_printf("%s: No such file or directory", list->content);
+}
