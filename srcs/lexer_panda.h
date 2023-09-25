@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/20 11:27:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 18:26:55 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,22 @@
 
 # define ERROR 0x200
 # define NOFLAG 0x400
-//
 
+//make_list
+char	*make_tmp_file(t_info *status, int *tmp_fd);
+void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd);
+char	*check_command_path(t_info *status, char *result);
+char	*check_flag(t_info *status, char *result, int *flag);
+void	*mini_memcpy(void *dst, const void *src, size_t n);
+char	*mini_substr(char const *s, unsigned int start, size_t len);
+int		search_dollar(char *line);
 char	*make_list(int *flag, char *line, int len, t_list **list);
+//redirection_operators
+void	check_infile(t_info *status, char *result);
+char	*check_heredoc(t_info *status, char *eof_word);
+void	check_outfile(t_info *status, char *result);
+void	check_appendfile(t_info *status, char *result);
+//
 char	*search_env(t_info *status, char *str);
 t_list	*search_envlist(t_info *status, char *str);
 void	lexer_panda_error_check(int *flag, t_info *status);
@@ -42,7 +55,7 @@ t_stack	*make_stack(t_info *status, t_stack *pre_data);
 char	*check_flag(t_info *status, char *result, int *flag);
 char	*mini_substr(char const *s, unsigned int start, size_t len);
 
-//utils
+// utils
 void	free_null(void *ptr);
 void	minun_quote(char s, int *flag);
 void	plusle_quote(char s, int *flag);

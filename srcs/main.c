@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 17:14:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:53:02 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "pipex.h"
 #include "builtin.h"
 
+void	check_command(t_info *status, t_stack *data);
 
 void	wait_process(t_info *status)
 {
@@ -36,8 +37,6 @@ void	wait_process(t_info *status)
 	if (WEXITSTATUS(exit_status) != 0)
 		;
 }
-
-void	check_command(t_info *status, t_stack *data);
 
 void	check_line(char *line, t_info *status)
 {

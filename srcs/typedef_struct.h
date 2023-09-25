@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 17:13:34 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:42:14 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_info
 	int				error;
 	int				exit_status;
 	int				exec_count;
-	t_list			*env; //exportの中身をpush_backする, unsetで消す
+	t_list			*env;
 	char			*line;
 	struct s_stack	*stack;
 	struct s_flist	*flist;

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 13:43:37 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/25 17:45:45 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 void	check_command(t_info *status, t_stack *data)
 {
 	ft_putstr_fd("[check_command]", 1);
-	char		 *line;
+	char		*line;
 
 	while (data->next != NULL)
 		data = data->next;
 	if (data->cmdlist == NULL)
 		return ;
 	line = data->cmdlist->content;
-	d_printf("[line:%s]",line);
+	d_printf("[line:%s]", line);
 	if (ft_memcmp(line, "exit", 5) == 0)
 		ex_exit(status, data);
 	else if (ft_memcmp(line, "echo", 5) == 0)
@@ -43,10 +43,7 @@ void	check_command(t_info *status, t_stack *data)
 	{
 		usleep(100);
 		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
-//		char *cat[] = {"cat", "-n", NULL};
-//		execve("/bin/cat", cat ,NULL);
 		ex_execve(status);
-//		ex_execve(split, pipe_flag, status);  listを**にする関数
 	}
 	if (status->pid == 1)
 		exit(0);

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 20:07:32 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:10:10 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 {
 	char	*exit_nbr;
 
-	
+
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
 		result = ft_strjoin(result, "$");
@@ -522,7 +522,7 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
 	}
-	check_command();
+	// check_command();
 	return (i);
 	(void)status;
 	(void)data;
@@ -651,6 +651,7 @@ void	panda(char *line, t_info *status)
 	d_printf("\n{pipe;%d}\n",status->pipe);
 	if (status->pipe == 0)
 		exec_panda(line, status,flag);
+//forkでつなげる↓
 	int	i;
 	int	stdin_fd;
 	pid_t	pid;
