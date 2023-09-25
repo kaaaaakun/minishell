@@ -6,26 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/20 11:46:03 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 18:32:30 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer_panda.h"
 #include "minishell.h"
 #include <errno.h>
-
-void	check_infile(t_info *status, char *result)
-{
-	int fd;
-
-	fd = open_ee(result, O_RDONLY, 0);
-	if (fd < 0)
-		return ;
-	dup2_ee(fd, STDIN_FILENO);
-	close_ee(fd);
-	(void)status;
-}
-
 
 char	*make_tmp_file(t_info *status, int *tmp_fd)
 {
@@ -54,68 +41,6 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 	if (*tmp_fd < 0)
 		return (NULL);
 	return (tmp_file_name);
-	(void)status;
-}
-
-void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
-{
-	char	*line;
-	int		eof_len;
-
-	dup2(status->cpy_stdin, 0);
-	int	cpy_stdin = dup(0);
-	close(status->cpy_stdin);
-	status->cpy_stdin = cpy_stdin;
-	eof_len = ft_strlen(eof_word) + 1;
-	while (1)
-	{
-		line = readline(">");
-		if (ft_strncmp(line, eof_word, eof_len) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (line == NULL)
-			break ;
-		ft_putendl_fd(line, tmp_fd);
-		free(line);
-	}
-	close(tmp_fd);
-	(void)status;
-}
-
-char	*check_heredoc(t_info *status, char *eof_word)
-{
-	char	*tmp_file_name;
-	int		tmp_fd;
-
-	tmp_file_name = make_tmp_file(status, &tmp_fd);
-	ex_heredoc(status, eof_word, tmp_fd);
-	check_infile(status, tmp_file_name);
-	(void)status;
-	unlink(tmp_file_name);
-	return (NULL);
-}
-
-void	check_outfile(t_info *status, char *result)
-{
-	int fd;
-
-	fd = open_ee(result, O_CREAT | O_TRUNC | O_WRONLY, \
-		S_IRWXU | S_IRGRP| S_IROTH);
-	dup2_ee(fd, STDOUT_FILENO);
-	close_ee(fd);
-	(void)status;
-}
-
-void	check_appendfile(t_info *status, char *result)
-{
-	int fd;
-
-	fd = open_ee(result, O_CREAT | O_APPEND | O_WRONLY, \
-		S_IRWXU | S_IRGRP| S_IROTH);
-	dup2_ee(fd, STDOUT_FILENO);
-	close_ee(fd);
 	(void)status;
 }
 
@@ -155,34 +80,6 @@ char	*check_flag(t_info *status, char *result, int *flag)
 	return (result);
 }
 
-void	*mini_memcpy(void *dst, const void *src, size_t n)
-{
-	char		*d;
-	const char	*s;
-	int			flag;
-
-	flag = 0;
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	d = dst;
-	s = src;
-	while (n--)
-	{
-		if ((*s == '\'' || *s == '\"') && !(flag & IN_QUOTE))
-		{
-			plusle_quote(*s, &flag);
-			s++;
-		}
-		if ((*s == '\'' && flag & S_QUOTE) || (*s == '\"' && flag & D_QUOTE))
-		{
-			minun_quote(*s, &flag);
-			s++;
-		}
-		*d++ = *s++;
-	}
-	return (dst);
-}
-
 int	search_dollar(char *line)
 {
 	int	i;
@@ -209,27 +106,6 @@ int	search_dollar(char *line)
 		}
 
 	}
-}
-
-char	*mini_substr(char const *s, unsigned int start, size_t len)
-{
-	unsigned int	length;
-	char			*result;
-	char			*str;
-
-	str = (char *)s;
-	if (s == NULL)
-		return (NULL);
-	length = ft_strlen((char *)s);
-	if (len == 0 || length <= start)
-		return (ft_strdup (""));
-	length = ft_strlen(&str[start]);
-	if (len < length)
-		length = len;
-	result = (char *)ft_calloc(length + 1, sizeof(char));
-	if (result == NULL)
-		return (NULL);
-	return (mini_memcpy(result, &str[start], length));
 }
 
 char	*make_list(int *flag, char *line, int len, t_list **list)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:17:45 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/07 16:11:41 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:44:13 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,6 @@ void	exit_ee(int nbr)
 	fork_id = fork();
 	if (fork_id == 0)
 		exit (nbr);
-}
-
-void	split_free(char **result)
-{
-	int	i;
-
-	i = 0;
-	while (result[i] != NULL)
-	{
-		free(result[i]);
-		i++;
-	}
-	free(result);
-}
-
-void	error_exit(char *msg)
-{
-	perror(msg);
-	exit_ee(1);
-}
-
-void	fork_error_exit(char *msg)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		error_exit("fork");
-	if (pid == 0)
-	{
-		perror(msg);
-		exit(1);
-	}
 }
 
 int	open_ee(char *str, int oflag, int orflag)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 19:24:02 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:57:30 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 {
 	char	*exit_nbr;
 
-	
+
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
 		result = ft_strjoin(result, "$");
@@ -522,7 +522,6 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
 	}
-//	check_command(status, status->stack);
 	return (i);
 	(void)status;
 	(void)data;

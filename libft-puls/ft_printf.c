@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 10:40:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:27:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	ft_printf(const char *format, ...)
 
 int	d_printf(const char *format, ...)//debug用
 {
+	return(0) ;
 	va_list	ap;
 	ssize_t	count;
 	ssize_t	count_tmp;

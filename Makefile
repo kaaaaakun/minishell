@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
+#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/22 19:58:49 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/25 18:31:40 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 		utils.c \
 		debug.c \
 		pipex_utils.c \
+		pipex_utils2.c \
 		$(addprefix builtin/, \
 			exit.c \
 			echo.c \
@@ -33,7 +34,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			pwd.c \
 			env.c \
 			export.c \
-			export_utils.c\
+			export_utils.c \
 			unset.c \
 			) \
 		$(addprefix lexer_panda/, \
@@ -44,6 +45,8 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 			chck_flag_error.c \
 			getpath.c \
 			panda_utils.c \
+			redirection_operators.c \
+			mini_libft.c \
 			) \
 		)
 OBJS = $(SRCS:.c=.o)

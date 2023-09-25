@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/17 16:15:02 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/25 19:08:24 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	ex_cd(t_info *status, t_stack *data)
 		ft_printf("%s: No such file or directory\n", list->content);
 	return ;
 }
-
 
 // cd はHOMEに戻る
 // cd /は一番最初の階層に戻る
