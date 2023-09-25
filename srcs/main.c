@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 17:14:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:01:49 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,27 @@ void	check_line(char *line, t_info *status)
 	if (status->error)
 		return ;
 	debug(status,"panda to check");
-	if (status->pipe != 0)
+//	if (status->pipe != 0)
+//	{
+//		int	pid;
+//
+//		d_printf("last-fork");
+//		pid = fork();
+//		if (pid < 0)
+//			error_exit("fork");
+//		if (pid == 0)
+//		{
+//			status->pid = 1;
+//			check_command(status, status->stack);
+//		}
+//	}
+//	else
+	if (status->pipe == 0)
 	{
-		int	pid;
-
-		d_printf("last-fork");
-		pid = fork();
-		if (pid < 0)
-			error_exit("fork");
-		if (pid == 0)
-		{
-			status->pid = 1;
-			check_command(status, status->stack);
-		}
-	}
-	else
 		check_command(status, status->stack);
-	free_stack(status);
-	wait_process(status);
+		free_stack(status);
+	}
+//	wait_process(status);
 	dup2(status->cpy_stdin, 0);
 	dup2(cpy_stdout, 1);
 }

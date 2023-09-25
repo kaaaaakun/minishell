@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 11:50:09 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/25 19:24:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void	ex_execve(t_info *status)
 		waitpid(pid, NULL, 0);
 	}
 	else
+	{
+		d_printf("AAAAAAAAAAAAAA\n");
 		execve(path, cmd, NULL);
+	}
 	(void)pid;
 }
 

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 20:07:32 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:24:02 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -522,7 +522,7 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
 	}
-	check_command();
+//	check_command(status, status->stack);
 	return (i);
 	(void)status;
 	(void)data;
@@ -621,7 +621,10 @@ void	exec_panda(char *line, t_info *status, int flag)
 		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
 			i += process_output_redirect_operation(status, line, &flag);
 		else if (value == 6 && !(flag & IN_QUOTE))// |
+		{
 			i += process_pipe_operation(status, line, &flag);
+			return ;
+		}
 		line += i;
 	}
 }
@@ -650,7 +653,10 @@ void	panda(char *line, t_info *status)
 	line = check_dollar(status, line);
 	d_printf("\n{pipe;%d}\n",status->pipe);
 	if (status->pipe == 0)
+	{
 		exec_panda(line, status,flag);
+		return ;
+	}
 	int	i;
 	int	stdin_fd;
 	pid_t	pid;
@@ -659,18 +665,18 @@ void	panda(char *line, t_info *status)
 	i = 0;
 	pid = 0;
 	stdin_fd = dup(STDIN_FILENO);
-	while (*line != '\0' && i < status->pipe)
+	while (i <= status->pipe)
 	{
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
-		d_printf("@@@@@\n");
 		pid = fork();
 		if (pid == 0)
 		{
-			if (i != 0 && i != status->pipe - 1)
+			if (i != status->pipe)
 				dup2_close_pipe(pipefd, STDOUT_FILENO);
 			status->pipe = 1;
 			exec_panda(line, status,flag);
+			check_command(status, status->stack);
 		}
 		status->pid = pid;
 		line = ft_strchr(line, '|');
@@ -678,6 +684,7 @@ void	panda(char *line, t_info *status)
 			break ;
 		dup2_close_pipe(pipefd, STDIN_FILENO);
 		line++;
+		d_printf("[i:%d]",i);
 		i++;
 	}
 	dup2_ee(stdin_fd, STDIN_FILENO);
