@@ -25,6 +25,7 @@ static void	append_envlist(t_list *env, char *str)
 		env->content = ft_strjoin(env->content, "=");
 		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
 	}
+	(void)temp;
 }
 
 static void	overwrite_envlist(t_list *env, char *str)
@@ -33,6 +34,7 @@ static void	overwrite_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	env->content = str;
+	(void)temp;
 }
 
 //0912左辺が存在している時に+=をした次の"export"で死ぬ
@@ -90,6 +92,7 @@ void	ex_export(t_info *status, t_stack *data)
 		}
 	}
 	return ;
+	(void)listcontent;
 }
 
 

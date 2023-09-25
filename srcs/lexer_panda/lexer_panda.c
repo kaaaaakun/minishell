@@ -437,27 +437,26 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 # define PIPE_IN 0
 # define PIPE_OUT 1
-void close_pipe(int pipefd_in, int pipefd_out)
+void close_pipe(int *pipefd)
 {
-        close(pipefd_in);
-        close(pipefd_out);
+        close(pipefd[0]);
+        close(pipefd[1]);
 }
-void dup2_close_pipe(int pipefd_in, int pipefd_out, int flag)
+void dup2_close_pipe(int *pipefd, int flag)
 {
 	if (flag == PIPE_IN)
-        dup2(pipefd_in, flag);
+        dup2(pipefd[0], flag);
 	else if (flag == PIPE_OUT)
-        dup2(pipefd_out, flag);
-//    close(pipefd_in);
-    close(pipefd_out);
+        dup2(pipefd[1], flag);
+	close_pipe(pipefd);
 }
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
 	int		i;
 	t_stack	*data;
-	pid_t	pid;
-	int		pipefd[2];
+//	pid_t	pid;
+//	int		pipefd[2];
 
 	i = 0;
 	data = status->stack;
@@ -473,31 +472,32 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	else if (i == 1)
 	{
-		ft_putendl_fd(" : pipe", 1);
-		*flag = AT_PIPE;
-		if (pipe(pipefd) < 0)
-			error_exit("pipe");
-		d_printf("do-fork");
-		pid = fork();
-		if (pid < 0)
-			error_exit("fork");
-		if (pid == 0)
-		{
-			if (status->pre_pipe1 != -1)
-				dup2_close_pipe(status->pre_pipe0, status->pre_pipe1, STDIN_FILENO);
-			dup2_close_pipe(pipefd[0], pipefd[1], STDOUT_FILENO);
-			status->pid = 1;
-			check_command(status, status->stack);
-		}
-		if (status->pre_pipe1 != -1)
-			close_pipe(status->pre_pipe0, status->pre_pipe1);
-		status->pre_pipe1 = pipefd[1];
-		status->pre_pipe0 = pipefd[0];
-		status->pid = pid;
-		data = make_stack(status, data);
+//			ft_putendl_fd(" : pipe", 1);
+//			*flag = AT_PIPE;
+//			if (pipe(pipefd) < 0)
+//				error_exit("pipe");
+//			d_printf("do-fork");
+//			pid = fork();
+//			if (pid < 0)
+//				error_exit("fork");
+//			if (pid == 0)
+//			{
+//				if (status->pre_pipe1 != -1)
+//					dup2_close_pipe(status->pre_pipe0, status->pre_pipe1, STDIN_FILENO);
+//				dup2_close_pipe(pipefd[0], pipefd[1], STDOUT_FILENO);
+//				status->pid = 1;
+				check_command(status, status->stack);
+//			}
+//			if (status->pre_pipe1 != -1)
+//				close_pipe(status->pre_pipe0, status->pre_pipe1);
+//			status->pre_pipe1 = pipefd[1];
+//			status->pre_pipe0 = pipefd[0];
+//			status->pid = pid;
+//			data = make_stack(status, data);
 	}
 	return (i);
 	(void)status;
+	(void)data;
 }
 
 int	check_pipe_operation(t_info *status, char *line, int *flag)
@@ -522,8 +522,10 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		ft_putendl_fd(" : pipe", 1);
 		*flag = AT_PIPE;
 	}
+	check_command();
 	return (i);
 	(void)status;
+	(void)data;
 }
 
 char	*mini_ft_strchr(const char *s, int c)
@@ -597,30 +599,8 @@ void	process_input_operation(t_info *status, char *line, int j, int *flag)
 		make_other_list(flag, line,  j, status);
 }
 
-void	panda(char *line, t_info *status)
+void	exec_panda(char *line, t_info *status, int flag)
 {
-	d_printf("[panda]");
-	t_stack	*data;
-	int	flag;
-//	int	pipe;
-
-	flag = INITIAL;
-	if (*line == '\0')
-		return ;
-	check_error(status, line, &flag);
-	if (flag & ERROR)
-	{
-		lexer_panda_error_check(&flag, status);//errorチェック
-		d_printf("errorだ！おかえり〜\n");
-		status->error = -1;
-		return ;
-	}
-	flag = INITIAL;
-	d_printf("[panda]");
-	data = make_stack(status, NULL);
-	status->pipe = check_and_count_pipe(status, line);
-	line = check_dollar(status, line);
-	d_printf("\n{pipe;%d}\n",status->pipe);
 	d_printf("[panda]");
 	int	i;
 	int	j;
@@ -643,6 +623,67 @@ void	panda(char *line, t_info *status)
 		else if (value == 6 && !(flag & IN_QUOTE))// |
 			i += process_pipe_operation(status, line, &flag);
 		line += i;
+	}
+}
+
+void	panda(char *line, t_info *status)
+{
+	d_printf("[panda]");
+	t_stack	*data;
+	int	flag;
+
+	flag = INITIAL;
+	if (*line == '\0')
+		return ;
+	check_error(status, line, &flag);
+	if (flag & ERROR)
+	{
+		lexer_panda_error_check(&flag, status);//errorチェック
+		d_printf("errorだ！おかえり〜\n");
+		status->error = -1;
+		return ;
+	}
+	flag = INITIAL;
+	d_printf("[panda]");
+	data = make_stack(status, NULL);
+	status->pipe = check_and_count_pipe(status, line);
+	line = check_dollar(status, line);
+	d_printf("\n{pipe;%d}\n",status->pipe);
+	if (status->pipe == 0)
+		exec_panda(line, status,flag);
+	int	i;
+	int	stdin_fd;
+	pid_t	pid;
+	int		pipefd[2];
+
+	i = 0;
+	pid = 0;
+	stdin_fd = dup(STDIN_FILENO);
+	while (*line != '\0' && i < status->pipe)
+	{
+		if (pipe(pipefd) < 0)
+			error_exit("pipe");
+		d_printf("@@@@@\n");
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i != 0 && i != status->pipe - 1)
+				dup2_close_pipe(pipefd, STDOUT_FILENO);
+			status->pipe = 1;
+			exec_panda(line, status,flag);
+		}
+		status->pid = pid;
+		line = ft_strchr(line, '|');
+		if (line == NULL)
+			break ;
+		dup2_close_pipe(pipefd, STDIN_FILENO);
+		line++;
+		i++;
+	}
+	dup2_ee(stdin_fd, STDIN_FILENO);
+	while (i--)
+	{
+		wait(NULL);
 	}
 	(void)data;
 }

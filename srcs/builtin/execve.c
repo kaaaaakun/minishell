@@ -40,7 +40,6 @@ char	**generate_cmdstr(t_info *status)
 void	ex_execve(t_info *status)
 {
 	int		pid;
-	int		pipefd[2];
 	char	*path;
 	char	**cmd;
 
@@ -48,18 +47,10 @@ void	ex_execve(t_info *status)
 	path = check_access(status->stack->cmdlist->content, status);
 	if (status->pipe == 0)
 	{
-		pipe(pipefd);
 		pid = fork();
 		if (pid == 0)
-		{
-			dup2_ee(pipefd[0], STDIN_FILENO);
-			close_ee(pipefd[0]);
-			close_ee(pipefd[1]);
 			execve(path, cmd, NULL);
-		}
 		waitpid(pid, NULL, 0);
-		dup2_ee(pipefd[1], STDOUT_FILENO);
-		close_ee(pipefd[0]);
 	}
 	else
 		execve(path, cmd, NULL);

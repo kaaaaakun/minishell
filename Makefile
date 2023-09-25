@@ -73,7 +73,6 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) $(INCLUDE) $(LDFLAGS) $(CFLAGS) $(LIBFT) -o $@
 	@ echo "compiled!"
-	make clean
 
 clean:
 	@ make -C $(LIBFT_DIR) clean
