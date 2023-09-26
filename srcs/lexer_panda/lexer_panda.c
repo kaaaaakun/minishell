@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 19:57:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:42:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	search_env_variable(char *line, int *i, int *flag)
 	d_printf("[search_env_variable]");
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
-		d_printf("\n%c",line[*i]);
+		ft_printf("\n%c",line[*i]);
 		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
 		{
 			plusle_quote(line[*i], flag);
@@ -254,7 +254,7 @@ char	*check_dollar(t_info *status, char *line)
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
 	}
-//	d_printf("\n[end dollar :%s]\n", result);
+	ft_printf("\n[end dollar :%s]\n", result);
 	return (result);
 }
 
@@ -519,7 +519,7 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	else if (i == 1)
 	{
-		ft_putendl_fd(" : pipe", 1);
+		d_printf(" : pipe", 1);
 		*flag = AT_PIPE;
 	}
 	return (i);
@@ -630,6 +630,7 @@ void	exec_panda(char *line, t_info *status, int flag)
 
 void	panda(char *line, t_info *status)
 {
+//	ft_printf("[line:%s]\n", line);
 	d_printf("[panda]");
 	t_stack	*data;
 	int	flag;
@@ -653,6 +654,7 @@ void	panda(char *line, t_info *status)
 	d_printf("\n{pipe;%d}\n",status->pipe);
 	if (status->pipe == 0)
 	{
+		ft_printf("[line:%s]\n", line);
 		exec_panda(line, status,flag);
 		return ;
 	}
@@ -666,6 +668,7 @@ void	panda(char *line, t_info *status)
 	stdin_fd = dup(STDIN_FILENO);
 	while (i <= status->pipe)
 	{
+		d_printf("[i:%d]",i);
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
 		pid = fork();
@@ -683,7 +686,6 @@ void	panda(char *line, t_info *status)
 			break ;
 		dup2_close_pipe(pipefd, STDIN_FILENO);
 		line++;
-		d_printf("[i:%d]",i);
 		i++;
 	}
 	dup2_ee(stdin_fd, STDIN_FILENO);
@@ -691,5 +693,6 @@ void	panda(char *line, t_info *status)
 	{
 		wait(NULL);
 	}
+		wait(NULL);
 	(void)data;
 }

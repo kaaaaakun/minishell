@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 17:45:45 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/26 16:42:38 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	check_command(t_info *status, t_stack *data)
 {
-	ft_putstr_fd("[check_command]", 1);
+	d_printf("[check_command]");
 	char		*line;
 
 	while (data->next != NULL)
@@ -42,7 +42,7 @@ void	check_command(t_info *status, t_stack *data)
 	else
 	{
 		usleep(100);
-		ft_putendl_fd(ft_strjoin("builtin not found: ", line), 1);
+		d_printf(ft_strjoin("builtin not found: ", line));
 		ex_execve(status);
 	}
 	if (status->pid == 1)

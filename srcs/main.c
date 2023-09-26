@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 19:57:38 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/26 16:44:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	wait_process(t_info *status)
 
 void	check_line(char *line, t_info *status)
 {
-	ft_putstr_fd("[check_line]", 1);
+	d_printf("[check_line]", 1);
 
 	if (line && *line)
 		add_history(line);
