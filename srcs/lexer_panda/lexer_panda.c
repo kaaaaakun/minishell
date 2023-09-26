@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 18:31:50 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:35:27 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,24 @@
 void	check_command(t_info *status, t_stack *data);
 void	plusle_quote(char s, int *flag);
 void	minun_quote(char s, int *flag);
+char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
+
+# define BOTH_FREE 0
+# define FIRST_FREE 1
+# define SECOND_FREE 2
+# define NEITHER_FREE 3
+
+char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
+{
+	char *joined_str;
+
+	joined_str = ft_strjoin(s1, s2);
+	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
+		free((void *)s1);
+	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
+		free((void *)s2);
+	return (joined_str);
+}
 
 int	analysis_char(char c)
 {
@@ -46,7 +64,7 @@ void	search_env_variable(char *line, int *i, int *flag)
 	d_printf("[search_env_variable]");
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
-		ft_printf("\n%c",line[*i]);
+		d_printf("\n%c",line[*i]);
 		if ((line[*i] == '\'') && !(*flag & IN_QUOTE))
 		{
 			plusle_quote(line[*i], flag);
@@ -91,18 +109,18 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
-		result = ft_strjoin(result, "$");
+		result = ft_strjoin_free(result, "$", FIRST_FREE);
 		*i += 1;
 	}
 	else if (line[*i] == '$' && line[*i + 1] == '$')
 	{
-		result = ft_strjoin(result, "PID");
+		result = ft_strjoin_free(result, "PID", FIRST_FREE);
 		*i += 2;
 	}
 	else if (line[*i] == '$' && line[*i + 1] == '?')
 	{
 		exit_nbr = ft_itoa(status->exit_status);
-		result = ft_strjoin(result, exit_nbr);
+		result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
 		*i += 2;
 	}
 	return (result);
@@ -127,12 +145,12 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 //			char *squote = ft_strchr(post_word, '\"');
 //		d_printf("[d:%s s:%s]\n",dquote,squote);
 //			if (dquote == NULL || (squote < dquote && squote != NULL))
-				result = ft_strjoin(result, post_word);
+				result = ft_strjoin_free(result, post_word, BOTH_FREE);
 //			else
 //			{
 //				char *chageptr = ft_strrchr(result, '\"');
 //				*chageptr = '\'';
-//				result = ft_strjoin(result, post_word);
+//				result = ft_strjoin_free(result, post_word);
 //			}
 		}
 		else
@@ -145,19 +163,19 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 					i++;
 				if (j == 0)
 				{
-					result = ft_strjoin(result, "\'");
+					result = ft_strjoin_free(result, "\'", FIRST_FREE );
 					space_splited_word = ft_substr(post_word, 0, i - j);
-					result = ft_strjoin(result, "\'");
+					result = ft_strjoin_free(result, "\'", FIRST_FREE);
 				}
-				result = ft_strjoin(result, "\'");
+				result = ft_strjoin_free(result, "\'", FIRST_FREE);
 				space_splited_word = ft_substr(post_word, j, i - j);
-				result = ft_strjoin(result, space_splited_word);
+				result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
 				while(post_word[i] == ' ')
 					i++;
 				if (post_word[i - 1] == ' ')
-					result = ft_strjoin(result, "\' ");
+					result = ft_strjoin_free(result, "\' ", FIRST_FREE);
 				else
-					result = ft_strjoin(result, "\'");
+					result = ft_strjoin_free(result, "\'", FIRST_FREE);
 				j = i;
 			}
 		}
@@ -249,12 +267,12 @@ char	*check_dollar(t_info *status, char *line)
 		if (j == 0)
 			result = ft_substr(line, j, i - j);
 		else
-			result = ft_strjoin(result, ft_substr(line, j, i - j));
+			result = ft_strjoin_free(result, ft_substr(line, j, i - j), FIRST_FREE);
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
 	}
-	ft_printf("\n[end dollar :%s]\n", result);
+	d_printf("\n[end dollar :%s]\n", result);
 	return (result);
 }
 
@@ -654,7 +672,7 @@ void	panda(char *line, t_info *status)
 	d_printf("\n{pipe;%d}\n",status->pipe);
 	if (status->pipe == 0)
 	{
-		ft_printf("[line:%s]\n", line);
+		d_printf("[line:%s]\n", line);
 		exec_panda(line, status,flag);
 		return ;
 	}
