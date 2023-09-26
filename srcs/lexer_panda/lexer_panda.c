@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 17:42:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/26 18:31:50 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ void	search_env_variable(char *line, int *i, int *flag)
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
 		ft_printf("\n%c",line[*i]);
-		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
+		if ((line[*i] == '\'') && !(*flag & IN_QUOTE))
 		{
 			plusle_quote(line[*i], flag);
 			*i += 1;
 		}
-		else if ((line[*i] == '\'' && *flag & S_QUOTE) || (line[*i] == '\"' && *flag & D_QUOTE))
+		else if (line[*i] == '\'' && *flag & S_QUOTE)
 		{
 			minun_quote(line[*i], flag);
 			*i += 1;
@@ -638,6 +638,7 @@ void	panda(char *line, t_info *status)
 	flag = INITIAL;
 	if (*line == '\0')
 		return ;
+	line = check_dollar(status, line);
 	check_error(status, line, &flag);
 	if (flag & ERROR)
 	{
@@ -650,7 +651,6 @@ void	panda(char *line, t_info *status)
 	d_printf("[panda]");
 	data = make_stack(status, NULL);
 	status->pipe = check_and_count_pipe(status, line);
-	line = check_dollar(status, line);
 	d_printf("\n{pipe;%d}\n",status->pipe);
 	if (status->pipe == 0)
 	{
