@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:11:54 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 14:41:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:54:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ex_exit(t_info *status, t_stack *data)
 
 	if (status->line == NULL)
 	{
-		ft_printf("exit", 0);
+		ft_printf("exit\n", 0);
 		exit(0);
 	}
 	list = data->cmdlist;

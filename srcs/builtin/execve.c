@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 14:33:20 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:02:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ void	ex_execve(t_info *status)
 
 	cmd = generate_cmdstr(status);
 	path = check_access(status->stack->cmdlist->content, status);
-	if (status->pipe == 0)
+	if (path == NULL)
+	{
+		ft_printf("command not found: %s\n", status->stack->cmdlist->content);
+		return ;
+	}
+	else if (status->pipe == 0)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -54,7 +59,6 @@ void	ex_execve(t_info *status)
 	}
 	else
 	{
-		d_printf("AAAAAAAAAAAAAA\n");
 		execve(path, cmd, NULL);
 	}
 	(void)pid;
