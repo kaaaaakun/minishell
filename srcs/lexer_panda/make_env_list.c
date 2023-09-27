@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:41:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/14 16:28:12 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/27 14:43:29 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ char	*search_env(t_info *status, char *str)
 	searched_word = ft_strjoin(str, "=");
 	//status->error
 	len = ft_strlen(searched_word);
-	d_printf("[%s:%d]",searched_word,len);
-	while (env->next != NULL) //最後まで行った時を考えて->nextではない方がいい？
+	d_printf("[%s:%d : %s]",searched_word,len,env->content);
+	while (env != NULL) //最後まで行った時を考えて->nextではない方がいい？
 	{
+//	ft_printf("[%s:%d : %s]\n",searched_word,len,env->content);
 		if (ft_strncmp(env->content, searched_word, len) == 0)
 			break ;
 		env = env->next;
 	}
-	if (ft_strncmp(env->content, searched_word, len) != 0)
+	free (searched_word);
+	if (env == NULL)
 		return (NULL);
 	return (&env->content[len]);
 }
@@ -74,6 +76,7 @@ t_list	*search_envlist_for_export(t_info *status, char *str)
 			break ;
 		env = env->next;
 	}
+	free (searched_word);
 	return (env);
 }
 

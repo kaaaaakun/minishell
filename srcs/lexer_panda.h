@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 19:34:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:19:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ void	free_null(void *ptr);
 void	minun_quote(char s, int *flag);
 void	plusle_quote(char s, int *flag);
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
+char	*ft_strtrim_free(char const *s1, char const *s2, int free_flag);
 
 #endif

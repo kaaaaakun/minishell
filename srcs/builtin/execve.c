@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 19:24:03 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:33:20 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**generate_cmdstr(t_info *status)
 
 	i = 0;
 	list = status->stack->cmdlist;
-	cmdstr = (char **)malloc(sizeof(char *) * listsize(list));
+	cmdstr = (char **)malloc(sizeof(char *) * (listsize(list) + 1));
 	while (list != NULL)
 	{
 		cmdstr[i] = ft_strdup(list->content);

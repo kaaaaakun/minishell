@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 19:35:27 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 14:48:29 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	check_command(t_info *status, t_stack *data);
 void	plusle_quote(char s, int *flag);
 void	minun_quote(char s, int *flag);
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
+char	*ft_strtrim_free(char const *s1, char const *set, int free_flag);
 
 # define BOTH_FREE 0
 # define FIRST_FREE 1
@@ -40,6 +41,18 @@ char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
 		free((void *)s2);
 	return (joined_str);
+}
+
+char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
+{
+	char *trimed_str;
+
+	trimed_str = ft_strtrim(s1, set);
+	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
+		free((void *)s1);
+	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
+		free((void *)set);
+	return (trimed_str);
 }
 
 int	analysis_char(char c)
@@ -375,7 +388,7 @@ void make_other_list(int *flag, char *line, int j, t_info *status)
 	t_stack	*data;
 
 	data = search_last_stack(status);
-	ft_putendl_fd(" : *flag or file", 1);
+	d_printf(" : *flag or file");
 	str = make_list(flag, line, j, &data->cmdlist);
 	check_flag(status, str, flag);
 }
