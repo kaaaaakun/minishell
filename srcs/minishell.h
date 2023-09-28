@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/22 16:46:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/26 19:38:19 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <limits.h>
 
 # include "typedef_struct.h"
+
+//global variable
+extern int	g_sig_num;
 
 void	check_line(char *line, t_info *status);
 
