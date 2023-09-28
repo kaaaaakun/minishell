@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/28 17:30:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/28 17:31:57 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ex_cd(t_info *status, t_stack *data)
 	t_list	*list;
 
 	list = data->cmdlist->next;
-	if (list == NULL || ft_memset(list->content, "~", 2) == 0)
+	if (list == NULL || ft_memcmp(list->content, "~", 2) == 0)
 	{
 		if (search_env(status, "HOME") != NULL)
 			chdir(search_env(status, "HOME"));
