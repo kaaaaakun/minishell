@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 17:02:08 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:30:45 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ char	*check_path(char *command, char **path)
 		}
 		i++;
 	}
-	d_printf("command not found: ");
-	d_printf("%s", ft_strtrim(command, "/"));
 	free(command);
 	split_free(path);
 	return (NULL);

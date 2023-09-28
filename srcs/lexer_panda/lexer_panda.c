@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 14:48:29 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:24:28 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,7 @@ void make_input_redirect(int *flag, char *line, int j, t_info *status)
 	t_stack	*data;
 
 	data = search_last_stack(status);
-	ft_putendl_fd(" : no*flag redirect", 1);
+	d_printf(" : no*flag redirect", 1);
 	char *str = make_list(flag, line, j, &data->inputlist);
 	check_flag(status, str, flag);
 	*flag = *flag - INPUT_REDIRECT;
@@ -339,7 +339,7 @@ void make_output_redirect(int *flag, char *line, int j, t_info *status)
 
 	data = search_last_stack(status);
 	char *str;
-	ft_putendl_fd(" : RE redirect", 1);
+	d_printf(" : RE redirect", 1);
 	str = make_list(flag, line, j, &data->outputlist);
 	check_flag(status, str, flag);
 	*flag -= OUTPUT_REDIRECT;
@@ -351,7 +351,7 @@ void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 	t_stack	*data;
 
 	data = search_last_stack(status);
-	ft_putendl_fd(" : heredoc", 1);
+	d_printf(" : heredoc", 1);
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
 	push_back(&data->heredoclist, str);
@@ -364,7 +364,7 @@ void make_append_list(int *flag, char *line, int j, t_info *status)
 	t_stack	*data;
 
 	data = search_last_stack(status);
-	ft_putendl_fd(" : append", 1);
+	d_printf(" : append", 1);
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
 	push_back(&data->appendlist, str);
@@ -422,15 +422,15 @@ int	process_input_redirect_operation(t_info *status, char *line, int *flag)
 	}
 	if (2 < i || (*flag & NEED_FILE))
 	{
-		ft_putendl_fd(" : syntax error near unexpected token `<'", 1);
+		error_printf(" : syntax error near unexpected token `<'", 1);
 		*flag += ERROR;
 	}
 	else if (i == 2)
 	{
-		ft_putendl_fd(" : heredoc", 1);
+		d_printf(" : heredoc", 1);
 		*flag = *flag | HEREDOC;
 	} else if (i == 1) {
-		ft_putendl_fd(" : redirect", 1);
+		d_printf(" : redirect", 1);
 		*flag = *flag | INPUT_REDIRECT;
 	}
 	return (i);
@@ -449,17 +449,17 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 	}
 	if (2 < i || (*flag& NEED_FILE))
 	{
-		ft_putendl_fd(" : syntax error near unexpected token `>'", 1);
+		error_printf(" : syntax error near unexpected token `>'", 1);
 		*flag+= ERROR;
 	}
 	else if (i == 2)
 	{
-		ft_putendl_fd(" : re:heredoc", 1);
+		d_printf(" : re:heredoc", 1);
 		*flag= *flag| APPENDDOC;
 	}
 	else if (i == 1)
 	{
-		ft_putendl_fd(" : re:redirect", 1);
+		d_printf(" : re:redirect", 1);
 		*flag= *flag| OUTPUT_REDIRECT;
 	}
 	return (i);
@@ -498,12 +498,12 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
 	{
-		ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+		error_printf(" : syntax error near unexpected token `|'", 1);
 		*flag += ERROR;
 	}
 	else if (i == 1)
 	{
-//			ft_putendl_fd(" : pipe", 1);
+//			d_printf(" : pipe", 1);
 //			*flag = AT_PIPE;
 //			if (pipe(pipefd) < 0)
 //				error_exit("pipe");
@@ -545,12 +545,12 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
 	{
-		ft_putendl_fd(" : syntax error near unexpected token `|'", 1);
+		error_printf(" : syntax error near unexpected token `|'");
 		*flag += ERROR;
 	}
 	else if (i == 1)
 	{
-		d_printf(" : pipe", 1);
+		d_printf(" : pipe");
 		*flag = AT_PIPE;
 	}
 	return (i);
@@ -661,8 +661,8 @@ void	exec_panda(char *line, t_info *status, int flag)
 
 void	panda(char *line, t_info *status)
 {
-//	ft_printf("[line:%s]\n", line);
 	d_printf("[panda]");
+	d_printf("[line:%s]\n", line);
 	t_stack	*data;
 	int	flag;
 
@@ -678,17 +678,19 @@ void	panda(char *line, t_info *status)
 		status->error = -1;
 		return ;
 	}
-	flag = INITIAL;
 	d_printf("[panda]");
 	data = make_stack(status, NULL);
 	status->pipe = check_and_count_pipe(status, line);
 	d_printf("\n{pipe;%d}\n",status->pipe);
-	if (status->pipe == 0)
+
+	if (status->pipe == 0)//pipeがなかった時の処理
 	{
 		d_printf("[line:%s]\n", line);
 		exec_panda(line, status,flag);
+		free(line);
 		return ;
 	}
+	//pipeがあった時の処理
 	int	i;
 	int	stdin_fd;
 	pid_t	pid;
@@ -699,12 +701,13 @@ void	panda(char *line, t_info *status)
 	stdin_fd = dup(STDIN_FILENO);
 	while (i <= status->pipe)
 	{
-		d_printf("[i:%d]",i);
+		d_printf("[i:%p]",i);
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
 		pid = fork();
 		if (pid == 0)
 		{
+			d_printf("[line:%s]\n", line);
 			if (i != status->pipe)
 				dup2_close_pipe(pipefd, STDOUT_FILENO);
 			status->pipe = 1;

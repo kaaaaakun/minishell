@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/25 18:31:40 by hhino            ###   ########.fr        #
+#    Updated: 2023/09/28 13:25:29 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,6 @@ debug:
 
 del:
 	rm -rf .tmp*
-	rm -rf in*
 	rm -rf out*
 	rm -rf **.back
 	rm -rf **.c.un*

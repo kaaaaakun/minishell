@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/22 16:46:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/28 13:41:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*check_access(char *command, t_info *status);
 
 //void	ex_heredoc(char *line);
 void	ex_execve(t_info *status);
-
+void	free_null(void *ptr);
 
 //debug.c
 void	debug(t_info *status, char *str);

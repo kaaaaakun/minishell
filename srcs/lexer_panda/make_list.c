@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 14:34:38 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:22:28 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,18 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 
 	*tmp_fd = 0;
 	nbr = 0;
-	origin_file_name = ft_strdup(".tmp");
+	origin_file_name = ft_strdup("/tmp/.tmp");
 	tmp_file_name = origin_file_name;
 	*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 	d_printf("[%d]",*tmp_fd);
 	while (*tmp_fd != -1 && errno != ENOENT && nbr < 5000)
 	{
 		char_nbr = ft_itoa(nbr);
-		tmp_file_name = ft_strjoin(origin_file_name, char_nbr);
+		tmp_file_name = ft_strjoin_free(origin_file_name, char_nbr, SECOND_FREE);
 		*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 		nbr++;
 	}
+	free(origin_file_name);
 	//*tmp_fd がファイルが存在しないので開けない場合
 	//ファイルをtmpファイルを作成する
 	*tmp_fd = open_ee(tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
