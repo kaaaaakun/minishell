@@ -12,20 +12,23 @@
 
 #include "minishell.h"
 
-void	insert_doublequotes(char *str)
+void	print_with_doublequotes(char *str)
 {
-	int		len;
-	char	*flag;
+	int	i;
 
-	flag = ft_strchr(str, '=');
-	len = ft_strlen(str);
-	if (flag != NULL)
+	i = 0;
+	while (str[i] != '\0')
 	{
-		ft_memmove(flag + 2, flag + 1, len - (flag - str));
-		flag[1] = '"';
+		if (str[i] != '=')
+			ft_putchar_fd(str[i], 1);
+		else if (str[i] == '=')
+		{
+			ft_putchar_fd(str[i], 1);
+			ft_putchar_fd('"', 1);
+		}
+		i++;
 	}
-	str[len + 1] = '"';
-	str[len + 2] = '\0';
+	ft_putchar_fd('"', 1);
 }
 
 int	valid_left(char *str, int flag)
@@ -95,15 +98,14 @@ char	*no_left_but_plus(char *str)
 
 void	print_export_env(t_list *env)
 {
-	char	*str;
-
 	while (env != NULL)
 	{
-		str = ft_strjoin("declare -x ", env->content);
-		insert_doublequotes(str);
-		ft_printf("%s\n", str);
-		// free(str);
+		ft_printf("declare -x ");
+		if (ft_strchr(env->content, '='))
+			print_with_doublequotes(env->content);
+		else
+			ft_printf("%s", env->content);
+		ft_putchar_fd('\n', 1);
 		env = env->next;
 	}
 }
-

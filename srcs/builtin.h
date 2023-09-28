@@ -18,7 +18,7 @@ void	ex_pwd(void);
 void	ex_unset(t_info *status, t_stack *data);
 
 //export_utils
-void	insert_doublequotes(char *str);
+void	print_with_doublequotes(char *str);
 int		valid_left(char *str, int flag);
 int		plus_equal_or_not(char *str);
 char	*no_left_but_plus(char *str);
