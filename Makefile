@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/28 13:25:29 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/09/28 17:29:48 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ endif
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 .PHONY: all clean fclean re debug
 
-all: $(NAME)
+#all: $(NAME)
 
 .c.o:
 	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
@@ -93,7 +93,8 @@ re: fclean all
 $(LIBFT):
 	make bonus -C $(LIBFT_DIR) all
 
-debug:
+#debug:
+all:
 	make WITH_DEBUG=1
 
 del:
