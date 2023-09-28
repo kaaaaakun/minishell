@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   panda_to_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 16:42:38 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:01:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ void	check_command(t_info *status, t_stack *data)
 	else
 	{
 		usleep(100);
-		d_printf(ft_strjoin("builtin not found: ", line));
 		ex_execve(status);
+		if (status->pipe != 0)
+			exit(127);
 	}
-	if (status->pid == 1)
+	if (status->pipe != 0)
 		exit(0);
 	rl_on_new_line();
 //	split_free(split);

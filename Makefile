@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/09/25 18:31:40 by hhino            ###   ########.fr        #
+#    Updated: 2023/09/28 17:29:48 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ endif
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 .PHONY: all clean fclean re debug
 
-all: $(NAME)
+#all: $(NAME)
 
 .c.o:
 	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
@@ -93,12 +93,12 @@ re: fclean all
 $(LIBFT):
 	make bonus -C $(LIBFT_DIR) all
 
-debug:
+#debug:
+all:
 	make WITH_DEBUG=1
 
 del:
 	rm -rf .tmp*
-	rm -rf in*
 	rm -rf out*
 	rm -rf **.back
 	rm -rf **.c.un*

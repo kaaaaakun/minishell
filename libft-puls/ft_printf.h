@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 17:12:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/10 10:38:41 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:09:00 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 int		ft_printf(const char *format, ...);
 int		d_printf(const char *format, ...);
+int		error_printf(const char *format, ...);
 
 ssize_t	ftp_putchar_fd(int c, int fd);
 ssize_t	ftp_putstr_fd(char *s, int fd);

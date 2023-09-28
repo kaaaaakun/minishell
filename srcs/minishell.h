@@ -53,9 +53,19 @@ char	*check_access(char *command, t_info *status);
 
 //void	ex_heredoc(char *line);
 void	ex_execve(t_info *status);
-
+void	free_null(void *ptr);
 
 //debug.c
 void	debug(t_info *status, char *str);
 void	debug_env(t_info *status, char *str);
+
+//warap free
+# define BOTH_FREE 0
+# define FIRST_FREE 1
+# define SECOND_FREE 2
+# define NEITHER_FREE 3
+
+char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
+char	*ft_strtrim_free(char const *s1, char const *set, int free_flag);
+
 #endif

@@ -6,12 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 16:47:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:30:45 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
+#include "lexer_panda.h"
 
 void	malloc_error(void)
 {
@@ -40,16 +41,24 @@ char	*check_path(char *command, char **path)
 		return (NULL);
 	while (path[i] != NULL)
 	{
-		path[i] = ft_strjoin(path[i], command);
+		path[i] = ft_strjoin_free(path[i], command, NEITHER_FREE);
 		if (path[i] == NULL)
+		{
+			free(command);
+			split_free(path);
 			return (NULL);
+		}
 		if (access(path[i], X_OK) == 0)
-			return (path[i]);
+		{
+			free(command);
+			char *collect_path = ft_strdup(path[i]);
+			split_free(path);
+			return (collect_path);
+		}
 		i++;
 	}
+	free(command);
 	split_free(path);
-	ft_printf("command not found: ");
-	ft_putendl_fd(ft_strtrim(command, "/"), STDERR_FILENO);
 	return (NULL);
 }
 
@@ -61,5 +70,5 @@ char	*check_access(char *command, t_info *status)
 		return (ft_strtrim(command, "./"));
 	else if (access(command, X_OK) == 0)
 		return (command);
-	return (check_path(ft_strjoin("/", command), getpath(status)));
+	return (check_path(ft_strjoin_free("/", command, NEITHER_FREE), getpath(status)));
 }

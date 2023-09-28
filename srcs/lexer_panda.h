@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 18:26:55 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/27 13:19:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-//
+// define flag
 # define INITIAL 0x000
 # define AT_PIPE 0x001
 # define COMMAND 0x002
@@ -32,6 +32,12 @@
 
 # define ERROR 0x200
 # define NOFLAG 0x400
+
+// define ft_strjoin_free
+# define BOTH_FREE 0
+# define FIRST_FREE 1
+# define SECOND_FREE 2
+# define NEITHER_FREE 3
 
 //make_list
 char	*make_tmp_file(t_info *status, int *tmp_fd);
@@ -59,5 +65,7 @@ char	*mini_substr(char const *s, unsigned int start, size_t len);
 void	free_null(void *ptr);
 void	minun_quote(char s, int *flag);
 void	plusle_quote(char s, int *flag);
+char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
+char	*ft_strtrim_free(char const *s1, char const *s2, int free_flag);
 
 #endif

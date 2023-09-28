@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:55 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/25 17:54:57 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/28 14:16:05 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_stack	*make_stack(t_info *status, t_stack *pre_data)
 {
 	t_stack	*data;
 
-	data = (t_stack *)malloc(sizeof(t_stack) * 1);
+	data = (t_stack *)ft_calloc(sizeof(t_stack), 1);
 	if (!data)
 		return (NULL);
 	data->outputlist = NULL;
