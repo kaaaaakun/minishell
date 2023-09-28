@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 16:43:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:44:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	**generate_cmdstr(t_info *status)
 void	ex_execve(t_info *status)
 {
 	int		pid;
+	int		exit_status;
 	char	*path;
 	char	**cmd;
 
@@ -55,7 +56,9 @@ void	ex_execve(t_info *status)
 			}
 			execve(path, cmd, NULL);
 		}
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &exit_status, 0);
+		error_printf("[%d]\n", status);
+		status->exit_status = exit_status;
 	}
 	else//pipeがあった時
 	{
