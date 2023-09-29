@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 17:46:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:50:15 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static ssize_t	d_check_format(int fd, const char *fmt, va_list ap)
 		return (write(fd, "%", 1));
 	else if (*fmt == 'c')
 		return (ftp_putchar_fd (va_arg(ap, int), fd));
-	else if (*fmt == 's')//pから変更
+	else if (*fmt == 'p')//pから変更
 		return (ftp_put_pointer(va_arg(ap, uintptr_t), fd, "0123456789abcdef"));
 	else if (*fmt == 's')
 		return (ftp_putstr_fd (va_arg(ap, char *), fd));

@@ -6,14 +6,14 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 20:26:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:28:29 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 #include "typedef_struct.h"
-
+#include <errno.h>
 char	*check_access(char *command, t_info *status);
 
 char	**generate_cmdstr(t_info *status)
@@ -35,49 +35,79 @@ char	**generate_cmdstr(t_info *status)
 	return (cmdstr);
 }
 
+void	search_paht_and_exec(t_info *status)
+{
+	int		fd_nbr;
+	char	*path;
+	char	**cmd;
+	
+	cmd = generate_cmdstr(status);
+	path = check_access(status->stack->cmdlist->content, status);
+	errno = 0;
+//	error_printf("\n[path %s]\n",path);
+	fd_nbr = open(path, O_WRONLY);
+	if (path == NULL)//no file
+	{
+		if (status->stack->cmdlist->content[0] == '.' || status->stack->cmdlist->content[0] == '/')//no file
+		{
+			error_printf("minishell: %s: No such file or directory\n", status->stack->cmdlist->content);
+			exit (127) ;
+		}
+		error_printf("%s: command not found\n", status->stack->cmdlist->content);
+		exit (127) ;
+	}
+	if (fd_nbr == -1 && errno == EISDIR)//directryの判定用
+	{
+		if (status->stack->cmdlist->content[0] == '.' || path[0] == '/')//絶対path
+		{
+			error_printf("%s: is a directory\n", status->stack->cmdlist->content);
+			exit (126);
+		}
+		if (status->stack->cmdlist->content[0] == '/')
+		{
+			error_printf("minishell: %s: No such file or directory\n", status->stack->cmdlist->content);
+			exit(127);
+		}
+		else
+		{
+			error_printf("%s: command not found\n", status->stack->cmdlist->content);
+			exit (127) ;
+		}
+	}
+	if (access(path, X_OK) != 0)//ファイルをひらけない時
+	{
+		error_printf("%s: Permission denied\n", status->stack->cmdlist->content);
+		exit (126) ;
+	}
+	else
+	{
+		execve(path, cmd, NULL);
+		error_printf("%s: command not found\n", status->stack->cmdlist->content);
+		exit (127) ;
+		exit (1);//何かの間違えでexecが実行できなかった場合？
+	}
+}
+
 void	ex_execve(t_info *status)
 {
 	pid_t	pid;
 	int		exit_status;
-	char	*path;
-	char	**cmd;
 
 	if (status->pipe == 0)//pipeがなかった時
 	{
 		pid = fork();
+		if (pid == -1)
+			exit (1);
 		if (pid == 0)
 		{
-			cmd = generate_cmdstr(status);
-			path = check_access(status->stack->cmdlist->content, status);
-			if (path == NULL)
-			{
-				error_printf("command not found: %s\n", status->stack->cmdlist->content);
-				exit (127) ;
-			}
-			else if (access(path, F_OK) == 0)//明日はここからやるよ
-			{
-				error_printf("%s: is a directory\n", status->stack->cmdlist->content);
-				exit (127) ;
-			}
-			else
-			{
-				error_printf("%s: execve\n", status->stack->cmdlist->content);
-				execve(path, cmd, NULL);
-			}
+			search_paht_and_exec(status);
 		}
 		wait(&exit_status);
 		status->exit_status =WEXITSTATUS(exit_status);
 	}
 	else//pipeがあった時
 	{
-		cmd = generate_cmdstr(status);
-		path = check_access(status->stack->cmdlist->content, status);
-		if (path == NULL)
-		{
-			error_printf("command not found: %s\n", status->stack->cmdlist->content);
-			exit (127) ;
-		}
-		execve(path, cmd, NULL);
+		search_paht_and_exec(status);
 	}
 	(void)pid;
 }

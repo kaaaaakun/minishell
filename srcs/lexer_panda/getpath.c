@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 20:27:02 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/29 16:58:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*check_path(char *command, char **path)
 			split_free(path);
 			return (NULL);
 		}
-		if (access(path[i], X_OK) == 0)
+		if (access(path[i], F_OK) == 0)
 		{
 			free(command);
 			char *collect_path = ft_strdup(path[i]);
@@ -66,9 +66,9 @@ char	*check_access(char *command, t_info *status)
 {
 	if (!command)
 		return (NULL);
-	if (access(ft_strtrim(command, "./"), X_OK) == 0)
+	if (access(ft_strtrim(command, "./"), F_OK) == 0)
 		return (ft_strtrim(command, "./"));
-	else if (access(command, X_OK) == 0)
+	else if (access(command, F_OK) == 0)
 		return (command);
 	return (check_path(ft_strjoin_free("/", command, NEITHER_FREE), getpath(status)));
 }
