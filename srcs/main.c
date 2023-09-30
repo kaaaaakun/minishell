@@ -81,7 +81,7 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
-		status->line = readline("[readline]>> ");
+		status->line = readline("my_shell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);
