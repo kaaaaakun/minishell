@@ -46,6 +46,5 @@ void	check_command(t_info *status, t_stack *data)
 	if (status->pipe != 0)
 		exit(0);
 	rl_on_new_line();
-//	split_free(split);
 }
 

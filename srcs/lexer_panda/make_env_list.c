@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+void	make_pwd__shvl___env(t_info *status)
+{
+	t_list	*envlist;
+	char	*path;
+	char	buf[PATH_MAX];
+
+	envlist = NULL;
+	path = getcwd(buf, PATH_MAX);
+	if (path == NULL) //PATH_MAXより長いディレクトリだった場合error
+		exit(1) ;
+	push_back(&envlist, ft_strjoin("PWD=", path));
+	push_back(&envlist, ft_strdup("SHLVL=1"));
+	push_back(&envlist, ft_strdup("_=/usr/bin/env"));
+	status->env = envlist;
+}
+
 void	make_env_list(t_info *status, char *env[])
 {
 	int				i;
@@ -25,6 +41,8 @@ void	make_env_list(t_info *status, char *env[])
 		i++;
 	}
 	status->env = envlist;
+	if (envlist == NULL)
+		make_pwd__shvl___env(status);
 }
 
 char	*search_env(t_info *status, char *str)

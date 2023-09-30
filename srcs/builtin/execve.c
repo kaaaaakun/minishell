@@ -44,7 +44,8 @@ void	search_paht_and_exec(t_info *status)
 	cmd = generate_cmdstr(status);
 	path = check_access(status->stack->cmdlist->content, status);
 	errno = 0;
-//	error_printf("\n[path %s]\n",path);
+//	d_printf("\n[path %s]",path);
+//	d_printf("[%s]",status->stack->cmdlist->content);
 	fd_nbr = open(path, O_WRONLY);
 	if (path == NULL)//no file
 	{
@@ -74,10 +75,20 @@ void	search_paht_and_exec(t_info *status)
 			exit (127) ;
 		}
 	}
-	if (access(path, X_OK) != 0)//ファイルをひらけない時
+	if (access(path, X_OK) != 0)//実行権限がない時
 	{
-		error_printf("%s: Permission denied\n", status->stack->cmdlist->content);
-		exit (126) ;
+		if (status->stack->cmdlist->content[0] == '.' && status->stack->cmdlist->content[1] == '/')//絶対path
+		{
+			error_printf("%s: Permission denied\n", status->stack->cmdlist->content);
+			exit (126) ;
+		}
+		if (status->stack->cmdlist->content[0] == '/')//絶対path
+		{
+			error_printf("minishell: %s: No such file or directory\n", status->stack->cmdlist->content);
+			exit (127) ;
+		}
+		error_printf("%s: command not found\n", status->stack->cmdlist->content);
+		exit (127) ;
 	}
 	else
 	{

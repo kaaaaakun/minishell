@@ -48,7 +48,7 @@ char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 //	}
 	return (joined_str);
 	(void)free_flag;
-}/
+}
 
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
 {
@@ -259,7 +259,7 @@ int	count_pipe(t_info *status,char *line)
 		{
 			if (flag & IN_QUOTE)
 				minun_quote(line[i], &flag);
-			if (!(flag & IN_QUOTE))
+			else if (!(flag & IN_QUOTE))
 				plusle_quote(line[i], &flag);
 		}
 		else if (!(flag & IN_QUOTE) && line[i] == '|')
