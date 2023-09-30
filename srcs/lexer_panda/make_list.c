@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/29 19:33:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/30 13:29:55 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 	free(origin_file_name);
 	//*tmp_fd がファイルが存在しないので開けない場合
 	//ファイルをtmpファイルを作成する
-	*tmp_fd = open_ee(tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
+	*tmp_fd = open_ee(status, tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
 		S_IRWXU | S_IRGRP| S_IROTH);
 	if (*tmp_fd < 0)
 		return (NULL);

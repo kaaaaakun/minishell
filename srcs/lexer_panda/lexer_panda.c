@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/29 20:32:23 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/30 19:40:16 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 //	}
 	return (joined_str);
 	(void)free_flag;
-}
+}/
 
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
 {
@@ -262,7 +262,7 @@ int	count_pipe(t_info *status,char *line)
 			if (!(flag & IN_QUOTE))
 				plusle_quote(line[i], &flag);
 		}
-		if (!(flag & IN_QUOTE) && line[i] == '|')
+		else if (!(flag & IN_QUOTE) && line[i] == '|')
 			count++;
 		i++;
 	}
@@ -489,18 +489,19 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 # define PIPE_IN 0
 # define PIPE_OUT 1
-void close_pipe(int *pipefd)
+void close_pipe(t_info *status, int *pipefd)
 {
-        close(pipefd[0]);
-        close(pipefd[1]);
+        close_ee(status, pipefd[0]);
+        close_ee(status, pipefd[1]);
 }
-void dup2_close_pipe(int *pipefd, int flag)
+
+void dup2_close_pipe(t_info *status, int *pipefd, int flag)
 {
 	if (flag == PIPE_IN)
-        dup2(pipefd[0], flag);
+        dup2_ee(status, pipefd[0], flag);
 	else if (flag == PIPE_OUT)
-        dup2(pipefd[1], flag);
-	close_pipe(pipefd);
+        dup2_ee(status, pipefd[1], flag);
+	close_pipe(status, pipefd);
 }
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
@@ -677,6 +678,8 @@ void	exec_panda(char *line, t_info *status, int flag)
 			return ;
 		}
 		line += i;
+		if (status->error != 0)
+			return ;
 	}
 }
 
@@ -733,7 +736,7 @@ void	panda(char *line, t_info *status)
 		{
 			d_printf("[line:%s]\n", line);
 			if (i != status->pipe)
-				dup2_close_pipe(pipefd, STDOUT_FILENO);
+				dup2_close_pipe(status, pipefd, STDOUT_FILENO);
 			status->pipe = 1;
 			exec_panda(line, status,flag);
 			check_command(status, status->stack);
@@ -742,16 +745,16 @@ void	panda(char *line, t_info *status)
 		line = ft_strchr(line, '|');
 		if (line == NULL)
 			break ;
-		dup2_close_pipe(pipefd, STDIN_FILENO);
+		dup2_close_pipe(status, pipefd, STDIN_FILENO);
 		line++;
 		i++;
 	}
-	dup2_ee(stdin_fd, STDIN_FILENO);
+	dup2_ee(status, stdin_fd, STDIN_FILENO);
 	i++;
 	while (i--)
 	{
 		if (waitpid(-1, &exit_status, 0) == pid)
-			status->exit_status =WEXITSTATUS(exit_status);
+			status->exit_status = WEXITSTATUS(exit_status);
 	}
 	(void)data;
 }

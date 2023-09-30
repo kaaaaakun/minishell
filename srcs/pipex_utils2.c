@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:43:53 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/25 17:44:05 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/30 13:28:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	split_free(char **result)
 void	error_exit(char *msg)
 {
 	perror(msg);
-	exit_ee(1);
+//	exit_ee(1);
 }
 
 void	fork_error_exit(char *msg)
