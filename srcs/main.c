@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/30 13:52:06 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:36:21 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	execute_main_process(t_info *status)
 	dup2(status->cpy_stdin, 0);
 	dup2(cpy_stdout, 1);
 }
-	
+
 void	pre_line_check(t_info *status)
 {
 	d_printf("[check_line]", 1);
@@ -74,14 +74,14 @@ int	main(int argc, char *argv[], char *env[])
 		printf("minishell: %s: No such file or directory\n", argv[1]);
 		return (0);
 	}
-	add_sigaction();
+	add_sigaction(0);
 	status = (t_info *)ft_calloc(sizeof(t_info), 1);
 	if (!status)
 		exit(1);
 	make_env_list(status, env);
 	while (1)
 	{
-		status->line = readline("my_shell$ ");
+		status->line = readline("[readline]>> ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);

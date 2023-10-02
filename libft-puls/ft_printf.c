@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/02 14:09:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/02 19:59:06 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	error_printf(const char *format, ...)//debug用
 
 int	d_printf(const char *format, ...)//debug用
 {
-	///return(0) ;
+	return(0) ;
 	va_list	ap;
 	ssize_t	count;
 	ssize_t	count_tmp;

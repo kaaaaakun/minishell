@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/28 19:12:15 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/02 20:09:53 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ex_export(t_info *status, t_stack *data)
 		{
 			flag = plus_equal_or_not(list->content);
 			if (valid_left(list->content, flag) == 0)
-				error_printf("%s not a valid identifier\n", list->content);
+				error_printf(" not a valid identifier\n");
 			else
 			{
 				i = 0;
