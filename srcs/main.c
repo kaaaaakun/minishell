@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 15:58:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/30 13:52:06 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ void	execute_main_process(t_info *status)
 	status->cpy_stdin = dup(0);//標準入出力の管理
 	cpy_stdout = dup(1);
 	panda(status->line, status);//メインの処理
-	if (status->error)
-		return ;
 	debug(status,"panda to check");
-	if (status->pipe == 0)//pipeがない（forkがなかった場合）
+	if (status->pipe == 0 && status->error == 0)//pipeがない（forkがなかった場合）
 	{
 		check_command(status, status->stack);
 		free_stack(status);
@@ -83,7 +81,7 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
-		status->line = readline("[readline]>> ");
+		status->line = readline("my_shell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);

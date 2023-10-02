@@ -24,7 +24,7 @@ static t_list	*search_envlist_for_unset(t_info *status, char *str)
 	env = status->env;
 	if (!env)
 		return (NULL);
-	searched_word = ft_strjoin(str, "=");
+	searched_word = ft_strjoin_free(str, "=", NEITHER_FREE);
 	len = ft_strlen(searched_word);
 	while (env->next != NULL)
 	{
