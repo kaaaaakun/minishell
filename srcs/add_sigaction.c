@@ -6,22 +6,22 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 19:33:32 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/28 20:23:45 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtin.h"
 
-void	sighandl(int sig)
+void	sighandler(int sig)
 {
 	if (sig == SIGINT)
 		ft_printf("\n[sicnal]>> ");
 	if (rl_on_new_line() == -1)
 		exit(1);
-	//	rl_replace_line("", 1);
-	//	rl_on_new_line();
-	//	rl_redisplay();
+	rl_replace_line("", 1);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void	sig_exit(int i)
@@ -30,16 +30,24 @@ void	sig_exit(int i)
 	ex_exit(NULL, NULL);
 }
 
-void	add_sigaction(void)
+void	add_sigaction(int i)
 {
 	//	struct sigaction sa_int;
-	// signal(SIGINT, sighandl);
-	signal(SIGQUIT, sig_exit);
-	signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
-	// if (g_sig_num == 0)
-	// if (g_sig_num == 1)
-	// if (g_sig_num == 2)
-	// if (g_sig_num == 3)
+	// signal(SIGINT, sighandler);
+	// signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
+	if (i == 0) /*コマンドの途中などではないとき*/
+	{
+		signal(SIGINT, sighandler);
+		signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
+	}
+	if (i == 1) /*parent process*/
+	{
+		signal(SIGCHLD, NULL);
+		signal(SIGINT, sighandler);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	// if (i == 2) /*child process*/
+	// if (i == 3) /*heredoc*/
 	//	sigemptyset(&sa_int.sa_mask);
 	//	sigaddset(&sa_int.sa_mask, SIGINT);
 	//	sa_int.sa_handler = sa_sigint;
@@ -52,7 +60,7 @@ void	add_sigaction(void)
 }
 
 // ctrl-C displays a new prompt on a new line.
-// ctrl-D exits the shell.
+// ctrl-D exits the shell. readlineにNULLが送られex_exitに入る
 // ctrl-\ does nothing.
 
 // signal, sigaction, sigemptyset, sigaddset

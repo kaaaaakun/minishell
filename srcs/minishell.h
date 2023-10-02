@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/26 19:38:19 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/28 20:10:37 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_list(t_list *head);
 void	free_stack(t_info *status);
 size_t	listsize(t_list *lst);
 
-void	add_sigaction(void);
+void	add_sigaction(int i);
 void	line_read(void);
 
 //lexer.c
