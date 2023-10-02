@@ -80,7 +80,7 @@ int	error_printf(const char *format, ...)//debug用
 
 int	d_printf(const char *format, ...)//debug用
 {
-	return(0) ;
+	///return(0) ;
 	va_list	ap;
 	ssize_t	count;
 	ssize_t	count_tmp;

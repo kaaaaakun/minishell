@@ -26,11 +26,6 @@ void	minun_quote(char s, int *flag);
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag);
 
-# define BOTH_FREE 0
-# define FIRST_FREE 1
-# define SECOND_FREE 2
-# define NEITHER_FREE 3
-
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 {
 	char *joined_str;
@@ -117,7 +112,7 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\"' && line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
+	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
 		((line[i + k] != '\'' && line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 		k++;

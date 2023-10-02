@@ -74,8 +74,8 @@ char	*check_flag(t_info *status, char *result, int *flag)
 		check_appendfile(status, result);
 	else if (!(*flag & COMMAND))
 	{
-	//	data->content = check_command_path(status, ft_strjoin("/", result));
-		check_command_path(status, ft_strjoin("/", result));
+	//	data->content = check_command_path(status, ft_strjoin_free("/", result));
+		check_command_path(status, ft_strjoin_free("/", result, NEITHER_FREE));
 	}
 	d_printf("\n[[%s]]", result);
 	return (result);

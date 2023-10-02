@@ -65,7 +65,5 @@ char	*mini_substr(char const *s, unsigned int start, size_t len);
 void	free_null(void *ptr);
 void	minun_quote(char s, int *flag);
 void	plusle_quote(char s, int *flag);
-char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
-char	*ft_strtrim_free(char const *s1, char const *s2, int free_flag);
 
 #endif

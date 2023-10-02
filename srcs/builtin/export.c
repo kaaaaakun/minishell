@@ -19,11 +19,11 @@ static void	append_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	if (ft_strchr(env->content, '=') != NULL)
-		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
+		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1, NEITHER_FREE);
 	else
 	{
-		env->content = ft_strjoin(env->content, "=");
-		env->content = ft_strjoin(env->content, ft_strchr(str, '=') + 1);
+		env->content = ft_strjoin_free(env->content, "=", NEITHER_FREE);
+		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1, NEITHER_FREE);
 	}
 	(void)temp;
 }

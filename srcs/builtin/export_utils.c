@@ -90,7 +90,7 @@ char	*no_left_but_plus(char *str)
 		i++;
 	s1 = ft_substr(str, 0, i);
 	s2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
-	ans = ft_strjoin(s1, s2);
+	ans = ft_strjoin_free(s1, s2, NEITHER_FREE);
 	// free(s1);
 	// free(s2); //strjoinが修正されたら消した方がいい
 	return (ans);

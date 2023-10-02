@@ -22,7 +22,7 @@ void	make_pwd__shvl___env(t_info *status)
 	path = getcwd(buf, PATH_MAX);
 	if (path == NULL) //PATH_MAXより長いディレクトリだった場合error
 		exit(1) ;
-	push_back(&envlist, ft_strjoin("PWD=", path));
+	push_back(&envlist, ft_strjoin_free("PWD=", path, NEITHER_FREE));
 	push_back(&envlist, ft_strdup("SHLVL=1"));
 	push_back(&envlist, ft_strdup("_=/usr/bin/env"));
 	status->env = envlist;
@@ -55,7 +55,7 @@ char	*search_env(t_info *status, char *str)
 	env = status->env;
 	if (!env)
 		return (NULL);
-	searched_word = ft_strjoin(str, "=");
+	searched_word = ft_strjoin_free(str, "=", NEITHER_FREE);
 	//status->error
 	len = ft_strlen(searched_word);
 	d_printf("[%s:%d : %s]",searched_word,len,env->content);
@@ -83,7 +83,7 @@ t_list	*search_envlist_for_export(t_info *status, char *str)
 	if (!env)
 		return (NULL);
 	//status->error
-	searched_word = ft_strjoin(str, "=");
+	searched_word = ft_strjoin_free(str, "=", NEITHER_FREE);
 	len = ft_strlen(searched_word);
 	d_printf("[%s:%d]",searched_word,len);
 	while (env != NULL)
@@ -108,7 +108,7 @@ t_list	*search_envlist(t_info *status, char *str)
 	env = status->env;
 	if (!env)
 		return (NULL);
-	searched_word = ft_strjoin(str, "=");
+	searched_word = ft_strjoin_free(str, "=", NEITHER_FREE);
 	//status->error
 	len = ft_strlen(searched_word);
 	d_printf("[%s:%d]",searched_word,len);
