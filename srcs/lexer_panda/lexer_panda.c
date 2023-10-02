@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 18:48:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:44:02 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,25 @@ void	minun_quote(char s, int *flag);
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag);
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag);
 
-# define BOTH_FREE 0
-# define FIRST_FREE 1
-# define SECOND_FREE 2
-# define NEITHER_FREE 3
-
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 {
 	char *joined_str;
 
 	joined_str = ft_strjoin(s1, s2);
 	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
+	{
 		free((void *)s1);
+		s1 = NULL;
+	}
 	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
+	{
 		free((void *)s2);
+		s1 = NULL;
+	}
+	if (joined_str == NULL)
+		exit (1);
 	return (joined_str);
+	(void)free_flag;
 }
 
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
@@ -78,12 +82,12 @@ void	search_env_variable(char *line, int *i, int *flag)
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
 		d_printf("\n%c",line[*i]);
-		if ((line[*i] == '\'') && !(*flag & IN_QUOTE))
+		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
 		{
 			plusle_quote(line[*i], flag);
 			*i += 1;
 		}
-		else if (line[*i] == '\'' && *flag & S_QUOTE)
+		else if ((line[*i] == '\'' && *flag & S_QUOTE) || (line[*i] == '\"' && *flag & D_QUOTE))
 		{
 			minun_quote(line[*i], flag);
 			*i += 1;
@@ -100,6 +104,7 @@ void	search_env_variable(char *line, int *i, int *flag)
 		else
 			*i += 1;
 	}
+	d_printf("[serch_env_var:%c]",line[*i]);
 }
 
 int	find_next_token(char *line, int i, int flag)
@@ -107,12 +112,21 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\"' && line[i + k] != '\0' && line[i + k] != '$' && \
-		((line[i + k] != '\'' && line[i + k] != ' ' && line[i + k] != '<' && \
+	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
+		((line[i + k] != '\'' && line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 		k++;
 	d_printf("[find_next_token:%d %c]",k,line[i+k]);
 	return (k);
+}
+
+char	*process_single_dollar_in_d_quote(t_info *status, char *line, int *i, char *result)
+{
+		result = ft_strjoin_free(result, "$", FIRST_FREE);
+		*i += 1;
+		return (result);
+		(void)status;
+		(void)line;
 }
 
 char	*process_single_double_dollar(t_info *status, char *line, int *i, char *result)
@@ -158,7 +172,7 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 //			char *squote = ft_strchr(post_word, '\"');
 //		d_printf("[d:%s s:%s]\n",dquote,squote);
 //			if (dquote == NULL || (squote < dquote && squote != NULL))
-				result = ft_strjoin_free(result, post_word, BOTH_FREE);
+				result = ft_strjoin_free(result, post_word, FIRST_FREE);
 //			else
 //			{
 //				char *chageptr = ft_strrchr(result, '\"');
@@ -168,8 +182,6 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 		}
 		else
 		{
-			while(post_word[i] == ' ')
-				i++;
 			while(post_word[i] != '\0')
 			{
 				while(post_word[i] != '\0' && post_word[i] != ' ')
@@ -211,11 +223,14 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 	}
 	else if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' ' || line[*i + 1] == '$' || line[*i + 1] == '?'))
 		result = process_single_double_dollar(status, line, i, result);
+	else if (line[*i + 1] == '\"' && *flag & D_QUOTE)
+		result = process_single_dollar_in_d_quote(status, line, i, result);
 	else// if (line[*i] == '$')
 	{
 		*i += 1;
 		k = find_next_token(line, *i, *flag);
 		pre_word = ft_substr(&line[*i], 0, k);
+		d_printf("\n[process_doll/pre_word:%s]",pre_word);
 		result = search_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
@@ -239,10 +254,10 @@ int	count_pipe(t_info *status,char *line)
 		{
 			if (flag & IN_QUOTE)
 				minun_quote(line[i], &flag);
-			if (!(flag & IN_QUOTE))
+			else if (!(flag & IN_QUOTE))
 				plusle_quote(line[i], &flag);
 		}
-		if (!(flag & IN_QUOTE) && line[i] == '|')
+		else if (!(flag & IN_QUOTE) && line[i] == '|')
 			count++;
 		i++;
 	}
@@ -284,6 +299,7 @@ char	*check_dollar(t_info *status, char *line)
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
+		d_printf("\n[途中 dollar :%s]\n", result);
 	}
 	d_printf("\n[end dollar :%s]\n", result);
 	return (result);
@@ -468,18 +484,19 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 # define PIPE_IN 0
 # define PIPE_OUT 1
-void close_pipe(int *pipefd)
+void close_pipe(t_info *status, int *pipefd)
 {
-        close(pipefd[0]);
-        close(pipefd[1]);
+        close_ee(status, pipefd[0]);
+        close_ee(status, pipefd[1]);
 }
-void dup2_close_pipe(int *pipefd, int flag)
+
+void dup2_close_pipe(t_info *status, int *pipefd, int flag)
 {
 	if (flag == PIPE_IN)
-        dup2(pipefd[0], flag);
+        dup2_ee(status, pipefd[0], flag);
 	else if (flag == PIPE_OUT)
-        dup2(pipefd[1], flag);
-	close_pipe(pipefd);
+        dup2_ee(status, pipefd[1], flag);
+	close_pipe(status, pipefd);
 }
 
 int	process_pipe_operation(t_info *status, char *line, int *flag)
@@ -656,6 +673,8 @@ void	exec_panda(char *line, t_info *status, int flag)
 			return ;
 		}
 		line += i;
+		if (status->error != 0)
+			return ;
 	}
 }
 
@@ -670,7 +689,9 @@ void	panda(char *line, t_info *status)
 	if (*line == '\0')
 		return ;
 	line = check_dollar(status, line);
-	check_error(status, line, &flag);
+	d_printf("[line:%s]\n", line);
+//	check_error(status, line, &flag);
+	d_printf("[line:%s]\n", line);
 	if (flag & ERROR)
 	{
 		lexer_panda_error_check(&flag, status);//errorチェック
@@ -695,6 +716,7 @@ void	panda(char *line, t_info *status)
 	int	stdin_fd;
 	pid_t	pid;
 	int		pipefd[2];
+	int		exit_status;
 
 	i = 0;
 	pid = 0;
@@ -709,7 +731,7 @@ void	panda(char *line, t_info *status)
 		{
 			d_printf("[line:%s]\n", line);
 			if (i != status->pipe)
-				dup2_close_pipe(pipefd, STDOUT_FILENO);
+				dup2_close_pipe(status, pipefd, STDOUT_FILENO);
 			status->pipe = 1;
 			exec_panda(line, status,flag);
 			check_command(status, status->stack);
@@ -718,15 +740,16 @@ void	panda(char *line, t_info *status)
 		line = ft_strchr(line, '|');
 		if (line == NULL)
 			break ;
-		dup2_close_pipe(pipefd, STDIN_FILENO);
+		dup2_close_pipe(status, pipefd, STDIN_FILENO);
 		line++;
 		i++;
 	}
-	dup2_ee(stdin_fd, STDIN_FILENO);
+	dup2_ee(status, stdin_fd, STDIN_FILENO);
+	i++;
 	while (i--)
 	{
-		wait(NULL);
+		if (waitpid(-1, &exit_status, 0) == pid)
+			status->exit_status = WEXITSTATUS(exit_status);
 	}
-		wait(NULL);
 	(void)data;
 }

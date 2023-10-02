@@ -13,6 +13,11 @@
 #ifndef TYPEDEF_STRUCT_H
 # define TYPEDEF_STRUCT_H
 
+# define BOTH_FREE 0
+# define FIRST_FREE 1
+# define SECOND_FREE 2
+# define NEITHER_FREE 3
+
 typedef struct s_list
 {
 	char			*content;

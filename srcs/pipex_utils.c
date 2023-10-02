@@ -6,22 +6,24 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:17:45 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/25 17:44:13 by hhino            ###   ########.fr       */
+/*   Updated: 2023/09/30 13:37:35 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	exit_ee(int nbr)
+void	exit_ee(t_info *status, int nbr)
 {
-	int	fork_id;
-
-	fork_id = fork();
-	if (fork_id == 0)
-		exit (nbr);
+	status->exit_status = nbr;
+	status->error = nbr;
+//	int	fork_id;
+//
+//	fork_id = fork();
+//	if (fork_id == 0)
+//		exit (nbr);
 }
 
-int	open_ee(char *str, int oflag, int orflag)
+int	open_ee(t_info *status, char *str, int oflag, int orflag)
 {
 	int	fd;
 
@@ -29,12 +31,12 @@ int	open_ee(char *str, int oflag, int orflag)
 	if (fd < 0)
 	{
 		perror(str);
-		exit_ee(1);
+		exit_ee (status, 1);
 	}
 	return (fd);
 }
 
-void	dup2_ee(int fd, int std)
+void	dup2_ee(t_info *status, int fd, int std)
 {
 	int	flag;
 
@@ -42,11 +44,11 @@ void	dup2_ee(int fd, int std)
 	if (flag < 0)
 	{
 		perror("dup2");
-		exit_ee (1);
+		exit_ee (status, 1);
 	}
 }
 
-void	close_ee(int fd)
+void	close_ee(t_info *status, int fd)
 {
 	int	flag;
 
@@ -54,6 +56,6 @@ void	close_ee(int fd)
 	if (flag < 0)
 	{
 		perror("close");
-		exit_ee (1);
+		exit_ee (status, 1);
 	}
 }

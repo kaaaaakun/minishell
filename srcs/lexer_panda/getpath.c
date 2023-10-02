@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 15:30:45 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/09/29 16:58:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*check_path(char *command, char **path)
 			split_free(path);
 			return (NULL);
 		}
-		if (access(path[i], X_OK) == 0)
+		if (access(path[i], F_OK) == 0)
 		{
 			free(command);
 			char *collect_path = ft_strdup(path[i]);
@@ -62,13 +62,23 @@ char	*check_path(char *command, char **path)
 	return (NULL);
 }
 
+int	access_ee(char *command, int flag, int free_flag)
+{
+	int	result;
+
+	result = access(command, flag);
+	if (free_flag != 0)
+		free_null(command);
+	return (result);
+}
+
 char	*check_access(char *command, t_info *status)
 {
 	if (!command)
 		return (NULL);
-	if (access(ft_strtrim(command, "./"), X_OK) == 0)
-		return (ft_strtrim(command, "./"));
-	else if (access(command, X_OK) == 0)
+	if (access_ee(ft_strtrim_free(command, "./", NEITHER_FREE), F_OK, FIRST_FREE) == 0)
+		return (ft_strtrim_free(command, "./", NEITHER_FREE));
+	else if (access(command, F_OK) == 0)
 		return (command);
 	return (check_path(ft_strjoin_free("/", command, NEITHER_FREE), getpath(status)));
 }
