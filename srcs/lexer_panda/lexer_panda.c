@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/30 19:40:16 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:44:02 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,18 @@ char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 	char *joined_str;
 
 	joined_str = ft_strjoin(s1, s2);
-//	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
-//	{
-//		free((void *)s1);
-//		s1 = NULL;
-//	}
-//	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
-//	{
-//		free((void *)s2);
-//		s1 = NULL;
-//	}
+	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
+	{
+		free((void *)s1);
+		s1 = NULL;
+	}
+	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
+	{
+		free((void *)s2);
+		s1 = NULL;
+	}
+	if (joined_str == NULL)
+		exit (1);
 	return (joined_str);
 	(void)free_flag;
 }
@@ -175,7 +177,7 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 //			char *squote = ft_strchr(post_word, '\"');
 //		d_printf("[d:%s s:%s]\n",dquote,squote);
 //			if (dquote == NULL || (squote < dquote && squote != NULL))
-				result = ft_strjoin_free(result, post_word, BOTH_FREE);
+				result = ft_strjoin_free(result, post_word, FIRST_FREE);
 //			else
 //			{
 //				char *chageptr = ft_strrchr(result, '\"');
@@ -185,8 +187,6 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 		}
 		else
 		{
-			while(post_word[i] == ' ')
-				i++;
 			while(post_word[i] != '\0')
 			{
 				while(post_word[i] != '\0' && post_word[i] != ' ')
