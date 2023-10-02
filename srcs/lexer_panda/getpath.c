@@ -62,12 +62,22 @@ char	*check_path(char *command, char **path)
 	return (NULL);
 }
 
+int	access_ee(char *command, int flag, int free_flag)
+{
+	int	result;
+
+	result = access(command, flag);
+	if (free_flag != 0)
+		free_null(command);
+	return (result);
+}
+
 char	*check_access(char *command, t_info *status)
 {
 	if (!command)
 		return (NULL);
-	if (access(ft_strtrim(command, "./"), F_OK) == 0)
-		return (ft_strtrim(command, "./"));
+	if (access_ee(ft_strtrim_free(command, "./", NEITHER_FREE), F_OK, FIRST_FREE) == 0)
+		return (ft_strtrim_free(command, "./", NEITHER_FREE));
 	else if (access(command, F_OK) == 0)
 		return (command);
 	return (check_path(ft_strjoin_free("/", command, NEITHER_FREE), getpath(status)));
