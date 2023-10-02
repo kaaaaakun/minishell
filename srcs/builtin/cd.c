@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/28 17:31:57 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/02 20:07:36 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	ex_cd(t_info *status, t_stack *data)
 		if (search_env(status, "HOME") != NULL)
 			chdir(search_env(status, "HOME"));
 		else
-			ft_printf("cd: HOME not set\n");
+			error_printf("cd: HOME not set\n");
 	}
 	else if (check_access(list->content, status) != NULL)
 		chdir(list->content);
 	else if (check_access(list->content, status) == NULL)
-		ft_printf("%s: No such file or directory\n", list->content);
+		error_printf("%s: No such file or directory\n", list->content);
 	return ;
 }
 

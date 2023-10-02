@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/29 19:28:29 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:54:48 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	search_paht_and_exec(t_info *status)
 	int		fd_nbr;
 	char	*path;
 	char	**cmd;
-	
+
 	cmd = generate_cmdstr(status);
 	path = check_access(status->stack->cmdlist->content, status);
 	errno = 0;
@@ -95,7 +95,6 @@ void	search_paht_and_exec(t_info *status)
 		execve(path, cmd, NULL);
 		error_printf("%s: command not found\n", status->stack->cmdlist->content);
 		exit (127) ;
-		exit (1);//何かの間違えでexecが実行できなかった場合？
 	}
 }
 
