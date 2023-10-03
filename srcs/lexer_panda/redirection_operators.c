@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/03 12:21:24 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/03 20:11:07 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,9 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	eof_len = ft_strlen(eof_word) + 1;
 	while (1)
 	{
+		add_sigaction(1);
+		// if (g_signal == SIGINT)
+		// 	status->exit_status = 1;
 		line = readline(">");
 		if (ft_strncmp(line, eof_word, eof_len) == 0)
 		{
@@ -98,6 +101,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		ft_putendl_fd(line, tmp_fd);
 		free(line);
 	}
+	add_sigaction(0);
 	close(tmp_fd);
 	(void)status;
 }
