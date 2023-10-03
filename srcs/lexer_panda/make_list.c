@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/30 13:29:55 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:35:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,17 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 	while (*tmp_fd != -1 && errno != ENOENT && nbr < 5000)
 	{
 		char_nbr = ft_itoa(nbr);
-		tmp_file_name = ft_strjoin_free(origin_file_name, char_nbr, SECOND_FREE);
+		tmp_file_name = ft_strjoin_free(origin_file_name, char_nbr, \
+				SECOND_FREE);
 		*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 		nbr++;
 	}
 	free(origin_file_name);
-	//*tmp_fd がファイルが存在しないので開けない場合
-	//ファイルをtmpファイルを作成する
 	*tmp_fd = open_ee(status, tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
-		S_IRWXU | S_IRGRP| S_IROTH);
-	if (*tmp_fd < 0)
-		return (NULL);
+			S_IRWXU | S_IRGRP | S_IROTH);
+	if (*tmp_fd < 0 || status->error == 0)
+		exit (1);
 	return (tmp_file_name);
-	(void)status;
 }
 
 char	*check_command_path(t_info *status, char *result)
@@ -60,7 +58,6 @@ char	*check_command_path(t_info *status, char *result)
 
 char	*check_flag(t_info *status, char *result, int *flag)
 {
-//	return ;//ここで一回止めてる
 	d_printf("[check_flag]");
 	if (*flag & INPUT_REDIRECT)
 		check_infile(status, result);
@@ -74,7 +71,6 @@ char	*check_flag(t_info *status, char *result, int *flag)
 		check_appendfile(status, result);
 	else if (!(*flag & COMMAND))
 	{
-	//	data->content = check_command_path(status, ft_strjoin_free("/", result));
 		check_command_path(status, ft_strjoin_free("/", result, NEITHER_FREE));
 	}
 	d_printf("\n[[%s]]", result);
@@ -91,7 +87,7 @@ int	search_dollar(char *line)
 		while (line[i] != '$')
 		{
 			if (line[i] == '\0')
-				return (i) ;
+				return (i);
 			i++;
 		}
 		i++;
@@ -105,7 +101,6 @@ int	search_dollar(char *line)
 			d_printf("$$ : PID\n");
 			i++;
 		}
-
 	}
 }
 
@@ -113,12 +108,10 @@ char	*make_list(int *flag, char *line, int len, t_list **list)
 {
 	char	*result;
 
-//	len = search_dollar(line);
 	result = ft_substr(line, 0, len);
 	if (!result)
 	{
-//		status->error == 1;
-		return (NULL);
+		exit (1);
 	}
 	push_back(list, result);
 	return (result);
