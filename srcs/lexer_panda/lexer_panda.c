@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/02 14:44:02 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/03 19:31:15 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strtrim_free(char const *s1, char const *set, int free_flag);
 
 char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 {
-	char *joined_str;
+	char	*joined_str;
 
 	joined_str = ft_strjoin(s1, s2);
 	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
@@ -49,7 +49,7 @@ char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
 
 char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
 {
-	char *trimed_str;
+	char	*trimed_str;
 
 	trimed_str = ft_strtrim(s1, set);
 	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
@@ -61,7 +61,8 @@ char	*ft_strtrim_free(char const *s1, char const *set, int free_flag)
 
 int	analysis_char(char c)
 {
-	if (ft_isdigit(c) || ft_isalpha(c) || c =='-' || c =='\"' || c =='\'' || c =='/' || c =='$' || c =='.'|| c =='+' || c =='_')
+	if (ft_isdigit(c) || ft_isalpha(c) || c == '-' || c == '\"' || c == '\'' \
+		|| c == '/' || c == '$' || c == '.' || c == '+' || c == '_')
 		return (1);
 	if (c == ' ')
 		return (2);
@@ -78,16 +79,15 @@ int	analysis_char(char c)
 
 void	search_env_variable(char *line, int *i, int *flag)
 {
-	d_printf("[search_env_variable]");
 	while ((line[*i] != '$' || *flag & S_QUOTE) && line[*i] != '\0')
 	{
-		d_printf("\n%c",line[*i]);
 		if ((line[*i] == '\'' || line[*i] == '\"') && !(*flag & IN_QUOTE))
 		{
 			plusle_quote(line[*i], flag);
 			*i += 1;
 		}
-		else if ((line[*i] == '\'' && *flag & S_QUOTE) || (line[*i] == '\"' && *flag & D_QUOTE))
+		else if ((line[*i] == '\'' && *flag & S_QUOTE) || \
+			(line[*i] == '\"' && *flag & D_QUOTE))
 		{
 			minun_quote(line[*i], flag);
 			*i += 1;
@@ -104,7 +104,6 @@ void	search_env_variable(char *line, int *i, int *flag)
 		else
 			*i += 1;
 	}
-	d_printf("[serch_env_var:%c]",line[*i]);
 }
 
 int	find_next_token(char *line, int i, int flag)
@@ -112,27 +111,27 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
-		((line[i + k] != '\'' && line[i + k] != '<' && \
+	while (line[i + k] != '\'' && line[i + k] != '\"' && \
+		line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
+		((line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 		k++;
-	d_printf("[find_next_token:%d %c]",k,line[i+k]);
+	d_printf("[find_next_token:%d %c]", k, line[i + k]);
 	return (k);
 }
 
 char	*process_single_dollar_in_d_quote(t_info *status, char *line, int *i, char *result)
 {
-		result = ft_strjoin_free(result, "$", FIRST_FREE);
-		*i += 1;
-		return (result);
-		(void)status;
-		(void)line;
+	result = ft_strjoin_free(result, "$", FIRST_FREE);
+	*i += 1;
+	return (result);
+	(void)status;
+	(void)line;
 }
 
 char	*process_single_double_dollar(t_info *status, char *line, int *i, char *result)
 {
 	char	*exit_nbr;
-
 
 	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
 	{
@@ -154,55 +153,86 @@ char	*process_single_double_dollar(t_info *status, char *line, int *i, char *res
 	(void)status;
 }
 
-char	*search_and_append_env(t_info *status, char *result, char *post_word, int *flag)
+void	skip_space(char *post_word, int *i)
 {
-	d_printf("[s_a_ap_env]\n");
-	int	i;
-	int	j;
+	while (post_word[*i] == ' ')
+		i += 1;
+}
+
+char	*make_first_space_splited_word(char *result, char *post_word, int i, int j)
+{
+	char	*space_splited_word;
+
+	result = ft_strjoin_free(result, "\'", FIRST_FREE);
+	space_splited_word = ft_substr(post_word, 0, i - j);
+	result = ft_strjoin_free(result, "\'", FIRST_FREE);
+	return (result);
+}
+
+char	*append_non_quote_env(char *result, char *post_word)
+{
+	int		i;
+	int		j;
 	char	*space_splited_word;
 
 	i = 0;
 	j = 0;
+	while (post_word[i] != '\0')
+	{
+		while (post_word[i] != '\0' && post_word[i] != ' ')
+			i++;
+		if (j == 0)
+			result = make_first_space_splited_word(result, post_word, i, j);
+		// {
+		// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
+		// 	space_splited_word = ft_substr(post_word, 0, i - j);
+		// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
+		// }
+		result = ft_strjoin_free(result, "\'", FIRST_FREE);
+		space_splited_word = ft_substr(post_word, j, i - j);
+		result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
+		skip_space(post_word, &i);
+		if (post_word[i - 1] == ' ')
+			result = ft_strjoin_free(result, "\' ", FIRST_FREE);
+		else
+			result = ft_strjoin_free(result, "\'", FIRST_FREE);
+		j = i;
+	}
+	return (result);
+}
+
+char	*search_and_append_env(t_info *status, char *result, char *post_word, int *flag)
+{
+	d_printf("[s_a_ap_env]\n");
 	post_word = search_env(status, post_word);
 	if (post_word != NULL)
 	{
 		if (*flag & D_QUOTE)
-		{
-//			char *dquote = ft_strchr(post_word, '\'');
-//			char *squote = ft_strchr(post_word, '\"');
-//		d_printf("[d:%s s:%s]\n",dquote,squote);
-//			if (dquote == NULL || (squote < dquote && squote != NULL))
-				result = ft_strjoin_free(result, post_word, FIRST_FREE);
-//			else
-//			{
-//				char *chageptr = ft_strrchr(result, '\"');
-//				*chageptr = '\'';
-//				result = ft_strjoin_free(result, post_word);
-//			}
-		}
+			result = ft_strjoin_free(result, post_word, FIRST_FREE);
 		else
 		{
-			while(post_word[i] != '\0')
-			{
-				while(post_word[i] != '\0' && post_word[i] != ' ')
-					i++;
-				if (j == 0)
-				{
-					result = ft_strjoin_free(result, "\'", FIRST_FREE );
-					space_splited_word = ft_substr(post_word, 0, i - j);
-					result = ft_strjoin_free(result, "\'", FIRST_FREE);
-				}
-				result = ft_strjoin_free(result, "\'", FIRST_FREE);
-				space_splited_word = ft_substr(post_word, j, i - j);
-				result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
-				while(post_word[i] == ' ')
-					i++;
-				if (post_word[i - 1] == ' ')
-					result = ft_strjoin_free(result, "\' ", FIRST_FREE);
-				else
-					result = ft_strjoin_free(result, "\'", FIRST_FREE);
-				j = i;
-			}
+			result = append_non_quote_env(result, post_word);
+			// while (post_word[i] != '\0')
+			// {
+			// 	while (post_word[i] != '\0' && post_word[i] != ' ')
+			// 		i++;
+			// 	if (j == 0)
+			// 	{
+			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
+			// 		space_splited_word = ft_substr(post_word, 0, i - j);
+			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
+			// 	}
+			// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
+			// 	space_splited_word = ft_substr(post_word, j, i - j);
+			// 	result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
+			// 	while (post_word[i] == ' ')
+			// 		i++;
+			// 	if (post_word[i - 1] == ' ')
+			// 		result = ft_strjoin_free(result, "\' ", FIRST_FREE);
+			// 	else
+			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
+			// 	j = i;
+			// }
 		}
 	}
 	d_printf("[result:%s]\n",result);
@@ -278,24 +308,24 @@ int	check_and_count_pipe(t_info *status, char *line)
 
 char	*check_dollar(t_info *status, char *line)
 {
-	d_printf("[check_dollar]");
-	int	i;
-	int	flag;
-	int	j;
+	int		i;
+	int		flag;
+	int		j;
 	char	*result;
 
+	d_printf("[check_dollar]");
 	status->line = line;
 	i = 0;
 	j = 0;
 	flag = 0;
-//	result = line;
 	while (line[i] != '\0')
 	{
 		search_env_variable(line, &i, &flag);
 		if (j == 0)
 			result = ft_substr(line, j, i - j);
 		else
-			result = ft_strjoin_free(result, ft_substr(line, j, i - j), FIRST_FREE);
+			result = ft_strjoin_free(result, ft_substr(line, j, i - j), \
+				FIRST_FREE);
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
@@ -313,7 +343,7 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 	while ((analysis_char(line[*i]) == *value || *flag & IN_QUOTE) && line[*i] != '\0')
 	{
 		if (line[*i] == '\'' && *flag & S_QUOTE)
-			*flag-= S_QUOTE;
+			*flag -= S_QUOTE;
 		else if (line[*i] == '\"' && *flag & D_QUOTE)
 			*flag -= D_QUOTE;
 		else if (line[*i] == '\'' && !(*flag & IN_QUOTE))
@@ -328,7 +358,7 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 	return (j);
 }
 
-t_stack	*search_last_stack(t_info *status)//最後のstackを探して返す
+t_stack	*search_last_stack(t_info *status)
 {
 	t_stack	*data;
 
@@ -341,10 +371,11 @@ t_stack	*search_last_stack(t_info *status)//最後のstackを探して返す
 void make_input_redirect(int *flag, char *line, int j, t_info *status)
 {
 	t_stack	*data;
+	char	*str;
 
 	data = search_last_stack(status);
 	d_printf(" : no*flag redirect", 1);
-	char *str = make_list(flag, line, j, &data->inputlist);
+	str = make_list(flag, line, j, &data->inputlist);
 	check_flag(status, str, flag);
 	*flag = *flag - INPUT_REDIRECT;
 }
@@ -352,9 +383,9 @@ void make_input_redirect(int *flag, char *line, int j, t_info *status)
 void make_output_redirect(int *flag, char *line, int j, t_info *status)
 {
 	t_stack	*data;
+	char	*str;
 
 	data = search_last_stack(status);
-	char *str;
 	d_printf(" : RE redirect", 1);
 	str = make_list(flag, line, j, &data->outputlist);
 	check_flag(status, str, flag);
@@ -376,8 +407,8 @@ void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 
 void make_append_list(int *flag, char *line, int j, t_info *status)
 {
-	char *str;
 	t_stack	*data;
+	char 	*str;
 
 	data = search_last_stack(status);
 	d_printf(" : append", 1);
@@ -400,8 +431,8 @@ void make_command_list(int *flag, char *line, int j, t_info *status)
 
 void make_other_list(int *flag, char *line, int j, t_info *status)
 {
-	char *str;
 	t_stack	*data;
+	char	*str;
 
 	data = search_last_stack(status);
 	d_printf(" : *flag or file");
@@ -445,7 +476,9 @@ int	process_input_redirect_operation(t_info *status, char *line, int *flag)
 	{
 		d_printf(" : heredoc", 1);
 		*flag = *flag | HEREDOC;
-	} else if (i == 1) {
+	}
+	else if (i == 1)
+	{
 		d_printf(" : redirect", 1);
 		*flag = *flag | INPUT_REDIRECT;
 	}
@@ -463,20 +496,20 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (2 < i || (*flag& NEED_FILE))
+	if (2 < i || (*flag & NEED_FILE))
 	{
 		error_printf(" : syntax error near unexpected token `>'", 1);
-		*flag+= ERROR;
+		*flag += ERROR;
 	}
 	else if (i == 2)
 	{
 		d_printf(" : re:heredoc", 1);
-		*flag= *flag| APPENDDOC;
+		*flag = *flag | APPENDDOC;
 	}
 	else if (i == 1)
 	{
 		d_printf(" : re:redirect", 1);
-		*flag= *flag| OUTPUT_REDIRECT;
+		*flag = *flag | OUTPUT_REDIRECT;
 	}
 	return (i);
 	(void)status;
@@ -484,18 +517,19 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 
 # define PIPE_IN 0
 # define PIPE_OUT 1
+
 void close_pipe(t_info *status, int *pipefd)
 {
-        close_ee(status, pipefd[0]);
-        close_ee(status, pipefd[1]);
+	close_ee(status, pipefd[0]);
+	close_ee(status, pipefd[1]);
 }
 
 void dup2_close_pipe(t_info *status, int *pipefd, int flag)
 {
 	if (flag == PIPE_IN)
-        dup2_ee(status, pipefd[0], flag);
+		dup2_ee(status, pipefd[0], flag);
 	else if (flag == PIPE_OUT)
-        dup2_ee(status, pipefd[1], flag);
+		dup2_ee(status, pipefd[1], flag);
 	close_pipe(status, pipefd);
 }
 
@@ -503,8 +537,6 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
 	int		i;
 	t_stack	*data;
-//	pid_t	pid;
-//	int		pipefd[2];
 
 	i = 0;
 	data = status->stack;
@@ -520,28 +552,7 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	else if (i == 1)
 	{
-//			d_printf(" : pipe", 1);
-//			*flag = AT_PIPE;
-//			if (pipe(pipefd) < 0)
-//				error_exit("pipe");
-//			d_printf("do-fork");
-//			pid = fork();
-//			if (pid < 0)
-//				error_exit("fork");
-//			if (pid == 0)
-//			{
-//				if (status->pre_pipe1 != -1)
-//					dup2_close_pipe(status->pre_pipe0, status->pre_pipe1, STDIN_FILENO);
-//				dup2_close_pipe(pipefd[0], pipefd[1], STDOUT_FILENO);
-//				status->pid = 1;
-				check_command(status, status->stack);
-//			}
-//			if (status->pre_pipe1 != -1)
-//				close_pipe(status->pre_pipe0, status->pre_pipe1);
-//			status->pre_pipe1 = pipefd[1];
-//			status->pre_pipe0 = pipefd[0];
-//			status->pid = pid;
-//			data = make_stack(status, data);
+		check_command(status, status->stack);
 	}
 	return (i);
 	(void)status;
@@ -586,7 +597,6 @@ char	*mini_ft_strchr(const char *s, int c)
 	chr = (char)c;
 	while (*str || chr == '\0')
 	{
-
 		if (*str == chr)
 			return (str);
 		str++;
@@ -602,22 +612,22 @@ void	check_error(t_info *status, char *line, int *e_flag)
 	int	value;
 
 	flag = 0;
-	while(*line != '\0')
+	while (*line != '\0')
 	{
 		i = 0;
 		value = analysis_char(*line);
-		if (value == 1 || value == 0)// command系の処理
+		if (value == 1 || value == 0)
 		{
 			j = process_quotes(line, &value, &i, &flag);
 			check_input_operation(status, line, j, &flag);
 		}
-		if (value == 2)// ' '
+		if (value == 2)
 			i++;
-		else if (value == 3 && !(flag & IN_QUOTE))// < << <<<　ここは完成
+		else if (value == 3 && !(flag & IN_QUOTE))
 			i += process_input_redirect_operation(status, line, &flag);
-		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
+		else if (value == 4 && !(flag & IN_QUOTE))
 			i += process_output_redirect_operation(status, line, &flag);
-		else if (value == 6 && !(flag & IN_QUOTE))// |
+		else if (value == 6 && !(flag & IN_QUOTE))
 			i += check_pipe_operation(status, line, &flag);
 		line += i;
 	}
@@ -633,17 +643,17 @@ void	check_error(t_info *status, char *line, int *e_flag)
 void	process_input_operation(t_info *status, char *line, int j, int *flag)
 {
 	if (*flag & INPUT_REDIRECT)
-		make_input_redirect(flag, line,  j, status);
+		make_input_redirect(flag, line, j, status);
 	else if (*flag & OUTPUT_REDIRECT)
-		make_output_redirect(flag, line,  j, status);
+		make_output_redirect(flag, line, j, status);
 	else if (*flag & HEREDOC)
-		make_heredoc_list(flag, line,  j, status);
+		make_heredoc_list(flag, line, j, status);
 	else if (*flag & APPENDDOC)
-		make_append_list(flag, line,  j, status);
+		make_append_list(flag, line, j, status);
 	else if (!(*flag & COMMAND))
-		make_command_list(flag, line,  j, status);
+		make_command_list(flag, line, j, status);
 	else
-		make_other_list(flag, line,  j, status);
+		make_other_list(flag, line, j, status);
 }
 
 void	exec_panda(char *line, t_info *status, int flag)

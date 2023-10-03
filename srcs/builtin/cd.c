@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/02 20:07:36 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/03 18:05:36 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,18 @@ void	ex_cd(t_info *status, t_stack *data)
 		if (search_env(status, "HOME") != NULL)
 			chdir(search_env(status, "HOME"));
 		else
+		{
 			error_printf("cd: HOME not set\n");
+			status->exit_status = 1;
+		}
 	}
 	else if (check_access(list->content, status) != NULL)
 		chdir(list->content);
 	else if (check_access(list->content, status) == NULL)
+	{
 		error_printf("%s: No such file or directory\n", list->content);
+		status->exit_status = 1;
+	}
 	return ;
 }
 

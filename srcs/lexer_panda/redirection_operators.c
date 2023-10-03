@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/30 19:40:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/03 12:21:24 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	check_infile(t_info *status, char *result)
 {
 	int	fd;
 
-//	if (result[0] == '.' && result[1] == '/')
-//		fd = open_ee(status, &result[1], O_RDONLY, 0);
-//	else
-		fd = open_ee(status, result, O_RDONLY, 0);
+	fd = open_ee(status, result, O_RDONLY, 0);
 	if (fd < 0)
 	{
 		status->exit_status = 1;
@@ -49,12 +46,8 @@ void	check_outfile(t_info *status, char *result)
 {
 	int	fd;
 
-//	if (result[0] == '.' && result[1] == '/')
-//		fd = open_ee(status, &result[1], O_CREAT | O_TRUNC | O_WRONLY,
-//			S_IRWXU | S_IRGRP | S_IROTH);
-//	else
-		fd = open_ee(status, result, O_CREAT | O_TRUNC | O_WRONLY,
-			S_IRWXU | S_IRGRP | S_IROTH);
+	fd = open_ee(status, result, O_CREAT | O_TRUNC | O_WRONLY, \
+		S_IRWXU | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
 		status->exit_status = 1;
@@ -69,12 +62,8 @@ void	check_appendfile(t_info *status, char *result)
 {
 	int	fd;
 
-//	if (result[2] == '.' && result[1] == '/')
-//		fd = open_ee(status, &result[1], O_CREAT | O_APPEND | O_WRONLY,
-//			S_IRWXU | S_IRGRP | S_IROTH);
-//	else
-		fd = open_ee(status, result, O_CREAT | O_APPEND | O_WRONLY,
-			S_IRWXU | S_IRGRP | S_IROTH);
+	fd = open_ee(status, result, O_CREAT | O_APPEND | O_WRONLY, \
+		S_IRWXU | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
 		status->exit_status = 1;
