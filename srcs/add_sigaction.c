@@ -6,48 +6,55 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 20:23:45 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/03 20:05:50 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtin.h"
 
-void	sighandler(int sig)
+void	sighandler_sigint(int sig)
 {
 	if (sig == SIGINT)
 		ft_printf("\n[sicnal]>> ");
 	if (rl_on_new_line() == -1)
 		exit(1);
-	rl_replace_line("", 1);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
+	// g_signal = SIGINT;
 }
 
-void	sig_exit(int i)
+void	sighandler_heredoc(int sig)
 {
-	(void)i;
-	ex_exit(NULL, NULL);
+	(void)sig;
+	// kill(0, SIGUSR1);
+	close(0);
+	// g_signal = SIGINT;
+
 }
 
-void	add_sigaction(int i)
+void	add_sigaction(int flag)
 {
-	//	struct sigaction sa_int;
-	// signal(SIGINT, sighandler);
-	// signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
-	if (i == 0) /*コマンドの途中などではないとき*/
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	if (flag == 0) /*main, parent process, child process*/
 	{
-		signal(SIGINT, sighandler);
+		signal(SIGINT, sighandler_sigint); /*ctrl+C*/
 		signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
 	}
-	if (i == 1) /*parent process*/
+	if (flag == 1) /*heredoc*/
 	{
-		signal(SIGCHLD, NULL);
-		signal(SIGINT, sighandler);
+		signal(SIGINT, sighandler_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	// if (i == 2) /*child process*/
-	// if (i == 3) /*heredoc*/
+}
+
+// void	add_sigaction(int flag)
+// {
+// 	signal(SIGINT, sighandler_sigint); /*ctrl+C*/
+// 	signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
 	//	sigemptyset(&sa_int.sa_mask);
 	//	sigaddset(&sa_int.sa_mask, SIGINT);
 	//	sa_int.sa_handler = sa_sigint;
@@ -57,7 +64,7 @@ void	add_sigaction(int i)
 	//		perror("sigaction");
 	//		ex_exit(NULL);
 	//	}
-}
+// }
 
 // ctrl-C displays a new prompt on a new line.
 // ctrl-D exits the shell. readlineにNULLが送られex_exitに入る
@@ -67,5 +74,5 @@ void	add_sigaction(int i)
 
 // parent, heredoc, child, main
 // 子プロセスがいたら子プロセスをkill
-// heredocがいたらheredocを終わらせる
+// heredocがいたらeredocを終わらせる
 // global 変数でのみ情報が引き渡される

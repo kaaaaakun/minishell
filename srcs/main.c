@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/02 18:36:21 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/03 20:05:43 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	main(int argc, char *argv[], char *env[])
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);
+		// if (g_signal == SIGINT)
+		// 	status->exit_status = 1;
 	}
 	(void)argv;
 	(void)env;

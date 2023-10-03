@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 20:10:37 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/03 19:57:09 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "typedef_struct.h"
 
 //global variable
-extern int	g_sig_num;
+extern int	g_signal;
 
 void	check_line(char *line, t_info *status);
 
@@ -38,6 +38,8 @@ void	free_stack(t_info *status);
 size_t	listsize(t_list *lst);
 
 void	add_sigaction(int i);
+void	sighandler_heredoc(int sig);
+void	sighandler_sigint(int sig);
 void	line_read(void);
 
 //lexer.c
