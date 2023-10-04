@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 19:31:15 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:19:49 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,11 +183,6 @@ char	*append_non_quote_env(char *result, char *post_word)
 			i++;
 		if (j == 0)
 			result = make_first_space_splited_word(result, post_word, i, j);
-		// {
-		// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
-		// 	space_splited_word = ft_substr(post_word, 0, i - j);
-		// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
-		// }
 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
 		space_splited_word = ft_substr(post_word, j, i - j);
 		result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
@@ -212,27 +207,6 @@ char	*search_and_append_env(t_info *status, char *result, char *post_word, int *
 		else
 		{
 			result = append_non_quote_env(result, post_word);
-			// while (post_word[i] != '\0')
-			// {
-			// 	while (post_word[i] != '\0' && post_word[i] != ' ')
-			// 		i++;
-			// 	if (j == 0)
-			// 	{
-			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
-			// 		space_splited_word = ft_substr(post_word, 0, i - j);
-			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
-			// 	}
-			// 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
-			// 	space_splited_word = ft_substr(post_word, j, i - j);
-			// 	result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
-			// 	while (post_word[i] == ' ')
-			// 		i++;
-			// 	if (post_word[i - 1] == ' ')
-			// 		result = ft_strjoin_free(result, "\' ", FIRST_FREE);
-			// 	else
-			// 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
-			// 	j = i;
-			// }
 		}
 	}
 	d_printf("[result:%s]\n",result);
@@ -251,16 +225,17 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 		k = find_next_token(line, *i, *flag);
 		pre_word = ft_substr(&line[*i], 0, k);
 	}
-	else if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' ' || line[*i + 1] == '$' || line[*i + 1] == '?'))
+	else if (line[*i] == '$' && (line[*i + 1] == '\0' || \
+		line[*i + 1] == ' ' || line[*i + 1] == '$' || line[*i + 1] == '?'))
 		result = process_single_double_dollar(status, line, i, result);
 	else if (line[*i + 1] == '\"' && *flag & D_QUOTE)
 		result = process_single_dollar_in_d_quote(status, line, i, result);
-	else// if (line[*i] == '$')
+	else
 	{
 		*i += 1;
 		k = find_next_token(line, *i, *flag);
 		pre_word = ft_substr(&line[*i], 0, k);
-		d_printf("\n[process_doll/pre_word:%s]",pre_word);
+		d_printf("\n[process_doll/pre_word:%s]", pre_word);
 		result = search_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
@@ -270,13 +245,13 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 
 int	count_pipe(t_info *status,char *line)
 {
-	d_printf("[count_pipe]");
 	int	count;
 	int	flag;
 	int	i;
 
+	d_printf("[count_pipe]");
 	count = 0;
-	flag =0;
+	flag = 0;
 	i = 0;
 	while (line[i] != '\0')
 	{
@@ -301,7 +276,7 @@ int	check_and_count_pipe(t_info *status, char *line)
 
 	d_printf("[check_and_count_pipe]");
 	count = count_pipe(status, line);
-	d_printf("[pipe:count:%d]",count);
+	d_printf("[pipe:count:%d]", count);
 	return (count);
 	(void)status;
 }
@@ -340,7 +315,8 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 	int	j;
 
 	j = 0;
-	while ((analysis_char(line[*i]) == *value || *flag & IN_QUOTE) && line[*i] != '\0')
+	while ((analysis_char(line[*i]) == *value || \
+		*flag & IN_QUOTE) && line[*i] != '\0')
 	{
 		if (line[*i] == '\'' && *flag & S_QUOTE)
 			*flag -= S_QUOTE;
@@ -354,6 +330,29 @@ int	process_quotes(char *line, int *value, int *i, int *flag)
 			j++;
 		*i += 1;
 		line[j] = line[*i];
+	}
+	return (j);
+}
+
+int	count_quotes(char *line, int *value, int *i, int *flag)
+{
+	int	j;
+
+	j = 0;
+	while ((analysis_char(line[*i]) == *value || \
+		*flag & IN_QUOTE) && line[*i] != '\0')
+	{
+		if (line[*i] == '\'' && *flag & S_QUOTE)
+			*flag -= S_QUOTE;
+		else if (line[*i] == '\"' && *flag & D_QUOTE)
+			*flag -= D_QUOTE;
+		else if (line[*i] == '\'' && !(*flag & IN_QUOTE))
+			*flag += S_QUOTE;
+		else if (line[*i] == '\"' && !(*flag & IN_QUOTE))
+			*flag += D_QUOTE;
+		else
+			j++;
+		*i += 1;
 	}
 	return (j);
 }
@@ -408,7 +407,7 @@ void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 void make_append_list(int *flag, char *line, int j, t_info *status)
 {
 	t_stack	*data;
-	char 	*str;
+	char	*str;
 
 	data = search_last_stack(status);
 	d_printf(" : append", 1);
@@ -420,7 +419,7 @@ void make_append_list(int *flag, char *line, int j, t_info *status)
 
 void make_command_list(int *flag, char *line, int j, t_info *status)
 {
-	char *str;
+	char	*str;
 	t_stack	*data;
 
 	data = search_last_stack(status);
@@ -612,13 +611,14 @@ void	check_error(t_info *status, char *line, int *e_flag)
 	int	value;
 
 	flag = 0;
-	while (*line != '\0')
+	while (*line != '\0' && !(flag & ERROR))
 	{
+		d_printf("check_erro line : %s\n",line);
 		i = 0;
 		value = analysis_char(*line);
 		if (value == 1 || value == 0)
 		{
-			j = process_quotes(line, &value, &i, &flag);
+			j = count_quotes(line, &value, &i, &flag);
 			check_input_operation(status, line, j, &flag);
 		}
 		if (value == 2)
@@ -658,26 +658,27 @@ void	process_input_operation(t_info *status, char *line, int j, int *flag)
 
 void	exec_panda(char *line, t_info *status, int flag)
 {
-	d_printf("[panda]");
 	int	i;
 	int	j;
 	int	value;
-	while(*line != '\0')
+
+	d_printf("[panda]");
+	while (*line != '\0')
 	{
 		i = 0;
 		value = analysis_char(*line);
-		if (value == 1 || value == 0)// command系の処理
+		if (value == 1 || value == 0)
 		{
 			j = process_quotes(line, &value, &i, &flag);
 			process_input_operation(status, line, j, &flag);
 		}
-		if (value == 2)// ' '
+		if (value == 2)
 			i++;
-		else if (value == 3 && !(flag & IN_QUOTE))// < << <<<　ここは完成
+		else if (value == 3 && !(flag & IN_QUOTE))
 			i += process_input_redirect_operation(status, line, &flag);
-		else if (value == 4 && !(flag & IN_QUOTE))// > >> >> ここは完成
+		else if (value == 4 && !(flag & IN_QUOTE))
 			i += process_output_redirect_operation(status, line, &flag);
-		else if (value == 6 && !(flag & IN_QUOTE))// |
+		else if (value == 6 && !(flag & IN_QUOTE))
 		{
 			i += process_pipe_operation(status, line, &flag);
 			return ;
@@ -688,42 +689,10 @@ void	exec_panda(char *line, t_info *status, int flag)
 	}
 }
 
-void	panda(char *line, t_info *status)
+void	some_pipes_exec_panda(t_info *status, t_stack *data, char *line, int flag)
 {
-	d_printf("[panda]");
-	d_printf("[line:%s]\n", line);
-	t_stack	*data;
-	int	flag;
-
-	flag = INITIAL;
-	if (*line == '\0')
-		return ;
-	line = check_dollar(status, line);
-	d_printf("[line:%s]\n", line);
-//	check_error(status, line, &flag);
-	d_printf("[line:%s]\n", line);
-	if (flag & ERROR)
-	{
-		lexer_panda_error_check(&flag, status);//errorチェック
-		d_printf("errorだ！おかえり〜\n");
-		status->error = -1;
-		return ;
-	}
-	d_printf("[panda]");
-	data = make_stack(status, NULL);
-	status->pipe = check_and_count_pipe(status, line);
-	d_printf("\n{pipe;%d}\n",status->pipe);
-
-	if (status->pipe == 0)//pipeがなかった時の処理
-	{
-		d_printf("[line:%s]\n", line);
-		exec_panda(line, status,flag);
-		free(line);
-		return ;
-	}
-	//pipeがあった時の処理
-	int	i;
-	int	stdin_fd;
+	int		i;
+	int		stdin_fd;
 	pid_t	pid;
 	int		pipefd[2];
 	int		exit_status;
@@ -733,17 +702,19 @@ void	panda(char *line, t_info *status)
 	stdin_fd = dup(STDIN_FILENO);
 	while (i <= status->pipe)
 	{
-		d_printf("[i:%p]",i);
+		d_printf("[i:%p]", i);
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
 		pid = fork();
+		if (pid < 0)
+			error_exit("fork");
 		if (pid == 0)
 		{
 			d_printf("[line:%s]\n", line);
 			if (i != status->pipe)
 				dup2_close_pipe(status, pipefd, STDOUT_FILENO);
 			status->pipe = 1;
-			exec_panda(line, status,flag);
+			exec_panda(line, status, flag);
 			check_command(status, status->stack);
 		}
 		status->pid = pid;
@@ -762,4 +733,31 @@ void	panda(char *line, t_info *status)
 			status->exit_status = WEXITSTATUS(exit_status);
 	}
 	(void)data;
+}
+
+void	panda(char *line, t_info *status)
+{
+	t_stack	*data;
+	int		flag;
+
+	flag = INITIAL;
+	if (*line == '\0')
+		return ;
+	line = check_dollar(status, line);
+	check_error(status, line, &flag);
+	if (flag & ERROR)
+	{
+		lexer_panda_error_check(&flag, status);
+		error_printf("syntax error \n");
+		status->error = -1;
+		return ;
+	}
+	data = make_stack(status, NULL);
+	status->pipe = check_and_count_pipe(status, line);
+	if (status->pipe == 0)
+		exec_panda(line, status, flag);
+	else
+		some_pipes_exec_panda(status, data, line, flag);
+	free(line);
+	return ;
 }

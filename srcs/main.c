@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/10/04 17:29:11 by hhino            ###   ########.fr       */
+=======
+/*   Updated: 2023/10/04 13:28:19 by tokazaki         ###   ########.fr       */
+>>>>>>> 0c3e87399ffa2eaaf6507b0ce04cffe75fc382f0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +86,12 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
+<<<<<<< HEAD
 		add_sigaction(0);
 		status->line = readline("[readline]>> ");
+=======
+		status->line = readline("minishell$ ");
+>>>>>>> 0c3e87399ffa2eaaf6507b0ce04cffe75fc382f0
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);
