@@ -167,6 +167,7 @@ char	*make_first_space_splited_word(char *result, char *post_word, int i, int j)
 	space_splited_word = ft_substr(post_word, 0, i - j);
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
 	return (result);
+	(void)space_splited_word;
 }
 
 char	*append_non_quote_env(char *result, char *post_word)
@@ -466,10 +467,14 @@ int	process_input_redirect_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (2 < i || (*flag & NEED_FILE))
+	if (*flag & NEED_FILE)
 	{
-		error_printf(" : syntax error near unexpected token `<'", 1);
+		*flag = ERROR + INPUT_REDIRECT;
+	}
+	else if (2 < i)
+	{
 		*flag += ERROR;
+		*flag += INPUT_REDIRECT;
 	}
 	else if (i == 2)
 	{
@@ -495,10 +500,14 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (2 < i || (*flag & NEED_FILE))
+	if (*flag & NEED_FILE)
 	{
-		error_printf(" : syntax error near unexpected token `>'", 1);
+		*flag = ERROR + OUTPUT_REDIRECT;
+	}
+	else if (2 < i)
+	{
 		*flag += ERROR;
+		*flag += OUTPUT_REDIRECT;
 	}
 	else if (i == 2)
 	{
@@ -546,7 +555,6 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
 	{
-		error_printf(" : syntax error near unexpected token `|'", 1);
 		*flag += ERROR;
 	}
 	else if (i == 1)
@@ -572,7 +580,6 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
 	{
-		error_printf(" : syntax error near unexpected token `|'");
 		*flag += ERROR;
 	}
 	else if (i == 1)
@@ -589,14 +596,20 @@ char	*mini_ft_strchr(const char *s, int c)
 {
 	char	*str;
 	char	chr;
+	int		flag;
 
 	if (!s)
 		return (NULL);
 	str = (char *)s;
 	chr = (char)c;
+	flag = INITIAL;
 	while (*str || chr == '\0')
 	{
-		if (*str == chr)
+		if ((*str == '\'' || *str == '\"') && !(flag & IN_QUOTE))
+			plusle_quote(*str, &flag);
+		else if ((*str == '\'' && flag & S_QUOTE) || (*str == '\"' && flag & D_QUOTE))
+			minun_quote(*str, &flag);
+		else if (*str == chr && !(flag & IN_QUOTE))
 			return (str);
 		str++;
 	}
@@ -689,6 +702,7 @@ void	exec_panda(char *line, t_info *status, int flag)
 	}
 }
 
+
 void	some_pipes_exec_panda(t_info *status, t_stack *data, char *line, int flag)
 {
 	int		i;
@@ -718,7 +732,7 @@ void	some_pipes_exec_panda(t_info *status, t_stack *data, char *line, int flag)
 			check_command(status, status->stack);
 		}
 		status->pid = pid;
-		line = ft_strchr(line, '|');
+		line = mini_ft_strchr(line, '|');
 		if (line == NULL)
 			break ;
 		dup2_close_pipe(status, pipefd, STDIN_FILENO);
@@ -748,7 +762,7 @@ void	panda(char *line, t_info *status)
 	if (flag & ERROR)
 	{
 		lexer_panda_error_check(&flag, status);
-		error_printf("syntax error \n");
+		d_printf("syntax error \n");
 		status->error = -1;
 		return ;
 	}
