@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   panda_to_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 20:25:28 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:29:18 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	check_command(t_info *status, t_stack *data)
 		data = data->next;
 	if (data->cmdlist == NULL)
 		return ;
+	if (g_signal == SIGINT)
+		status->exit_status = 130;
 	if (status->error != 0 && status->pipe != 0)
 		exit(status->error);
 	line = data->cmdlist->content;
@@ -47,4 +49,3 @@ void	check_command(t_info *status, t_stack *data)
 		exit(0);
 	rl_on_new_line();
 }
-

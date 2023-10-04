@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 19:57:09 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/04 16:22:27 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "typedef_struct.h"
 
 //global variable
-extern int	g_signal;
+extern int		g_signal;
 
 void	check_line(char *line, t_info *status);
 

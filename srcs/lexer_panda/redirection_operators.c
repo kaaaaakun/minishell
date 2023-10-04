@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/03 20:11:07 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/03 20:22:35 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	while (1)
 	{
 		add_sigaction(1);
-		// if (g_signal == SIGINT)
-		// 	status->exit_status = 1;
+		if (g_signal == SIGINT)
+			status->exit_status = 1;
 		line = readline(">");
 		if (ft_strncmp(line, eof_word, eof_len) == 0)
 		{
