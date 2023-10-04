@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 20:37:18 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:42:28 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 		*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 		nbr++;
 	}
-	free(origin_file_name);
+	if (origin_file_name != tmp_file_name)
+		free(origin_file_name);
 	*tmp_fd = open_ee(status, tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
 			S_IRWXU | S_IRGRP | S_IROTH);
 	if (*tmp_fd < 0 || status->error != 0)
