@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 13:28:19 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:45:14 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 #include "builtin.h"
+
+int	g_signal = 0;
 
 void	check_command(t_info *status, t_stack *data);
 void	check_line(char *line, t_info *status);
@@ -74,7 +76,6 @@ int	main(int argc, char *argv[], char *env[])
 		printf("minishell: %s: No such file or directory\n", argv[1]);
 		return (0);
 	}
-	add_sigaction(0);
 	status = (t_info *)ft_calloc(sizeof(t_info), 1);
 	if (!status)
 		exit(1);
@@ -85,8 +86,8 @@ int	main(int argc, char *argv[], char *env[])
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);
-		// if (g_signal == SIGINT)
-		// 	status->exit_status = 1;
+		if (g_signal == SIGINT)
+			status->exit_status = 130;
 	}
 	(void)argv;
 	(void)env;
