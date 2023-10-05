@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/03 16:22:49 by hhino            ###   ########.fr        #
+#    Updated: 2023/10/05 15:38:26 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, \
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
-CFLAGS  = -Wall -Wextra -Werror
+CFLAGS  = -Wall -Wextra -Werror -g
 INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
 LDFLAGS	= -lreadline -L $(RL_DIR)/lib
 RM		= rm -f
@@ -68,7 +68,7 @@ endif
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 .PHONY: all clean fclean re debug
 
-#all: $(NAME)
+all: $(NAME)
 
 .c.o:
 	@ $(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
@@ -94,14 +94,14 @@ $(LIBFT):
 	make bonus -C $(LIBFT_DIR) all
 
 #debug:
-all:
+debug:
 	make WITH_DEBUG=1
 
 del:
 	rm -rf .tmp*
 	rm -rf out*
 	rm -rf **.back
-	rm -rf **.c.un*
+	rm -rf .**.c.un*
 
 leaks:
 	while [ 1 ]; do leaks -q minishell; sleep 2; done

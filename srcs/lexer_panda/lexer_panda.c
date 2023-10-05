@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 17:19:49 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:22:25 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -750,6 +750,7 @@ void	panda(char *line, t_info *status)
 		lexer_panda_error_check(&flag, status);
 		error_printf("syntax error \n");
 		status->error = -1;
+		free_null(line);
 		return ;
 	}
 	data = make_stack(status, NULL);
