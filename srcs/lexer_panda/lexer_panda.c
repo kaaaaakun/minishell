@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 15:22:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:19:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,15 @@ void	search_env_variable(char *line, int *i, int *flag)
 		{
 			minun_quote(line[*i], flag);
 			*i += 1;
+		}
+		else if (line[*i] == '<' && line[*i + 1] != '<' && !(*flag & IN_QUOTE))
+		{
+			*flag += INPUT_REDIRECT;
+			*i += 1;
+			while (analysis_char(line[*i]) == 2)
+				*i += 1;
+			while (analysis_char(line[*i]) == 1)
+				*i += 1;
 		}
 		else if (line[*i] == '<' && line[*i + 1] == '<' && !(*flag & IN_QUOTE))
 		{
