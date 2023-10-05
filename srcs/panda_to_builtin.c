@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 15:07:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:38:07 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	check_command(t_info *status, t_stack *data)
 	if (data->cmdlist == NULL)
 		return ;
 	if (g_signal == SIGINT)
-		status->exit_status = 130;
+		status->exit_status = 1;
 	if (status->error != 0 && status->pipe != 0)
 		exit(status->error);
 	line = data->cmdlist->content;

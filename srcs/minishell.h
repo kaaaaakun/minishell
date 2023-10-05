@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 17:45:27 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/05 19:03:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	free_list(t_list *head);
 void	free_stack(t_info *status);
 size_t	listsize(t_list *lst);
 
-void	add_sigaction(int i);
+void	add_sigaction(t_info *status, int i);
 void	sighandler_heredoc(int sig);
 void	sighandler_sigint(int sig);
 void	line_read(void);
