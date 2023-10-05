@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 18:28:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 12:42:28 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:39:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 	char	*origin_file_name;
 	char	*tmp_file_name;
 
-	*tmp_fd = 0;
+	*tmp_fd = -1;
 	nbr = 0;
 	origin_file_name = ft_strdup("/tmp/.tmp");
-	tmp_file_name = origin_file_name;
+	tmp_file_name = ft_strdup(origin_file_name);
 	*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 	d_printf("[%d]",*tmp_fd);
 	while (*tmp_fd != -1 && errno != ENOENT && nbr < 5000)
@@ -35,8 +35,7 @@ char	*make_tmp_file(t_info *status, int *tmp_fd)
 		*tmp_fd = open(tmp_file_name, O_APPEND | O_RDWR, 0);
 		nbr++;
 	}
-	if (origin_file_name != tmp_file_name)
-		free(origin_file_name);
+	free(origin_file_name);
 	*tmp_fd = open_ee(status, tmp_file_name, O_CREAT | O_APPEND | O_RDWR, \
 			S_IRWXU | S_IRGRP | S_IROTH);
 	if (*tmp_fd < 0 || status->error != 0)
@@ -70,10 +69,10 @@ char	*check_flag(t_info *status, char *result, int *flag)
 	}
 	else if (*flag & APPENDDOC)
 		check_appendfile(status, result);
-	else if (!(*flag & COMMAND))
-	{
-		check_command_path(status, ft_strjoin_free("/", result, NEITHER_FREE));
-	}
+	// else if (!(*flag & COMMAND))
+	// {
+	// 	check_command_path(status, ft_strjoin_free("/", result, NEITHER_FREE));
+	// }
 	d_printf("\n[[%s]]", result);
 	return (result);
 }

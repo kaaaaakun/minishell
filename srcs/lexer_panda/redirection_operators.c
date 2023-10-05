@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_operators.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/03 20:22:35 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/05 17:29:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*check_heredoc(t_info *status, char *eof_word)
 	check_infile(status, tmp_file_name);
 	(void)status;
 	unlink(tmp_file_name);
+	free_null(tmp_file_name);
 	return (NULL);
 }
 
@@ -101,6 +102,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		ft_putendl_fd(line, tmp_fd);
 		free(line);
 	}
+	free_null(eof_word);
 	add_sigaction(0);
 	close(tmp_fd);
 	(void)status;

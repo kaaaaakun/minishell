@@ -6,7 +6,7 @@
 #    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/05 15:38:26 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/05 15:48:58 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,8 +100,9 @@ debug:
 del:
 	rm -rf .tmp*
 	rm -rf out*
-	rm -rf **.back
-	rm -rf .**.c.un*
+	find . -name "*.o" -exec rm {} +
+	find . -name "*.un~" -exec rm {} +
+	find . -name "*.back" -exec rm {} +
 
 leaks:
 	while [ 1 ]; do leaks -q minishell; sleep 2; done
