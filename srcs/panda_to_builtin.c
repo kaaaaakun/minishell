@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 17:29:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/05 15:07:42 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 void	check_command(t_info *status, t_stack *data)
 {
-	d_printf("[check_command]");
-	char		*line;
+	char	*line;
 
+	d_printf("[check_command]");
 	while (data->next != NULL)
 		data = data->next;
 	if (data->cmdlist == NULL)

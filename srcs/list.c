@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/28 15:56:20 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:08:13 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	free_list(t_list *head)
 	while (head != NULL)
 	{
 		temp = head->next;
+		free(head->content);
 		free(head);
 		head = NULL;
 		head = temp;
