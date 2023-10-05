@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 15:15:34 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/04 18:04:52 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
+		add_sigaction(0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
