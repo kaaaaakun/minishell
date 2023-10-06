@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:09:48 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 19:03:38 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 17:21:47 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ t_list	*search_envlist_for_export(t_info *status, char *str);
 
 //getpath.c
 char	*check_access(char *command, t_info *status);
-
 
 //void	ex_heredoc(char *line);
 void	ex_execve(t_info *status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 20:18:15 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 17:21:40 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	execute_main_process(t_info *status)
 {
 	int			cpy_stdout;
 
-	status->cpy_stdin = dup(0);//標準入出力の管理
+	status->cpy_stdin = dup(0);
 	cpy_stdout = dup(1);
-	panda(status->line, status);//メインの処理
-	debug(status,"panda to check");
-	if (status->pipe == 0 && status->error == 0)//pipeがない（forkがなかった場合）
+	panda(status->line, status);
+	debug(status, "panda to check");
+	if (status->pipe == 0 && status->error == 0)
 	{
 		check_command(status, status->stack);
 		free_stack(status);
@@ -53,20 +53,20 @@ void	execute_main_process(t_info *status)
 
 void	pre_line_check(t_info *status)
 {
-	d_printf("[check_line]", 1);
-	char *line;
+	char	*line;
 
+	d_printf("[check_line]", 1);
 	line = status->line;
 	if (line && *line)
 		add_history(line);
 	if (!line)
-		ex_exit(status, NULL);//EOFの入力で終了
-	if (*line == '\0')//何も入力されてなければreadlineに戻る
+		ex_exit(status, NULL);
+	if (*line == '\0')
 	{
 		rl_on_new_line();
 		return ;
 	}
-	execute_main_process(status);//ここからがメインの処理
+	execute_main_process(status);
 }
 
 int	main(int argc, char *argv[], char *env[])

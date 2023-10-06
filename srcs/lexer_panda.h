@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_panda.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/27 13:19:40 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:20:28 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_MANDA_H
-# define LEXER_MANDA_H
+#ifndef LEXER_PANDA_H
+# define LEXER_PANDA_H
 
 # include "minishell.h"
 
