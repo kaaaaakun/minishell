@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/02 20:09:53 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 18:57:56 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	append_envlist(t_list *env, char *str)
 	(void)temp;
 }
 
-static void	overwrite_envlist(t_list *env, char *str)
+void	overwrite_envlist(t_list *env, char *str)
 {
 	char	*temp;
 

@@ -6,15 +6,18 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/04 17:35:17 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 19:12:53 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "builtin.h"
 
 void	ex_cd(t_info *status, t_stack *data)
 {
 	t_list	*list;
+	char	*path;
+	char	buf[PATH_MAX];
 
 	list = data->cmdlist->next;
 	if (list == NULL || ft_memcmp(list->content, "~", 2) == 0)
@@ -28,7 +31,13 @@ void	ex_cd(t_info *status, t_stack *data)
 		}
 	}
 	else if (check_access(list->content, status) != NULL)
+	{
 		chdir(list->content);
+		path = getcwd(buf, PATH_MAX);
+		if (!path)
+			return ; //returnでいい？
+		overwrite_envlist(search_envlist(status, "PWD"), ft_strjoin("PWD=", buf));
+	}
 	else if (check_access(list->content, status) == NULL)
 	{
 		error_printf("%s: No such file or directory\n", list->content);
@@ -58,3 +67,4 @@ void	ex_cd(t_info *status, t_stack *data)
 
 //Not a directory
 //Permission denied
+//
