@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 17:29:06 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/05 20:00:21 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	sighandler_sigint(int sig)
 {
 	// if (sig == SIGINT)
 	// 	ft_printf("\n[sicnal]>> ");
+	(void)sig;
 	rl_on_new_line();
 	ft_printf("\n");
-	(void)sig;
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_signal = SIGINT;
@@ -37,10 +37,13 @@ void	sighandler_heredoc(int sig)
 
 }
 
-void	add_sigaction(int flag)
+void	add_sigaction(t_info *status, int flag)
 {
 	struct sigaction	sa;
 
+	if (g_signal == SIGINT)
+		status->exit_status += 0;
+	g_signal = 0;
 	sigemptyset(&sa.sa_mask);
 	if (flag == 0) /*main, parent process, child process*/
 	{

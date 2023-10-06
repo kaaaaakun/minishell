@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_operators.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/05 18:15:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 19:02:59 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	eof_len = ft_strlen(eof_word) + 1;
 	while (1)
 	{
-		add_sigaction(1);
+		add_sigaction(status, 1);
 		if (g_signal == SIGINT)
 			status->exit_status = 1;
 		line = readline(">");
@@ -103,7 +103,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		free(line);
 	}
 	free_null(eof_word);
-	add_sigaction(0);
+	add_sigaction(status, 0);
 	close(tmp_fd);
 	(void)status;
 }

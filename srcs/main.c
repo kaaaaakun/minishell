@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/04 18:04:52 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/05 20:18:15 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	execute_main_process(t_info *status)
 	}
 	dup2(status->cpy_stdin, 0);
 	dup2(cpy_stdout, 1);
+	close (status->cpy_stdin);
+	close (cpy_stdout);
 }
 
 void	pre_line_check(t_info *status)
@@ -82,13 +84,11 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
-		add_sigaction(0);
+		add_sigaction(status, 0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
 		reset_status(status);
-		if (g_signal == SIGINT)
-			status->exit_status = 130;
 	}
 	(void)argv;
 	(void)env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 18:19:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:21:15 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -752,8 +752,14 @@ void	some_pipes_exec_panda(t_info *status, t_stack *data, char *line, int flag)
 	i++;
 	while (i--)
 	{
-		if (waitpid(-1, &exit_status, 0) == pid)
-			status->exit_status = WEXITSTATUS(exit_status);
+		if (waitpid(-1, &exit_status, 0) == status->pid)
+		{
+			if (WIFEXITED(exit_status))
+				status->exit_status = WEXITSTATUS(exit_status);
+			else if (WIFSIGNALED(exit_status))
+				status->exit_status = WTERMSIG(exit_status) + 128;
+		}
+			// status->exit_status = WEXITSTATUS(exit_status);
 	}
 	(void)data;
 }
