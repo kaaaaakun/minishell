@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/06 19:12:53 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 20:45:51 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ void	ex_cd(t_info *status, t_stack *data)
 	if (list == NULL || ft_memcmp(list->content, "~", 2) == 0)
 	{
 		if (search_env(status, "HOME") != NULL)
-			chdir(search_env(status, "HOME"));
+		{
+			if (chdir(search_env(status, "HOME")) == -1)
+			{
+				error_printf("Permission denied\n");
+				status->exit_status = 1;
+			}
+		}
 		else
 		{
 			error_printf("cd: HOME not set\n");
@@ -32,11 +38,23 @@ void	ex_cd(t_info *status, t_stack *data)
 	}
 	else if (check_access(list->content, status) != NULL)
 	{
-		chdir(list->content);
-		path = getcwd(buf, PATH_MAX);
-		if (!path)
-			return ; //returnでいい？
-		overwrite_envlist(search_envlist(status, "PWD"), ft_strjoin("PWD=", buf));
+		if (access(list->content, X_OK) != 0)
+		{
+			error_printf("Permission denied\n");
+			status->exit_status = 1;
+		}
+		else
+		{
+			if (chdir(list->content) == -1)
+			{
+				error_printf("Permission denied\n");
+				status->exit_status = 1;
+			}
+			path = getcwd(buf, PATH_MAX);
+			if (!path)
+				return ; //returnでいい？
+			overwrite_envlist(search_envlist(status, "PWD"), ft_strjoin("PWD=", buf));
+		}
 	}
 	else if (check_access(list->content, status) == NULL)
 	{
@@ -65,6 +83,5 @@ void	ex_cd(t_info *status, t_stack *data)
 	//bash-3.2$ ls
 	//a          cd/        minishell/ test/
 
-//Not a directory
-//Permission denied
-//
+//minishellのような実行ファイル Not a directory
+//chmod -x ?? Permission denied

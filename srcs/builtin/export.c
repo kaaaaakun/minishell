@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/06 18:57:56 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 20:11:38 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	overwrite_envlist(t_list *env, char *str)
 {
 	char	*temp;
 
+	if (!env || !str)
+		return ;
 	temp = env->content;
 	env->content = str;
 	(void)temp;
