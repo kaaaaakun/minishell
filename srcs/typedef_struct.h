@@ -46,6 +46,7 @@ typedef struct s_info
 	char			*line;
 	struct s_stack	*stack;
 	int				cpy_stdin;
+	int				cpy_stdout;
 }	t_info;
 
 #endif

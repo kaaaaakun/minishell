@@ -63,7 +63,10 @@ void	ex_export(t_info *status, t_stack *data)
 		{
 			flag = plus_equal_or_not(list->content);
 			if (valid_left(list->content, flag) == 0)
+			{
 				error_printf(" not a valid identifier\n");
+				status->exit_status = 1;
+			}
 			else
 			{
 				i = 0;

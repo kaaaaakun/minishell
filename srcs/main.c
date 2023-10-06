@@ -34,10 +34,8 @@ void	reset_status(t_info *status)
 
 void	execute_main_process(t_info *status)
 {
-	int			cpy_stdout;
-
 	status->cpy_stdin = dup(0);
-	cpy_stdout = dup(1);
+	status->cpy_stdout = dup(1);
 	panda(status->line, status);
 	debug(status, "panda to check");
 	if (status->pipe == 0 && status->error == 0)
@@ -46,9 +44,9 @@ void	execute_main_process(t_info *status)
 		free_stack(status);
 	}
 	dup2(status->cpy_stdin, 0);
-	dup2(cpy_stdout, 1);
 	close (status->cpy_stdin);
-	close (cpy_stdout);
+	dup2(status->cpy_stdout, 1);
+	close (status->cpy_stdout);
 }
 
 void	pre_line_check(t_info *status)

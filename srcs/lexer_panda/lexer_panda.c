@@ -762,7 +762,6 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 
 void	panda(char *line, t_info *status)
 {
-	t_stack	*data;
 	int		flag;
 	int		i;
 
@@ -779,7 +778,7 @@ void	panda(char *line, t_info *status)
 		free_null(line);
 		return ;
 	}
-	data = make_stack(status, NULL);
+	make_stack(status, NULL);
 	status->pipe = check_and_count_pipe(status, line);
 	if (status->pipe == 0)
 		exec_panda(line, status, flag);

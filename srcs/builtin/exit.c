@@ -18,6 +18,8 @@ void	ex_exit(t_info *status, t_stack *data)
 
 	if (status->line == NULL)
 	{
+		dup2(status->cpy_stdout, 1);
+		close (status->cpy_stdout);
 		ft_printf("exit\n", 0);
 		exit(0);
 	}
@@ -25,6 +27,8 @@ void	ex_exit(t_info *status, t_stack *data)
 	if (list == NULL || status == NULL || list->next == NULL
 		|| ft_memcmp(list->next->content, "--", 3) == 0)
 	{
+		dup2(status->cpy_stdout, 1);
+		close (status->cpy_stdout);
 		ft_printf("exit\n");
 		exit(0);
 	}
@@ -36,7 +40,9 @@ void	ex_exit(t_info *status, t_stack *data)
 	else if (ft_str_is_num(list->next->content) == 1)
 	{
 		status->exit_status = ft_atoi(list->next->content) % 256;
-		error_printf("exit\n");
+		dup2(status->cpy_stdout, 1);
+		close (status->cpy_stdout);
+		ft_printf("exit\n");
 		exit(status->exit_status);
 	}
 	else if (ft_str_is_num(list->next->content) == 0)
