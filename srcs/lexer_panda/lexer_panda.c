@@ -92,6 +92,15 @@ void	search_env_variable(char *line, int *i, int *flag)
 			minun_quote(line[*i], flag);
 			*i += 1;
 		}
+		else if (line[*i] == '<' && line[*i + 1] != '<' && !(*flag & IN_QUOTE))
+		{
+			*flag += INPUT_REDIRECT;
+			*i += 1;
+			while (analysis_char(line[*i]) == 2)
+				*i += 1;
+			while (analysis_char(line[*i]) == 1)
+				*i += 1;
+		}
 		else if (line[*i] == '<' && line[*i + 1] == '<' && !(*flag & IN_QUOTE))
 		{
 			*flag += HEREDOC;

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/05 15:08:13 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/05 18:01:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	free_list(t_list *head)
 {
 	t_list	*temp;
 
+	d_printf("free adress:%p", head);
 	while (head != NULL)
 	{
 		temp = head->next;
