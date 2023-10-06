@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/06 16:46:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 13:12:22 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	check_builtin_execve(t_info *status, t_stack *data)
 	else if (ft_memcmp(line, "cd", 3) == 0)
 		ex_cd(status, data);
 	else if (ft_memcmp(line, "pwd", 4) == 0)
-		ex_pwd();
+		ex_pwd(status, data);
 	else if (ft_memcmp(line, "export", 7) == 0)
 		ex_export(status, data);
 	else if (ft_memcmp(line, "unset", 6) == 0)
