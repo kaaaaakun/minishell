@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/02 20:09:53 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 17:17:50 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ static void	append_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	if (ft_strchr(env->content, '=') != NULL)
-		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1, NEITHER_FREE);
+		env->content = ft_strjoin_free(env->content, \
+			ft_strchr(str, '=') + 1, NEITHER_FREE);
 	else
 	{
 		env->content = ft_strjoin_free(env->content, "=", NEITHER_FREE);
-		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1, NEITHER_FREE);
+		env->content = ft_strjoin_free(env->content, \
+			ft_strchr(str, '=') + 1, NEITHER_FREE);
 	}
 	(void)temp;
 }
@@ -73,17 +75,23 @@ void	ex_export(t_info *status, t_stack *data)
 					while (list->content[i] != '=' && list->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist_for_export(status, ft_substr(list->content, 0, i)) != NULL)
+				if (search_envlist_for_export(status, \
+						ft_substr(list->content, 0, i)) != NULL)
 				{
 					if (flag == 1)
-						append_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+						append_envlist(search_envlist_for_export(status, \
+							ft_substr(list->content, 0, i)), \
+								ft_strdup(list->content));
 					else
-						overwrite_envlist(search_envlist_for_export(status, ft_substr(list->content, 0, i)), ft_strdup(list->content));
+						overwrite_envlist(search_envlist_for_export(status, \
+							ft_substr(list->content, 0, i)), \
+								ft_strdup(list->content));
 				}
 				else
 				{
 					if (flag == 1)
-						push_back(&status->env, no_left_but_plus(ft_strdup(list->content)));
+						push_back(&status->env, \
+							no_left_but_plus(ft_strdup(list->content)));
 					else
 						push_back(&status->env, ft_strdup(list->content));
 				}

@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:43:53 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/04 17:17:25 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:22:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	split_free(char **result)
 void	error_exit(char *msg)
 {
 	perror(msg);
-//	exit_ee(1);
 }
 
 void	fork_error_exit(char *msg)

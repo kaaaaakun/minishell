@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/05 18:01:09 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:22:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	push_back(t_list **head, char *str)
 
 	newlist = create_list(str);
 	if (!newlist || !str)
-		return ; //子プロセスのみ終了したい
+		return ;
 	if (*head == NULL)
 	{
 		*head = newlist;

@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/28 13:53:07 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:22:30 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ typedef struct s_list
 
 typedef struct s_stack
 {
-	struct s_list		*outputlist;	//>
-	struct s_list		*appendlist;	//>>
-	struct s_list		*inputlist;		//<
-	struct s_list		*heredoclist;	//<<
+	struct s_list		*outputlist;
+	struct s_list		*appendlist;
+	struct s_list		*inputlist;	
+	struct s_list		*heredoclist;
 	struct s_list		*cmdlist;
 	int					fork;
 	struct s_stack		*next;

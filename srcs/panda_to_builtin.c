@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   panda_to_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 19:38:07 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/06 16:46:22 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,11 @@
 #include "pipex.h"
 #include "builtin.h"
 
-void	check_command(t_info *status, t_stack *data)
+void	check_builtin_execve(t_info *status, t_stack *data)
 {
 	char	*line;
 
-	d_printf("[check_command]");
-	while (data->next != NULL)
-		data = data->next;
-	if (data->cmdlist == NULL)
-		return ;
-	if (g_signal == SIGINT)
-		status->exit_status = 1;
-	if (status->error != 0 && status->pipe != 0)
-		exit(status->error);
 	line = data->cmdlist->content;
-	d_printf("[line:%s]", line);
 	if (ft_memcmp(line, "exit", 5) == 0)
 		ex_exit(status, data);
 	else if (ft_memcmp(line, "echo", 5) == 0)
@@ -48,4 +38,16 @@ void	check_command(t_info *status, t_stack *data)
 	if (status->pipe != 0)
 		exit(0);
 	rl_on_new_line();
+}
+
+void	check_command(t_info *status, t_stack *data)
+{
+	d_printf("[check_command]");
+	if (data->cmdlist == NULL)
+		return ;
+	if (g_signal == SIGINT)
+		status->exit_status = 1;
+	if (status->error != 0 && status->pipe != 0)
+		exit(status->error);
+	check_builtin_execve(status, data);
 }

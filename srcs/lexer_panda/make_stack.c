@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_stack.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:55 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/30 13:04:17 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:22:52 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,3 @@ t_stack	*make_stack(t_info *status, t_stack *pre_data)
 		pre_data->next = data;
 	return (data);
 }
-

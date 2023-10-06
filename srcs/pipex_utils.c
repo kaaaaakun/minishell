@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:17:45 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/30 13:37:35 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:22:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ void	exit_ee(t_info *status, int nbr)
 {
 	status->exit_status = nbr;
 	status->error = nbr;
-//	int	fork_id;
-//
-//	fork_id = fork();
-//	if (fork_id == 0)
-//		exit (nbr);
 }
 
 int	open_ee(t_info *status, char *str, int oflag, int orflag)
