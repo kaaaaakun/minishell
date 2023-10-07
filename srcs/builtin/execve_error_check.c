@@ -6,12 +6,17 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:50:35 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:52:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 21:11:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtin.h"
+
+void	erro_msg_no_such_file(t_info *status, char *content);
+void	erro_msg_is_a_directory(t_info *status, char *content);
+void	erro_msg_permission_denied(t_info *status, char *content);
+void	erro_msg_not_command_found(t_info *status, char *content);
 
 void	is_no_file_error(t_info *status)
 {

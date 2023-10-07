@@ -6,15 +6,24 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:56:06 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 21:11:50 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
+#include "builtin.h"
 #include "typedef_struct.h"
 #include <errno.h>
 
+void	is_no_file_error(t_info *status);
+void	is_directory_error(t_info *status, char *path);
+void	is_non_xok(t_info *status);
+
+void	erro_msg_no_such_file(t_info *status, char *content);
+void	erro_msg_is_a_directory(t_info *status, char *content);
+void	erro_msg_permission_denied(t_info *status, char *content);
+void	erro_msg_not_command_found(t_info *status, char *content);
 char	*check_access(char *command, t_info *status);
 
 char	**generate_cmdstr(t_info *status)

@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/07 19:38:29 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/07 21:15:26 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS_DIR = objs
 RL_DIR = $(shell brew --prefix readline)
 
 SRCS = \
-	srcs/debug.c \
+	   srcs/debug.c \
 	srcs/panda_to_builtin.c \
 	srcs/pipex_utils2.c \
 	srcs/utils.c \
@@ -29,7 +29,9 @@ SRCS = \
 	srcs/builtin/execve.c \
 	srcs/builtin/echo.c \
 	srcs/builtin/export.c \
+	srcs/builtin/execve_error_mssage.c \
 	srcs/builtin/pwd.c \
+	srcs/builtin/execve_error_check.c \
 	srcs/builtin/exit.c \
 	srcs/builtin/unset.c \
 	srcs/builtin/env.c \
