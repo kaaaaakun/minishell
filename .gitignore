@@ -5,6 +5,7 @@
 *.un~
 *.swp
 *.json
+*.plist
 minishell
 minishell_tester
 minishell-tester
