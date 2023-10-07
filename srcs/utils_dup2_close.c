@@ -21,8 +21,8 @@ void	close_pipe(t_info *status, int *pipefd)
 
 void	skip_space(char *post_word, int *i)
 {
-	while (post_word[*i] == ' ')
-		i += 1;
+	while (post_word[*i] == ' ' || post_word[*i] == '	')
+		*i += 1;
 }
 
 void	dup2_close_pipe(t_info *status, int *pipefd, int flag)

@@ -34,7 +34,7 @@ char	*append_non_quote_env(char *result, char *post_word)
 	end = 0;
 	while (post_word[start] != '\0')
 	{
-		while (post_word[start] != '\0' && post_word[start] != ' ')
+		while (post_word[start] != '\0' && (post_word[start] != ' ' || post_word[start] != '	'))
 			start++;
 		if (end == 0)
 			result = make_first_space_splited_word(result, \
@@ -43,7 +43,7 @@ char	*append_non_quote_env(char *result, char *post_word)
 		space_splited_word = ft_substr(post_word, end, start - end);
 		result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);
 		skip_space(post_word, &start);
-		if (post_word[start - 1] == ' ')
+		if (post_word[start - 1] == ' ' || post_word[start - 1] == '	')
 			result = ft_strjoin_free(result, "\' ", FIRST_FREE);
 		else
 			result = ft_strjoin_free(result, "\'", FIRST_FREE);

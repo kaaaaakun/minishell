@@ -17,7 +17,7 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\'' && line[i + k] != '\"' && \
+	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != '	' && \
 		line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
 		((line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
@@ -41,7 +41,8 @@ char	*process_single_double_dollar(t_info *status, \
 {
 	char	*exit_nbr;
 
-	if (line[*i] == '$' && (line[*i + 1] == '\0' || line[*i + 1] == ' '))
+	if (line[*i] == '$' && (line[*i + 1] == '\0' || 
+	line[*i + 1] == ' ' || line[*i + 1] == '	'))
 	{
 		result = ft_strjoin_free(result, "$", FIRST_FREE);
 		*i += 1;
@@ -66,7 +67,7 @@ int	analysis_char(char c)
 	if (ft_isdigit(c) || ft_isalpha(c) || c == '-' || c == '\"' || c == '\'' \
 		|| c == '/' || c == '$' || c == '.' || c == '+' || c == '_')
 		return (1);
-	if (c == ' ')
+	if (c == ' ' && c == '	')
 		return (2);
 	if (c == '<')
 		return (3);

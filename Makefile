@@ -107,9 +107,13 @@ $(LIBFT):
 debug:
 	make WITH_DEBUG=1
 
+clang:
+	clang --analyze $(SRCS) $(INCLUDE)
+
 del:
 	rm -rf .tmp*
 	rm -rf out*
+	rm -rf *.plist
 	find . -name "*.o" -exec rm {} +
 	find . -name "*.un~" -exec rm {} +
 	find . -name "*.back" -exec rm {} +

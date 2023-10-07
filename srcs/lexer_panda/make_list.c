@@ -87,7 +87,7 @@ int	search_dollar(char *line)
 			i++;
 		}
 		i++;
-		if (line[i] == '\0' || line[i] == ' ')
+		if (line[i] == '\0' || line[i] == ' ' || line[i] == '	')
 		{
 			d_printf("$ : $ only\n");
 			i++;

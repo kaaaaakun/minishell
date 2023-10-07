@@ -54,15 +54,15 @@ void	pre_line_check(t_info *status)
 
 	d_printf("[check_line]", 1);
 	line = status->line;
-	if (line && *line)
-		add_history(line);
 	if (!line)
 		ex_exit(status, NULL);
-	if (*line == '\0')
+	else if (*line == '\0')
 	{
 		rl_on_new_line();
 		return ;
 	}
+	else
+		add_history(line);
 	execute_main_process(status);
 }
 

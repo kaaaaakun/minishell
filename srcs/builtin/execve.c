@@ -78,9 +78,7 @@ void	search_paht_and_exec(t_info *status)
 	int		fd_nbr;
 	char	*path;
 	char	**cmd;
-	char	*content;
 
-	content = status->stack->cmdlist->content;
 	cmd = generate_cmdstr(status);
 	path = check_access(status->stack->cmdlist->content, status);
 	errno = 0;
@@ -92,7 +90,7 @@ void	search_paht_and_exec(t_info *status)
 	if (access(path, X_OK) != 0)
 		is_non_xok(status);
 	execve(path, cmd, env_list(status));
-	erro_msg_not_command_found(status, content);
+	split_free(cmd);
 }
 
 void	ex_execve(t_info *status)

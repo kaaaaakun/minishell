@@ -17,6 +17,8 @@ t_list	*create_list(char *str)
 {
 	t_list	*newlist;
 
+	if (!str)
+		return (NULL);
 	newlist = (t_list *)malloc(sizeof(t_list));
 	if (!newlist)
 		return (NULL);
