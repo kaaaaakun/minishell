@@ -15,23 +15,26 @@
 
 void	lexer_panda_error_check(int *flag, t_info *status)
 {
+	status->exit_status = 2;
 	if (*flag & D_QUOTE)
 		ft_putendl_fd("minishell: syntax error near unexpected token `\"'",
 			2);
 	else if (*flag & S_QUOTE)
 		ft_putendl_fd("minishell: syntax error near unexpected token `\''",
 			2);
-	else if (!(*flag & COMMAND))
-		ft_putendl_fd("minishell: syntax error near unexpected token `|'",
-			2);
 	else if (*flag & INPUT_REDIRECT)
 		ft_putendl_fd("minishell: syntax error near unexpected token `<'",
+			2);
+	else if (*flag & HEREDOC)
+		ft_putendl_fd("minishell: syntax error near unexpected token `<<'",
+			2);
+	else if (*flag & APPENDDOC)
+		ft_putendl_fd("minishell: syntax error near unexpected token `>>'",
 			2);
 	else if (*flag & OUTPUT_REDIRECT)
 		ft_putendl_fd("minishell: syntax error near unexpected token `>'",
 			2);
-	else if (*flag & NEED_FILE)
-		ft_putendl_fd("minishell: syntax error near unexpected token `newline'",
+	else if (!(*flag & COMMAND))
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'",
 			2);
-	(void)status;
 }

@@ -475,18 +475,13 @@ int	process_input_redirect_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (*flag & NEED_FILE)
+	if (*flag & NEED_FILE || 2 < i)
 	{
-		*flag = ERROR + INPUT_REDIRECT;
+		*flag = ERROR;
 	}
-	else if (2 < i)
-	{
-		*flag += ERROR;
-		*flag += INPUT_REDIRECT;
-	}
-	else if (i == 2)
+	if (i == 2)
 		*flag = *flag | HEREDOC;
-	else if (i == 1)
+	else if (i != 2)
 		*flag = *flag | INPUT_REDIRECT;
 	return (i);
 	(void)status;
@@ -502,18 +497,13 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (*flag & NEED_FILE)
+	if (*flag & NEED_FILE || 2 < i)
 	{
-		*flag = ERROR + OUTPUT_REDIRECT;
+		*flag = ERROR;
 	}
-	else if (2 < i)
-	{
-		*flag += ERROR;
-		*flag += OUTPUT_REDIRECT;
-	}
-	else if (i == 2)
+	if (i == 2 || (i == 4 && *flag == ERROR))
 		*flag = *flag | APPENDDOC;
-	else if (i == 1)
+	else if (i != 2 )
 		*flag = *flag | OUTPUT_REDIRECT;
 	return (i);
 	(void)status;
