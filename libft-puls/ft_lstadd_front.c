@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 11:16:18 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/24 18:43:44 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 13:39:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_front(t_libft_list **lst, t_libft_list *new)
+void	ft_lstadd_front(t_l_list **lst, t_l_list *new)
 {
 	if (!lst || !new)
 		return ;

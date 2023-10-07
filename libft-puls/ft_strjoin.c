@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 15:09:56 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/07/12 10:16:42 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:35:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,25 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_memcpy (&result[s1_len], s2, s2_len);
 	result[s1_len + s2_len] = '\0';
 	return (result);
+}
+
+char	*ft_strjoin_free(char const *s1, char const *s2, int free_flag)
+{
+	char	*joined_str;
+
+	joined_str = ft_strjoin(s1, s2);
+	if (free_flag == FIRST_FREE || free_flag == BOTH_FREE)
+	{
+		free((void *)s1);
+		s1 = NULL;
+	}
+	if (free_flag == SECOND_FREE || free_flag == BOTH_FREE)
+	{
+		free((void *)s2);
+		s1 = NULL;
+	}
+	if (joined_str == NULL)
+		exit (1);
+	return (joined_str);
+	(void)free_flag;
 }

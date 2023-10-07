@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   utils_malloc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/28 11:38:58 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 13:39:44 by tokazaki         ###   ########.fr       */
+/*   Created: 2023/10/07 15:36:58 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/10/07 15:38:14 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstdelone(t_l_list *lst, void (*del)(void*))
+void	malloc_error(void)
 {
-	if (!lst || !del)
-		return ;
-	del(lst->content);
-	free(lst);
+	perror("malloc");
+	exit (1);
 }
-//17:エラー処理
-//19:delにしたがって処理
-//20:構造体ごとfreeする
+
+void	free_null(void *ptr)
+{
+	free(ptr);
+	ptr = NULL;
+}

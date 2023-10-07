@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/06 17:21:40 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:47:22 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	execute_main_process(t_info *status)
 	status->cpy_stdin = dup(0);
 	status->cpy_stdout = dup(1);
 	panda(status->line, status);
-	debug(status, "panda to check");
 	if (status->pipe == 0 && status->error == 0)
 	{
 		check_command(status, status->stack);

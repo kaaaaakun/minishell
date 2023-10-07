@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:44:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/06 19:06:27 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 19:17:11 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	ex_pwd(t_info *status, t_stack *data)
 		if (search_envlist(status, "PWD") == NULL)
 			error_printf("PWD is not set.\n");
 		else
-			ft_printf("%s\n", ft_strchr(search_envlist(status, "PWD")->content, '=') + 1);
+			ft_printf("%s\n", ft_strchr(search_envlist(status, \
+				"PWD")->content, '=') + 1);
 	}
 	else
 		ft_printf("%s\n", buf);
 }
-

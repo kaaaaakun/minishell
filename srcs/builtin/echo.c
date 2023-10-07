@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/17 16:19:55 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 19:17:46 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	checkflag(char *str)
 		while (*str == 'n')
 			str++;
 		if (*str == '\0')
-			return (1);//-n
+			return (1);
 	}
-	return (0);//通常
+	return (0);
 }
 
 void	ex_echo(t_info *status, t_stack *data)

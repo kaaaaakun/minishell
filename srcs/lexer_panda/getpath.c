@@ -6,19 +6,13 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 12:35:48 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 15:53:38 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipex.h"
 #include "lexer_panda.h"
-
-void	malloc_error(void)
-{
-	perror("malloc");
-	exit (1);
-}
 
 char	**getpath(t_info *status)
 {

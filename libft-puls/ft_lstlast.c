@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 11:32:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/08/24 18:43:49 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 13:39:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_libft_list	*ft_lstlast(t_libft_list *lst)
+t_l_list	*ft_lstlast(t_l_list *lst)
 {
 	if (!lst)
 		return (NULL);

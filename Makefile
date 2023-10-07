@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/05 18:25:15 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/07 19:38:29 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,43 +17,51 @@ SRCS_DIR = srcs
 OBJS_DIR = objs
 RL_DIR = $(shell brew --prefix readline)
 
-SRCS = $(addprefix $(SRCS_DIR)/, \
-		main.c \
-		panda_to_builtin.c \
-		add_sigaction.c \
-		list.c \
-		utils.c \
-		debug.c \
-		pipex_utils.c \
-		pipex_utils2.c \
-		$(addprefix builtin/, \
-			exit.c \
-			echo.c \
-			execve.c \
-			cd.c \
-			pwd.c \
-			env.c \
-			export.c \
-			export_utils.c \
-			unset.c \
-			) \
-		$(addprefix lexer_panda/, \
-			make_env_list.c \
-			make_list.c \
-			lexer_panda.c \
-			make_stack.c \
-			chck_flag_error.c \
-			getpath.c \
-			panda_utils.c \
-			redirection_operators.c \
-			mini_libft.c \
-			) \
-		)
+SRCS = \
+	srcs/debug.c \
+	srcs/panda_to_builtin.c \
+	srcs/pipex_utils2.c \
+	srcs/utils.c \
+	srcs/utils_find_token.c \
+	srcs/add_sigaction.c \
+	srcs/utils_dup2_close.c \
+	srcs/list.c \
+	srcs/builtin/execve.c \
+	srcs/builtin/echo.c \
+	srcs/builtin/export.c \
+	srcs/builtin/pwd.c \
+	srcs/builtin/exit.c \
+	srcs/builtin/unset.c \
+	srcs/builtin/env.c \
+	srcs/builtin/cd.c \
+	srcs/builtin/export_utils.c \
+	srcs/lexer_panda/panda_pre_check.c \
+	srcs/lexer_panda/chck_flag_error.c \
+	srcs/lexer_panda/make_operation.c \
+	srcs/lexer_panda/make_cmdlist.c \
+	srcs/lexer_panda/make_env_list.c \
+	srcs/lexer_panda/chck_dollar.c \
+	srcs/lexer_panda/count_operations.c \
+	srcs/lexer_panda/lexer_panda.c \
+	srcs/lexer_panda/env_variable.c \
+	srcs/lexer_panda/panda_process_operation.c \
+	srcs/lexer_panda/make_stack.c \
+	srcs/lexer_panda/panda_utils_quote.c \
+	srcs/lexer_panda/mini_libft.c \
+	srcs/lexer_panda/getpath.c \
+	srcs/lexer_panda/redirection_operators.c \
+	srcs/lexer_panda/process_input_count.c \
+	srcs/lexer_panda/make_list.c \
+	srcs/lexer_panda/panda_some_pipes.c \
+	srcs/pipex_utils.c \
+	srcs/utils_malloc.c \
+	srcs/main.c
+
 OBJS = $(SRCS:.c=.o)
 
 CC		= cc
 CFLAGS  = -Wall -Wextra -Werror -g
-INCLUDE = -I ./libft-puls -I ./srcs -I $(RL_DIR)/include
+INCLUDE = -I ./libft-puls -I ./includes -I $(RL_DIR)/include
 LDFLAGS	= -lreadline -L $(RL_DIR)/lib
 RM		= rm -f
 

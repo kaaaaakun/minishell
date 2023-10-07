@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/06 20:34:07 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:56:06 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,69 +36,32 @@ char	**generate_cmdstr(t_info *status)
 	return (cmdstr);
 }
 
-void	erro_msg_no_such_file(t_info *status, char *content)
+char	**env_list(t_info *status)
 {
-	error_printf("minishell: %s: No such file or directory\n", content);
-	exit (127);
-	(void)status;
-}
+	char	**result;
+	t_list	*tmp_list;
+	int		listsize;
 
-void	erro_msg_is_a_directory(t_info *status, char *content)
-{
-	error_printf("%s: is a directory\n", content);
-	exit (126);
-	(void)status;
-}
-
-void	erro_msg_permission_denied(t_info *status, char *content)
-{
-	error_printf("%s: Permission denied\n", content);
-	exit (126);
-	(void)status;
-}
-
-void	erro_msg_not_command_found(t_info *status, char *content)
-{
-	error_printf("%s: command not found\n", content);
-	exit (127);
-	(void)status;
-}
-
-void	is_no_file_error(t_info *status)
-{
-	char	*content;
-
-	content = status->stack->cmdlist->content;
-	if (content[0] == '.' || content[0] == '/')
-		erro_msg_no_such_file(status, content);
-	else
-		erro_msg_not_command_found(status, content);
-}
-
-void	is_directory_error(t_info *status, char *path)
-{
-	char	*content;
-
-	content = status->stack->cmdlist->content;
-	if (content[0] == '.' || path[0] == '/')
-		erro_msg_is_a_directory(status, content);
-	if (content[0] == '/')
-		erro_msg_no_such_file(status, content);
-	else
-		erro_msg_not_command_found(status, content);
-}
-
-void	is_non_xok(t_info *status)
-{
-	char	*content;
-
-	content = status->stack->cmdlist->content;
-	if (content[0] == '.' && content[1] == '/')
-		erro_msg_permission_denied(status, content);
-	if (content[0] == '/')
-		erro_msg_no_such_file(status, content);
-	else
-		erro_msg_not_command_found(status, content);
+	listsize = 0;
+	tmp_list = status->env;
+	while (tmp_list != NULL)
+	{
+		tmp_list = tmp_list->next;
+		listsize++;
+	}
+	result = (char **)ft_calloc (sizeof(char *), listsize + 1);
+	if (result == NULL)
+		return (NULL);
+	listsize = 0;
+	tmp_list = status->env;
+	while (tmp_list != NULL)
+	{
+		result[listsize] = tmp_list->content;
+		tmp_list = tmp_list->next;
+		listsize++;
+	}
+	result[listsize] = NULL;
+	return (result);
 }
 
 void	search_paht_and_exec(t_info *status)
@@ -119,7 +82,7 @@ void	search_paht_and_exec(t_info *status)
 		is_directory_error(status, path);
 	if (access(path, X_OK) != 0)
 		is_non_xok(status);
-	execve(path, cmd, NULL);
+	execve(path, cmd, env_list(status));
 	erro_msg_not_command_found(status, content);
 }
 

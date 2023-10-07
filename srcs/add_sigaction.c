@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/05 20:41:49 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 20:01:49 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,28 @@ void	add_sigaction(t_info *status, int flag)
 	}
 }
 
-// void	add_sigaction(int flag)
-// {
-// 	signal(SIGINT, sighandler_sigint); /*ctrl+C*/
-// 	signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
-	//	sigemptyset(&sa_int.sa_mask);
-	//	sigaddset(&sa_int.sa_mask, SIGINT);
-	//	sa_int.sa_handler = sa_sigint;
-	//	sa_int.sa_flags = 0;
-	//	if (sigaction(SIGINT, &sa_int, NULL) == -1)
-	//	{
-	//		perror("sigaction");
-	//		ex_exit(NULL);
-	//	}
-// }
-
-// ctrl-C displays a new prompt on a new line.
-// ctrl-D exits the shell. readlineにNULLが送られex_exitに入る
-// ctrl-\ does nothing.
-
-// signal, sigaction, sigemptyset, sigaddset
-
-// parent, heredoc, child, main
-// 子プロセスがいたら子プロセスをkill
-// heredocがいたらeredocを終わらせる
-// global 変数でのみ情報が引き渡される
+//// void	add_sigaction(int flag)
+//// {
+//// 	signal(SIGINT, sighandler_sigint); /*ctrl+C*/
+//// 	signal(SIGQUIT, SIG_IGN); /*CTRL + \*/
+//	//	sigemptyset(&sa_int.sa_mask);
+//	//	sigaddset(&sa_int.sa_mask, SIGINT);
+//	//	sa_int.sa_handler = sa_sigint;
+//	//	sa_int.sa_flags = 0;
+//	//	if (sigaction(SIGINT, &sa_int, NULL) == -1)
+//	//	{
+//	//		perror("sigaction");
+//	//		ex_exit(NULL);
+//	//	}
+//// }
+//
+//// ctrl-C displays a new prompt on a new line.
+//// ctrl-D exits the shell. readlineにNULLが送られex_exitに入る
+//// ctrl-\ does nothing.
+//
+//// signal, sigaction, sigemptyset, sigaddset
+//
+//// parent, heredoc, child, main
+//// 子プロセスがいたら子プロセスをkill
+//// heredocがいたらeredocを終わらせる
+//// global 変数でのみ情報が引き渡される

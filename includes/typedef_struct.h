@@ -6,17 +6,12 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/06 17:22:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:42:07 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPEDEF_STRUCT_H
 # define TYPEDEF_STRUCT_H
-
-# define BOTH_FREE 0
-# define FIRST_FREE 1
-# define SECOND_FREE 2
-# define NEITHER_FREE 3
 
 typedef struct s_list
 {

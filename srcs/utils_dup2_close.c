@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make_stack.c                                       :+:      :+:    :+:   */
+/*   utils_dup2_close.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 17:54:55 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/07 14:24:42 by tokazaki         ###   ########.fr       */
+/*   Created: 2023/10/07 15:57:38 by tokazaki          #+#    #+#             */
+/*   Updated: 2023/10/07 19:28:23 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "lexer_panda.h"
 
-t_stack	*make_stack(t_info *status, t_stack *pre_data)
+void	close_pipe(t_info *status, int *pipefd)
 {
-	t_stack	*data;
+	close_ee(status, pipefd[0]);
+	close_ee(status, pipefd[1]);
+}
 
-	data = (t_stack *)ft_calloc(sizeof(t_stack), 1);
-	if (!data)
-		return (NULL);
-	data->outputlist = NULL;
-	data->appendlist = NULL;
-	data->inputlist = NULL;
-	data->heredoclist = NULL;
-	data->cmdlist = NULL;
-	data->fork = 0;
-	data->next = NULL;
-	if (status->stack == NULL)
-		status->stack = data;
-	else
-		pre_data->next = data;
-	return (data);
+void	skip_space(char *post_word, int *i)
+{
+	while (post_word[*i] == ' ')
+		i += 1;
+}
+
+void	dup2_close_pipe(t_info *status, int *pipefd, int flag)
+{
+	if (flag == PIPE_IN)
+		dup2_ee(status, pipefd[0], flag);
+	else if (flag == PIPE_OUT)
+		dup2_ee(status, pipefd[1], flag);
+	close_pipe(status, pipefd);
 }

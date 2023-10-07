@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/06 20:45:51 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/07 19:59:51 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ void	ex_cd(t_info *status, t_stack *data)
 			}
 			path = getcwd(buf, PATH_MAX);
 			if (!path)
-				return ; //returnでいい？
-			overwrite_envlist(search_envlist(status, "PWD"), ft_strjoin("PWD=", buf));
+				return ;
+			overwrite_envlist(search_envlist(status, "PWD"), \
+				ft_strjoin("PWD=", buf));
 		}
 	}
 	else if (check_access(list->content, status) == NULL)
@@ -63,7 +64,6 @@ void	ex_cd(t_info *status, t_stack *data)
 	}
 	return ;
 }
-
 // cd はHOMEに戻る
 // cd /は一番最初の階層に戻る
 // cd ../ 存在しないディレクトリ名　はcd ../のみ実行される
@@ -82,6 +82,5 @@ void	ex_cd(t_info *status, t_stack *data)
 //bash-3.2$ cd ../ 1234 | touch a
 	//bash-3.2$ ls
 	//a          cd/        minishell/ test/
-
 //minishellのような実行ファイル Not a directory
 //chmod -x ?? Permission denied

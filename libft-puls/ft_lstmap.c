@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 14:16:02 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 12:04:30 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:39:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_libft_list	*ft_lstmap(t_libft_list *lst, void *(*f)(void *), \
+t_l_list	*ft_lstmap(t_l_list *lst, void *(*f)(void *), \
 		void (*del)(void *))
 {
-	t_libft_list	*new_lst;
-	t_libft_list	*new_set;
+	t_l_list	*new_lst;
+	t_l_list	*new_set;
 
 	if (!lst || !f || !del)
 		return (NULL);
