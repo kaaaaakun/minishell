@@ -82,8 +82,8 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 		k = find_next_token(line, *i, *flag);
 		pre_word = ft_substr(&line[*i], 0, k);
 	}
-	else if (line[*i] == '$' && (line[*i + 1] == '\0' || \
-		line[*i + 1] == ' ' || line[*i + 1] == '$' || line[*i + 1] == '?'))
+	else if (line[*i] == '$' && !(line[*i + 1] == '-' || \
+		ft_isdigit(line[*i + 1]) || ft_isalpha(line[*i + 1])))
 		result = process_single_double_dollar(status, line, i, result);
 	else if (line[*i + 1] == '\"' && *flag & D_QUOTE)
 		result = process_single_dollar_in_d_quote(status, line, i, result);

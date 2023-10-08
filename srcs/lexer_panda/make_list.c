@@ -109,7 +109,9 @@ char	*make_list(int *flag, char *line, int len, t_list **list)
 	{
 		exit (1);
 	}
-	push_back(list, result);
+	if (!(*flag & NEED_FILE))
+		push_back(list, result);
 	return (result);
 	(void)flag;
+	(void)list;
 }
