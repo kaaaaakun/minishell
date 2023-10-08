@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42tokyo.>       +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:16:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/06/17 16:16:55 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:04:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strdup(const char *src)
 
 	if (!src)
 		return (NULL);
-	result = malloc(sizeof(char) * (ft_strlen(src) + 1));
+	result = malloc_ee(sizeof(char) * (ft_strlen(src) + 1));
 	if (result == 0)
 		return (NULL);
 	ft_memcpy(result, src, (ft_strlen(src) + 1));
@@ -72,7 +72,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	length = ft_strlen(&str[start]);
 	if (len < length)
 		length = len;
-	result = (char *)malloc((length + 1) * sizeof(char));
+	result = (char *)malloc_ee((length + 1) * sizeof(char));
 	if (result == NULL)
 		return (NULL);
 	result[length] = '\0';
@@ -89,7 +89,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	s1_len = ft_strlen((char *)s1);
 	s2_len = ft_strlen((char *)s2);
-	result = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	result = (char *)malloc_ee((s1_len + s2_len + 1) * sizeof(char));
 	if (result == NULL)
 		return (NULL);
 	ft_memcpy (result, s1, s1_len);

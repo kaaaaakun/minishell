@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 16:29:32 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/06/27 17:58:21 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:04:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = (char *)malloc_ee(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buf)
 		return (free_gnl(content));
 	line = read_line(content, fd, buf);

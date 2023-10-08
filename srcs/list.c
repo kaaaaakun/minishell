@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:08:19 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/06 17:22:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:04:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_list	*create_list(char *str)
 
 	if (!str)
 		return (NULL);
-	newlist = (t_list *)malloc(sizeof(t_list));
+	newlist = (t_list *)malloc_ee(sizeof(t_list));
 	if (!newlist)
 		return (NULL);
 	newlist->content = str;

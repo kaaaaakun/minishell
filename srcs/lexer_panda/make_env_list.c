@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_env_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 19:41:29 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/03 12:42:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 19:14:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,6 @@ t_list	*search_envlist(t_info *status, char *str)
 			break ;
 		env = env->next;
 	}
+	free_null(searched_word);
 	return (env);
 }

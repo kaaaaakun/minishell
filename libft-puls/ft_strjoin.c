@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 15:09:56 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 13:35:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:04:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	s1_len = ft_strlen((char *)s1);
 	s2_len = ft_strlen((char *)s2);
-	result = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	result = (char *)malloc_ee((s1_len + s2_len + 1) * sizeof(char));
 	if (result == NULL)
 		return (NULL);
 	ft_memcpy (result, s1, s1_len);

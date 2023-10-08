@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 14:14:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 14:17:50 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 19:35:27 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ char	*check_dollar(t_info *status, char *line)
 	int		flag;
 	int		j;
 	char	*result;
+	char	*tmp;
 
 	d_printf("[check_dollar]");
 	status->line = line;
 	i = 0;
 	j = 0;
 	flag = 0;
+	result = ft_strdup("");
 	while (line[i] != '\0')
 	{
+		tmp = result;
 		search_env_variable(line, &i, &flag);
-		if (j == 0)
-			result = ft_substr(line, j, i - j);
-		else
-			result = ft_strjoin_free(result, ft_substr(line, j, i - j), \
-				FIRST_FREE);
+		result = ft_strjoin_free(result, ft_substr(line, j, i - j), \
+			BOTH_FREE);
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;

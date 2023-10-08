@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/07 19:59:51 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 18:04:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	ex_cd(t_info *status, t_stack *data)
 				error_printf("Permission denied\n");
 				status->exit_status = 1;
 			}
+			else
+				status->exit_status = 0;
 		}
 		else
 		{
@@ -55,6 +57,7 @@ void	ex_cd(t_info *status, t_stack *data)
 				return ;
 			overwrite_envlist(search_envlist(status, "PWD"), \
 				ft_strjoin("PWD=", buf));
+			status->exit_status = 0;
 		}
 	}
 	else if (check_access(list->content, status) == NULL)

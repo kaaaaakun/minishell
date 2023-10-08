@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:47:22 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:37:23 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ int	main(int argc, char *argv[], char *env[])
 
 	if (argc != 1)
 	{
-		printf("minishell: %s: No such file or directory\n", argv[1]);
-		return (0);
+		ft_printf("minishell: %s: No such file or directory\n", argv[1]);
+		return (127);
 	}
 	status = (t_info *)ft_calloc(sizeof(t_info), 1);
 	if (!status)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chck_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:58:07 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 19:59:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 char	*make_first_space_splited_word(char *result, char *post_word, \
 	int i, int j)
 {
-	char	*space_splited_word;
+	//char	*space_splited_word;
 
+	d_printf("make_first_space_splited_word");
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
-	space_splited_word = ft_substr(post_word, 0, i - j);
+	//space_splited_word = ft_substr(post_word, 0, i - j);
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
 	return (result);
-	(void)space_splited_word;
+	//(void)space_splited_word;
+	(void)i;
+	(void)j;
+	(void)post_word;
 }
 
 char	*append_non_quote_env(char *result, char *post_word)
@@ -30,6 +34,7 @@ char	*append_non_quote_env(char *result, char *post_word)
 	int		end;
 	char	*space_splited_word;
 
+	d_printf("append_non_quote_env");
 	start = 0;
 	end = 0;
 	while (post_word[start] != '\0')
@@ -76,6 +81,8 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 	char	*line;
 	int		k;
 
+	d_printf("[process_dollar]");
+	pre_word = NULL;
 	line = status->line;
 	if (*flag & HEREDOC)
 	{
@@ -96,5 +103,6 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 		result = search_and_append_env(status, result, pre_word, flag);
 		*i += k;
 	}
+	free_null(pre_word);
 	return (result);
 }

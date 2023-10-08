@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 13:38:04 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 13:44:03 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:08:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,6 @@ void		ft_lstclear(t_l_list **lst, void (*del)(void*));
 void		ft_lstadd_front(t_l_list **lst, t_l_list *new);
 void		ft_lstadd_back(t_l_list **lst, t_l_list *new);
 
+//malloc test
+void		*malloc_ee(size_t size);
 #endif
