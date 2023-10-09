@@ -6,12 +6,13 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/08 18:04:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:23:07 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtin.h"
+#include <sys/errno.h>
 
 void	ex_cd(t_info *status, t_stack *data)
 {
@@ -19,7 +20,6 @@ void	ex_cd(t_info *status, t_stack *data)
 	char	*path;
 	char	buf[PATH_MAX];
 
-	path = check_access(list->content, status);
 	list = data->cmdlist->next;
 	if (list == NULL || ft_memcmp(list->content, "~", 2) == 0)
 	{
@@ -38,6 +38,13 @@ void	ex_cd(t_info *status, t_stack *data)
 			error_printf("cd: HOME not set\n");
 			status->exit_status = 1;
 		}
+		return ;
+	}
+	path = check_access(list->content, status);
+	if (path == NULL)
+	{
+		error_printf("%s: No such file or directory\n", list->content);
+		status->exit_status = 1;
 	}
 	else if (path != NULL)
 	{
@@ -45,13 +52,25 @@ void	ex_cd(t_info *status, t_stack *data)
 		{
 			error_printf("Permission denied\n");
 			status->exit_status = 1;
+			free_null(path);
 		}
 		else
 		{
+			free_null(path);
+			errno = 0;
 			if (chdir(list->content) == -1)
 			{
-				error_printf("Permission denied\n");
 				status->exit_status = 1;
+				if (errno == EACCES)
+				{
+					error_printf("Permission denied\n");
+					return ;
+				}
+				else
+				{
+					error_printf("%s: No such file or directory\n", list->content);
+					return ;
+				}
 			}
 			path = getcwd(buf, PATH_MAX);
 			if (!path)
@@ -61,12 +80,6 @@ void	ex_cd(t_info *status, t_stack *data)
 			status->exit_status = 0;
 		}
 	}
-	else if (path == NULL)
-	{
-		error_printf("%s: No such file or directory\n", list->content);
-		status->exit_status = 1;
-	}
-	free_null(path);
 	return ;
 }
 // cd はHOMEに戻る

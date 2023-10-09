@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 19:30:56 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/08 17:41:23 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:27:28 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*malloc_ee(size_t size)
 	void		*result;
 
 	result = malloc(size);
-	ft_printf("%p",result);
+	//ft_printf("%p",result);
 	return (result);
 }
 //19:size or count がゼロの時には1byte分

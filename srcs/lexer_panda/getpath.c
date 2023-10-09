@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getpath.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 15:53:38 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:26:11 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ char	*check_path(char *command, char **path)
 		return (NULL);
 	while (path[i] != NULL)
 	{
-		path[i] = ft_strjoin_free(path[i], command, NEITHER_FREE);
-		if (path[i] == NULL)
+		collect_path = ft_strjoin_free(path[i], command, NEITHER_FREE);
+		if (collect_path == NULL)
 			return (command_and_split_free(command, path));
-		if (access(path[i], F_OK) == 0)
+		if (access(collect_path, F_OK) == 0)
 		{
-			collect_path = ft_strdup(path[i]);
 			command_and_split_free(command, path);
 			return (collect_path);
 		}
+		free_null(collect_path);
 		i++;
 	}
 	return (command_and_split_free(command, path));

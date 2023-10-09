@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/08 19:59:44 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:33:43 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 char	*make_first_space_splited_word(char *result, char *post_word, \
 	int i, int j)
 {
-	//char	*space_splited_word;
+	char	*space_splited_word;
 
 	d_printf("make_first_space_splited_word");
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
-	//space_splited_word = ft_substr(post_word, 0, i - j);
+	space_splited_word = ft_substr(post_word, 0, i - j);
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
 	return (result);
 	//(void)space_splited_word;
@@ -39,7 +39,7 @@ char	*append_non_quote_env(char *result, char *post_word)
 	end = 0;
 	while (post_word[start] != '\0')
 	{
-		while (post_word[start] != '\0' && (post_word[start] != ' ' || post_word[start] != '	'))
+		while (post_word[start] != '\0' && post_word[start] != ' ' && post_word[start] != '	')
 			start++;
 		if (end == 0)
 			result = make_first_space_splited_word(result, \

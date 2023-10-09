@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/08 17:39:20 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:33:21 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	d_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	//return (0);
+	return (0);
 	fd = 2;
 	count = 0;
 	va_start (ap, format);
