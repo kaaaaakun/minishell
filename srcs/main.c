@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/08 17:37:23 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:45:01 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,16 @@ void	execute_main_process(t_info *status)
 void	pre_line_check(t_info *status)
 {
 	char	*line;
+	int		i;
 
+	i = 0;
 	d_printf("[check_line]", 1);
 	line = status->line;
 	if (!line)
 		ex_exit(status, NULL);
-	else if (*line == '\0')
+	while (isspace(line[i]) != 0)
+		i++;
+	if (line[i] == '\0')
 	{
 		rl_on_new_line();
 		return ;
@@ -78,6 +82,7 @@ int	main(int argc, char *argv[], char *env[])
 	status = (t_info *)ft_calloc(sizeof(t_info), 1);
 	if (!status)
 		exit(1);
+	status->exit_status = 0;
 	make_env_list(status, env);
 	while (1)
 	{

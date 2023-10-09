@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/09 16:23:07 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:23:16 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ void	ex_cd(t_info *status, t_stack *data)
 				if (errno == EACCES)
 				{
 					error_printf("Permission denied\n");
-					return ;
 				}
 				else
 				{
+					if (list->content[0] == '\0')
+					{
+						status->exit_status = 0;
+						return ;
+					}
 					error_printf("%s: No such file or directory\n", list->content);
-					return ;
 				}
+				return ;
 			}
 			path = getcwd(buf, PATH_MAX);
 			if (!path)
