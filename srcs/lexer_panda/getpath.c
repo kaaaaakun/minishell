@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 19:56:26 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 15:26:11 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:01:52 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,18 @@ int	access_ee(char *command, int flag, int free_flag)
 
 char	*check_access(char *command, t_info *status)
 {
+	char	*path;
+
 	if (!command)
 		return (NULL);
 	if (access_ee(ft_strtrim_free(command, "./", NEITHER_FREE), \
 				F_OK, FIRST_FREE) == 0)
 		return (ft_strtrim_free(command, "./", NEITHER_FREE));
 	else if (access(command, F_OK) == 0)
-		return (command);
+	{
+		path = ft_strdup(command);
+		return (path);
+	}
 	return (check_path(ft_strjoin_free("/", command, NEITHER_FREE), \
 				getpath(status)));
 }
