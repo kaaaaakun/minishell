@@ -19,6 +19,7 @@ void	ex_cd(t_info *status, t_stack *data)
 	char	*path;
 	char	buf[PATH_MAX];
 
+	path = check_access(list->content, status);
 	list = data->cmdlist->next;
 	if (list == NULL || ft_memcmp(list->content, "~", 2) == 0)
 	{
@@ -38,9 +39,9 @@ void	ex_cd(t_info *status, t_stack *data)
 			status->exit_status = 1;
 		}
 	}
-	else if (check_access(list->content, status) != NULL)
+	else if (path != NULL)
 	{
-		if (access(list->content, X_OK) != 0)
+		if (access(path, X_OK) != 0)
 		{
 			error_printf("Permission denied\n");
 			status->exit_status = 1;
@@ -60,11 +61,12 @@ void	ex_cd(t_info *status, t_stack *data)
 			status->exit_status = 0;
 		}
 	}
-	else if (check_access(list->content, status) == NULL)
+	else if (path == NULL)
 	{
 		error_printf("%s: No such file or directory\n", list->content);
 		status->exit_status = 1;
 	}
+	free_null(path);
 	return ;
 }
 // cd はHOMEに戻る

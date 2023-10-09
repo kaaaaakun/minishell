@@ -41,6 +41,7 @@ char	*check_dollar(t_info *status, char *line)
 	}
 	d_printf("\n[end dollar :%s]\n", result);
 	return (result);
+	(void)tmp;
 }
 
 void	search_env_variable(char *line, int *i, int *flag)
