@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 16:33:43 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:03:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*make_first_space_splited_word(char *result, char *post_word, \
 	space_splited_word = ft_substr(post_word, 0, i - j);
 	result = ft_strjoin_free(result, "\'", FIRST_FREE);
 	return (result);
-	//(void)space_splited_word;
+	(void)space_splited_word;
 	(void)i;
 	(void)j;
 	(void)post_word;
