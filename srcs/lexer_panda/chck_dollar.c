@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 17:03:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:35:24 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*append_non_quote_env(char *result, char *post_word)
 	{
 		while (post_word[start] != '\0' && post_word[start] != ' ' && post_word[start] != '	')
 			start++;
-		if (end == 0)
-			result = make_first_space_splited_word(result, \
-					post_word, start, end);
+		// if (end == 0)
+		// 	result = make_first_space_splited_word(result, \
+		// 			post_word, start, end);
 		result = ft_strjoin_free(result, "\'", FIRST_FREE);
 		space_splited_word = ft_substr(post_word, end, start - end);
 		result = ft_strjoin_free(result, space_splited_word, BOTH_FREE);

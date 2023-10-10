@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_operators.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/07 15:53:18 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:41:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,18 @@ void	check_appendfile(t_info *status, char *result)
 
 void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 {
-	char	*line;
+	char	*input_line;
+	char	*read_line;
+	char	*cmd_tmp;
 	int		eof_len;
 	int		flag;
 	int		i;
 
+	ft_printf("read_line : %s", eof_word);
 	dup2(status->cpy_stdin, 0);
 	close(status->cpy_stdin);
 	eof_len = ft_strlen(eof_word) + 1;
+	cmd_tmp = status->line;
 	while (1)
 	{
 		i = 0;
@@ -92,27 +96,29 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		add_sigaction(status, 1);
 		if (g_signal == SIGINT)
 			status->exit_status = 1;
-		line = readline(">");
-		if (line == NULL || ft_strncmp(line, eof_word, eof_len) == 0)
+		read_line = readline(">");
+		if (read_line == NULL || ft_strncmp(read_line, eof_word, eof_len) == 0)
 		{
-			free(line);
+			free(read_line);
 			break ;
 		}
-		line = check_dollar(status, line);
-		while (line != NULL && line[i] != '\0')
+		input_line = check_dollar(status, read_line);
+		while (input_line != NULL && input_line[i] != '\0')
 		{
-			if ((line[i] == '\'' || line[i] == '\"') && !(flag & IN_QUOTE))
-				plusle_quote(line[i], &flag);
-			else if ((line[i] == '\'' && flag & S_QUOTE) || \
-				(line[i] == '\"' && flag & D_QUOTE))
-				minun_quote(line[i], &flag);
+			if ((input_line[i] == '\'' || input_line[i] == '\"') && !(flag & IN_QUOTE))
+				plusle_quote(input_line[i], &flag);
+			else if ((input_line[i] == '\'' && flag & S_QUOTE) || \
+				(input_line[i] == '\"' && flag & D_QUOTE))
+				minun_quote(input_line[i], &flag);
 			else
-				ft_putchar_fd(line[i], tmp_fd);
+				ft_putchar_fd(input_line[i], tmp_fd);
 			i++;
 		}
-		ft_putendl_fd("",tmp_fd);
-		free(line);
+		ft_putendl_fd("", tmp_fd);
+		free(input_line);
+		free(read_line);
 	}
+	status->line = cmd_tmp;
 	free_null(eof_word);
 	add_sigaction(status, 0);
 	close(tmp_fd);

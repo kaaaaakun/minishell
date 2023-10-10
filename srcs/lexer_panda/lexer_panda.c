@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:34:52 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:45:39 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ void	panda(char *line, t_info *status)
 	int		flag;
 	int		i;
 
+	d_printf("[panda]");
 	i = 0;
 	if (*line == '\0')
 		return ;
 	line = check_dollar(status, line);
+	d_printf("[panda : line %s]", line);
 	check_error(status, line, &flag);
 	if (flag & ERROR)
 	{
