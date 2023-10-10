@@ -91,6 +91,7 @@ void	search_paht_and_exec(t_info *status)
 		is_non_xok(status);
 	execve(path, cmd, env_list(status));
 	split_free(cmd);
+	d_printf("[search_paht_and_exec]");
 }
 
 void	ex_execve(t_info *status)
@@ -116,4 +117,5 @@ void	ex_execve(t_info *status)
 	else
 		search_paht_and_exec(status);
 	(void)pid;
+	d_printf("[check_builtin_execve : %d]", g_signal);
 }

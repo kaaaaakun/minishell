@@ -37,6 +37,7 @@ void	check_builtin_execve(t_info *status, t_stack *data)
 		ex_execve(status);
 	if (status->pipe != 0)
 		exit(0);
+	d_printf("[check_builtin_execve : %d]", g_signal);
 	rl_on_new_line();
 }
 
@@ -53,4 +54,5 @@ void	check_command(t_info *status, t_stack *data)
 	if (status->error != 0 && status->pipe != 0)
 		exit(status->error);
 	check_builtin_execve(status, data);
+	d_printf("[check_command : %d]", g_signal);
 }

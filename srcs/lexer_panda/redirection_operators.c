@@ -18,6 +18,8 @@ void	check_infile(t_info *status, char *result)
 {
 	int	fd;
 
+	if (g_signal == SIGINT)
+		return ;
 	fd = open_ee(status, result, O_RDONLY, 0);
 	if (fd < 0)
 	{
@@ -34,10 +36,11 @@ char	*check_heredoc(t_info *status, char *eof_word)
 	char	*tmp_file_name;
 	int		tmp_fd;
 
+	if (g_signal == SIGINT)
+		return (NULL);
 	tmp_file_name = make_tmp_file(status, &tmp_fd);
 	ex_heredoc(status, eof_word, tmp_fd);
-	if (g_signal != SIGINT)
-		check_infile(status, tmp_file_name);
+	check_infile(status, tmp_file_name);
 	(void)status;
 	unlink(tmp_file_name);
 	free_null(tmp_file_name);
@@ -48,6 +51,8 @@ void	check_outfile(t_info *status, char *result)
 {
 	int	fd;
 
+	if (g_signal == SIGINT)
+		return ;
 	fd = open_ee(status, result, O_CREAT | O_TRUNC | O_WRONLY, \
 		S_IRWXU | S_IRGRP | S_IROTH);
 	if (fd < 0)
@@ -64,6 +69,8 @@ void	check_appendfile(t_info *status, char *result)
 {
 	int	fd;
 
+	if (g_signal == SIGINT)
+		return ;
 	fd = open_ee(status, result, O_CREAT | O_APPEND | O_WRONLY, \
 		S_IRWXU | S_IRGRP | S_IROTH);
 	if (fd < 0)
@@ -85,7 +92,9 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	int		flag;
 	int		i;
 
-	ft_printf("read_line : %s", eof_word);
+	ft_printf("read_line : %s : %d", eof_word, g_signal);
+	if (g_signal == SIGINT)
+		return ;
 	dup2(status->cpy_stdin, 0);
 	// close(status->cpy_stdin);
 	eof_len = ft_strlen(eof_word) + 1;
