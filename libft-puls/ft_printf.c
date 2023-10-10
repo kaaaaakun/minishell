@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:55:15 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:34:26 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	d_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	return (0);
+	// return (0);
 	fd = 2;
 	count = 0;
 	va_start (ap, format);

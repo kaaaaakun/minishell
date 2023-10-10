@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:45:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:36:23 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	execute_main_process(t_info *status)
 	if (status->pipe == 0 && status->error == 0)
 	{
 		check_command(status, status->stack);
-		free_stack(status);
+		// free_stack(status);
 	}
 	dup2(status->cpy_stdin, 0);
 	close (status->cpy_stdin);
@@ -90,6 +90,10 @@ int	main(int argc, char *argv[], char *env[])
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
+		if (g_signal == SIGINT)
+		{
+			status->exit_status = 1;
+		}
 		reset_status(status);
 	}
 	(void)argv;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   panda_to_builtin.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:44:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/08 17:56:18 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:53:46 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	check_command(t_info *status, t_stack *data)
 	if (data->cmdlist == NULL)
 		return ;
 	if (g_signal == SIGINT)
+	{
 		status->exit_status = 1;
+		return ;
+	}
 	if (status->error != 0 && status->pipe != 0)
 		exit(status->error);
 	check_builtin_execve(status, data);

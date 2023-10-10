@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_operators.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/10 14:41:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:39:19 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ char	*check_heredoc(t_info *status, char *eof_word)
 
 	tmp_file_name = make_tmp_file(status, &tmp_fd);
 	ex_heredoc(status, eof_word, tmp_fd);
-	check_infile(status, tmp_file_name);
+	if (g_signal != SIGINT)
+		check_infile(status, tmp_file_name);
 	(void)status;
 	unlink(tmp_file_name);
 	free_null(tmp_file_name);
@@ -86,7 +87,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 
 	ft_printf("read_line : %s", eof_word);
 	dup2(status->cpy_stdin, 0);
-	close(status->cpy_stdin);
+	// close(status->cpy_stdin);
 	eof_len = ft_strlen(eof_word) + 1;
 	cmd_tmp = status->line;
 	while (1)
@@ -94,9 +95,13 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		i = 0;
 		flag = 0;
 		add_sigaction(status, 1);
-		if (g_signal == SIGINT)
-			status->exit_status = 1;
 		read_line = readline(">");
+		if (g_signal == SIGINT)
+		{
+			status->exit_status = 1;
+			dup2(status->cpy_stdin, 0);
+			break ;
+		}
 		if (read_line == NULL || ft_strncmp(read_line, eof_word, eof_len) == 0)
 		{
 			free(read_line);
