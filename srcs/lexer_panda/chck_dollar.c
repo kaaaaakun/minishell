@@ -87,7 +87,9 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 	if (*flag & HEREDOC)
 	{
 		k = find_next_token(line, *i, *flag);
-		pre_word = ft_substr(&line[*i], 0, k);
+		result = ft_strjoin_free(result, ft_substr(&line[*i], 0, k), BOTH_FREE);
+		*i += k;
+		return (result);
 	}
 	else if (line[*i] == '$' && !(line[*i + 1] == '-' || \
 		ft_isdigit(line[*i + 1]) || ft_isalpha(line[*i + 1])))

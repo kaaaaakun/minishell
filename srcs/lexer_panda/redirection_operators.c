@@ -79,12 +79,16 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 {
 	char	*line;
 	int		eof_len;
+	int		flag;
+	int		i;
 
 	dup2(status->cpy_stdin, 0);
 	close(status->cpy_stdin);
 	eof_len = ft_strlen(eof_word) + 1;
 	while (1)
 	{
+		i = 0;
+		flag = 0;
 		add_sigaction(status, 1);
 		if (g_signal == SIGINT)
 			status->exit_status = 1;
@@ -94,7 +98,19 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 			free(line);
 			break ;
 		}
-		ft_putendl_fd(line, tmp_fd);
+		line = check_dollar(status, line);
+		while (line != NULL && line[i] != '\0')
+		{
+			if ((line[i] == '\'' || line[i] == '\"') && !(flag & IN_QUOTE))
+				plusle_quote(line[i], &flag);
+			else if ((line[i] == '\'' && flag & S_QUOTE) || \
+				(line[i] == '\"' && flag & D_QUOTE))
+				minun_quote(line[i], &flag);
+			else
+				ft_putchar_fd(line[i], tmp_fd);
+			i++;
+		}
+		ft_putendl_fd("",tmp_fd);
 		free(line);
 	}
 	free_null(eof_word);

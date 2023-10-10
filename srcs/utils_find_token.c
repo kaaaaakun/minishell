@@ -17,8 +17,8 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != '	' && \
-		line[i + k] != ' ' && line[i + k] != '\0' && line[i + k] != '$' && \
+	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != '\t' && \
+		line[i + k] != ' ' && line[i + k] != '\0' && (line[i + k] != '$' || flag & HEREDOC)&& \
 		((line[i + k] != '<' && \
 		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
 		k++;
