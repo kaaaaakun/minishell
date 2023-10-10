@@ -111,8 +111,10 @@ void	ex_execve(t_info *status)
 				status->exit_status = 1;
 			search_paht_and_exec(status);
 		}
+		add_sigaction(status, 3);
 		wait(&exit_status);
 		status->exit_status = WEXITSTATUS(exit_status);
+		d_printf("[check_builtin_execve : %d]", g_signal);
 	}
 	else
 		search_paht_and_exec(status);

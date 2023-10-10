@@ -59,6 +59,11 @@ void	add_sigaction(t_info *status, int flag)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
+	else if (flag == 3)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }
 
 //// void	add_sigaction(int flag)
