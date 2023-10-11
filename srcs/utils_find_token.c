@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:50 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 15:29:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:01:59 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ char	*process_single_double_dollar(t_info *status, \
 	}
 	else if (line[*i] == '$' && line[*i + 1] == '?')
 	{
+		char *tmp = result;
 		result = ft_strdup(result);
 	 	exit_nbr = ft_itoa(status->exit_status);
 	 	result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
 		*i += 2;
+		free(tmp);
 	}
 	else
 	{

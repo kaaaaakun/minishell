@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 14:35:24 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:09:55 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*process_dollar(t_info *status, char *result, int *i, int *flag)
 		*i += k;
 		return (result);
 	}
-	else if (line[*i] == '$' && !(line[*i + 1] == '-' || \
+	else if (line[*i] == '$' && !(line[*i + 1] == '_' || \
 		ft_isdigit(line[*i + 1]) || ft_isalpha(line[*i + 1])))
 		result = process_single_double_dollar(status, line, i, result);
 	else if (line[*i + 1] == '\"' && *flag & D_QUOTE)
