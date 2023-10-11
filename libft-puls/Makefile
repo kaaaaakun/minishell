@@ -51,13 +51,15 @@ B_SRCS=	ft_lstnew.c \
 
 OBJS = $(SRCS:.c=.o)
 B_OBJS = $(B_SRCS:.c=.o)
+OBJS += $(B_OBJS)
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 AR = ar rcs
 
-ifdef WITH_BONUS
-	OBJS += $(B_OBJS)
+ifdef WITH_DEBUG
+	CFLAGS += -D PRINTF_DEBUG=1
 endif
 
 all: $(NAME)
@@ -75,7 +77,7 @@ clean:
 fclean: clean
 	@ $(RM) $(NAME)
 
-bonus:
-	make WITH_BONUS=1
+debug:
+	make WITH_DEBUG=1
 
 re: fclean all

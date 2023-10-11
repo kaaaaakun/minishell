@@ -12,6 +12,10 @@
 
 #include "ft_printf.h"
 
+#ifndef PRINTF_DEBUG
+#define PRINTF_DEBUG 0
+#endif
+
 static ssize_t	check_format(int fd, const char *fmt, va_list ap);
 static ssize_t	d_check_format(int fd, const char *fmt, va_list ap);
 
@@ -87,7 +91,8 @@ int	d_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	return (0);
+	if (PRINTF_DEBUG == 0)
+		return (0);
 	fd = 2;
 	count = 0;
 	va_start (ap, format);

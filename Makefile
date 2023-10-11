@@ -101,10 +101,15 @@ re: fclean all
 
 # Other target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 $(LIBFT):
-	make bonus -C $(LIBFT_DIR) all
+	make  -C $(LIBFT_DIR) all
 
 #debug:
 debug:
+	make fclean
+	make debug -C $(LIBFT_DIR)
+	make all
+
+clash:
 	make WITH_DEBUG=1
 
 clang:
