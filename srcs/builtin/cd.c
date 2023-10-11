@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:15:57 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/09 21:23:16 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:50:25 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	ex_cd(t_info *status, t_stack *data)
 			{
 				status->exit_status = 1;
 				if (errno == EACCES)
-				{
 					error_printf("Permission denied\n");
-				}
 				else
 				{
 					if (list->content[0] == '\0')
