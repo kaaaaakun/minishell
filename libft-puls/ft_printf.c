@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 20:34:26 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 14:57:36 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int	d_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	return (0);
+	//return (0);
+	error_printf("\x1b[38;5;186m");
 	fd = 2;
 	count = 0;
 	va_start (ap, format);
@@ -105,6 +106,7 @@ int	d_printf(const char *format, ...)
 		format++;
 	}
 	va_end (ap);
+	error_printf("\x1b[0m");
 	return (count);
 }
 
