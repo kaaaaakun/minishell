@@ -34,6 +34,7 @@ void	reset_status(t_info *status)
 
 void	execute_main_process(t_info *status)
 {
+	d_printf("[execute_main_process]");
 	status->cpy_stdin = dup(0);
 	status->cpy_stdout = dup(1);
 	panda(status->line, status);
@@ -46,6 +47,7 @@ void	execute_main_process(t_info *status)
 	close (status->cpy_stdin);
 	dup2(status->cpy_stdout, 1);
 	close (status->cpy_stdout);
+	d_printf("[execute_main_process]");
 }
 
 void	pre_line_check(t_info *status)
@@ -68,6 +70,7 @@ void	pre_line_check(t_info *status)
 	else
 		add_history(line);
 	execute_main_process(status);
+	d_printf("[post_check_line]", 1);
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -86,6 +89,7 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
+		g_signal = 0;
 		add_sigaction(status, 0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
@@ -94,6 +98,7 @@ int	main(int argc, char *argv[], char *env[])
 		{
 			status->exit_status = 1;
 		}
+		d_printf("[post_main]");
 		reset_status(status);
 	}
 	(void)argv;

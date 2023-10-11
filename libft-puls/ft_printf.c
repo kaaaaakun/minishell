@@ -87,7 +87,7 @@ int	d_printf(const char *format, ...)
 	ssize_t	count_tmp;
 	int		fd;
 
-	// return (0);
+	return (0);
 	fd = 2;
 	count = 0;
 	va_start (ap, format);
