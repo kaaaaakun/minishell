@@ -7,7 +7,6 @@
 *.swp
 *.json
 *.plist
-libft-puls/ft_printf.c
 libft-puls/ft_calloc.c
 minishell
 minishell_tester
