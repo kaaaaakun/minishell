@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
 /*   Updated: 2023/10/11 17:38:58 by hhino            ###   ########.fr       */
@@ -47,7 +47,7 @@ void	execute_main_process(t_info *status)
 	close (status->cpy_stdin);
 	dup2(status->cpy_stdout, 1);
 	close (status->cpy_stdout);
-	d_printf("[execute_main_process]");
+	d_printf("[execute_main_process : end]");
 }
 
 void	pre_line_check(t_info *status)
