@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 15:59:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:38:58 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,21 @@ int	main(int argc, char *argv[], char *env[])
 		add_sigaction(status, 0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
-		pre_line_check(status);
-		if (g_signal == SIGINT)
+		if (g_signal == 2)
 		{
 			status->exit_status = 1;
+			g_signal = 0;
+		}
+		pre_line_check(status);
+		if (g_signal != 0)
+		{
+			if (g_signal == SIGINT)
+				status->exit_status = 1;
+			else if (g_signal == 130)
+				status->exit_status = 130;
+			else if (g_signal == 131)
+				status->exit_status = 131;
+			g_signal = 0;
 		}
 		d_printf("[post_main]");
 		reset_status(status);
