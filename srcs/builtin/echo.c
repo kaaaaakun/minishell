@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:27:12 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:17:46 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:50:00 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ void	ex_echo(t_info *status, t_stack *data)
 	}
 	if (nflag != 1)
 		ft_putstr_fd("\n", 1);
+	status->exit_status = 0;
 }

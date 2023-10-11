@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 14:37:51 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/09/24 16:18:56 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 15:07:01 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,14 @@ void	ex_env(t_info *status, t_stack *data)
 	t_list	*list;
 
 	list = data->cmdlist->next;
-	if (list == NULL || ft_memcmp(list->content, "--", 3))
+	if (list == NULL || ft_memcmp(list->content, "--", 3) == 0)
+	{
 		write_env(status->env);
+		status->exit_status = 0;
+	}
 	else
+	{
 		ft_printf("%s: No such file or directory", list->content);
+		status->exit_status = 127;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 19:59:47 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 14:29:55 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	add_sigaction(t_info *status, int flag)
 		status->exit_status += 0;
 	g_signal = 0;
 	sigemptyset(&sa.sa_mask);
-	if (flag == 0) /*main, parent process, child process*/
+	if (flag == 0)
 	{
-		signal(SIGINT, sighandler_sigint); /*ctrl+C*/
-		signal(SIGQUIT, SIG_IGN); /*ctrl + \*/
+		signal(SIGINT, sighandler_sigint);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (flag == 1) /*heredoc*/
 	{

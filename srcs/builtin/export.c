@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/08 18:04:02 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:56:51 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,14 @@ void	overwrite_envlist(t_list *env, char *str)
 	(void)temp;
 }
 
-//0912左辺が存在している時に+=をした次の"export"で死ぬ
-//export cc=cc -> export cc ->export すると cc になる。でもbashはcc=ccのまま
-
 void	ex_export(t_info *status, t_stack *data)
 {
 	int		flag;
 	int		i;
 	t_list	*list;
-	char	*listcontent;
 
 	flag = 0;
 	list = data->cmdlist;
-	listcontent = list->content;
 	if (list->next == NULL)
 		print_export_env(status->env);
 	else
@@ -106,7 +101,6 @@ void	ex_export(t_info *status, t_stack *data)
 		}
 	}
 	return ;
-	(void)listcontent;
 }
 
 
