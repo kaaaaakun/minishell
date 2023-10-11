@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 15:32:23 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 17:40:55 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,12 @@
 
 void	sighandler_sigint(int sig)
 {
-	// if (sig == SIGINT)
-	// 	ft_printf("\n[sicnal]>> ");
 	(void)sig;
 	rl_on_new_line();
 	ft_printf("\n");
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_signal = SIGINT;
-	// if (rl_on_new_line() == -1)
-	// 	exit(1);
-	// rl_catch_signals = 0;
+	g_signal = 2;
 }
 
 void	sighandler_heredoc(int sig)
@@ -34,6 +29,20 @@ void	sighandler_heredoc(int sig)
 	close(0);
 	g_signal = SIGINT;
 
+}
+
+void	sighandler_child(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(STDIN_FILENO, "\n", 1);
+		g_signal = 130;
+	}
+	if (sig == SIGQUIT)
+	{
+		write(STDIN_FILENO, "\n", 1);
+		g_signal = 131;
+	}
 }
 
 void	add_sigaction(t_info *status, int flag)
@@ -48,7 +57,7 @@ void	add_sigaction(t_info *status, int flag)
 		signal(SIGINT, sighandler_sigint);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else if (flag == 1) /*heredoc*/
+	else if (flag == 1)
 	{
 		signal(SIGINT, sighandler_heredoc);
 		signal(SIGQUIT, SIG_IGN);
@@ -60,8 +69,8 @@ void	add_sigaction(t_info *status, int flag)
 	}
 	else if (flag == 3)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sighandler_child);
+		signal(SIGQUIT, sighandler_child);
 	}
 }
 

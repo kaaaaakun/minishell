@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 14:45:39 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:45:59 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ void	wait_child_process(t_info *status, pid_t pid)
 	int	process_count;
 	int	i;
 	int	exit_status;
+	int	flag;
 
+	flag = 0;
 	process_count = status->pipe + 1;
 	i = 0;
 	while (i < process_count)
 	{
 		if (waitpid(-1, &exit_status, 0) == pid)
 		{
+			flag = 1;
 			if (WIFEXITED(exit_status))
 				status->exit_status = WEXITSTATUS(exit_status);
 			else if (WIFSIGNALED(exit_status))
@@ -62,6 +65,8 @@ void	wait_child_process(t_info *status, pid_t pid)
 		}
 		i++;
 	}
+	if (flag == 1)
+		g_signal = 0;
 }
 
 void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
