@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:50 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:23:06 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:29:56 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	*process_single_double_dollar(t_info *status, \
 {
 	char	*exit_nbr;
 
+	d_printf("[process_single_double_dollar]");
 	if (line[*i] == '$' && line[*i + 1] == '$')
 	{
 		result = ft_strjoin_free(result, "PID", FIRST_FREE);
@@ -48,8 +49,9 @@ char	*process_single_double_dollar(t_info *status, \
 	}
 	else if (line[*i] == '$' && line[*i + 1] == '?')
 	{
-		exit_nbr = ft_itoa(status->exit_status);
-		result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
+		result = ft_strdup(result);
+	 	exit_nbr = ft_itoa(status->exit_status);
+	 	result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
 		*i += 2;
 	}
 	else
@@ -57,6 +59,7 @@ char	*process_single_double_dollar(t_info *status, \
 		result = ft_strjoin_free(result, "$", FIRST_FREE);
 		*i += 1;
 	}
+	d_printf("[process_single_double_dollar : end]");
 	return (result);
 	(void)status;
 }
