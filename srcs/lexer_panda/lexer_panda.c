@@ -81,6 +81,7 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 			if (i != status->pipe + 1)
 				dup2_close_pipe(status, pipefd, STDOUT_FILENO);
 			exec_panda(line, status, flag);
+			add_sigaction(status, 2);
 			check_command(status, status->stack);
 		}
 		line = mini_ft_strchr(line, '|');
@@ -90,6 +91,7 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 		dup2_close_pipe(status, pipefd, STDIN_FILENO);
 	}
 	dup2_ee(status, stdin_fd, STDIN_FILENO);
+	add_sigaction(status, 3);
 	wait_child_process(status, pid);
 }
 

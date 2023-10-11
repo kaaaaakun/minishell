@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 20:01:49 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:59:47 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	sighandler_sigint(int sig)
 void	sighandler_heredoc(int sig)
 {
 	(void)sig;
-	// kill(0, SIGUSR1);
 	close(0);
 	g_signal = SIGINT;
 
@@ -50,9 +49,19 @@ void	add_sigaction(t_info *status, int flag)
 		signal(SIGINT, sighandler_sigint); /*ctrl+C*/
 		signal(SIGQUIT, SIG_IGN); /*ctrl + \*/
 	}
-	if (flag == 1) /*heredoc*/
+	else if (flag == 1) /*heredoc*/
 	{
 		signal(SIGINT, sighandler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (flag == 2)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
+	else if (flag == 3)
+	{
+		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
 }

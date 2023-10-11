@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:45:01 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:36:23 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,20 @@ void	reset_status(t_info *status)
 
 void	execute_main_process(t_info *status)
 {
+	d_printf("[execute_main_process]");
 	status->cpy_stdin = dup(0);
 	status->cpy_stdout = dup(1);
 	panda(status->line, status);
 	if (status->pipe == 0 && status->error == 0)
 	{
 		check_command(status, status->stack);
-		free_stack(status);
+		// free_stack(status);
 	}
 	dup2(status->cpy_stdin, 0);
 	close (status->cpy_stdin);
 	dup2(status->cpy_stdout, 1);
 	close (status->cpy_stdout);
+	d_printf("[execute_main_process]");
 }
 
 void	pre_line_check(t_info *status)
@@ -68,6 +70,7 @@ void	pre_line_check(t_info *status)
 	else
 		add_history(line);
 	execute_main_process(status);
+	d_printf("[post_check_line]", 1);
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -86,10 +89,16 @@ int	main(int argc, char *argv[], char *env[])
 	make_env_list(status, env);
 	while (1)
 	{
+		g_signal = 0;
 		add_sigaction(status, 0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
 		pre_line_check(status);
+		if (g_signal == SIGINT)
+		{
+			status->exit_status = 1;
+		}
+		d_printf("[post_main]");
 		reset_status(status);
 	}
 	(void)argv;

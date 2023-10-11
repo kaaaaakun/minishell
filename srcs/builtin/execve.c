@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:52:12 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:02:07 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	search_paht_and_exec(t_info *status)
 		is_non_xok(status);
 	execve(path, cmd, env_list(status));
 	split_free(cmd);
+	d_printf("[search_paht_and_exec]");
 }
 
 void	ex_execve(t_info *status)
@@ -105,12 +106,18 @@ void	ex_execve(t_info *status)
 			exit (1);
 		if (pid == 0)
 		{
+			add_sigaction(status, 2);
+			if (g_signal != 0)
+				status->exit_status = 1;
 			search_paht_and_exec(status);
 		}
+		add_sigaction(status, 3);
 		wait(&exit_status);
 		status->exit_status = WEXITSTATUS(exit_status);
+		d_printf("[check_builtin_execve : %d]", g_signal);
 	}
 	else
 		search_paht_and_exec(status);
 	(void)pid;
+	d_printf("[check_builtin_execve : %d]", g_signal);
 }
