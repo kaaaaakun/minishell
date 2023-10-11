@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 14:29:55 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 15:32:23 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	add_sigaction(t_info *status, int flag)
 
 	if (g_signal == SIGINT)
 		status->exit_status += 0;
-	g_signal = 0;
 	sigemptyset(&sa.sa_mask);
 	if (flag == 0)
 	{

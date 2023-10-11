@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 14:14:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 17:04:00 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:45:49 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ char	*check_dollar(t_info *status, char *line)
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
+		d_printf("\n[途中 dollar :%s/%x]\n", result, flag);
+		if (flag & HEREDOC)
+			flag -= HEREDOC;
+		else if (flag & INPUT_REDIRECT)
+			flag -= INPUT_REDIRECT;
 		d_printf("\n[途中 dollar :%s/%x]\n", result, flag);
 	}
 	d_printf("\n[end dollar :%s]\n", result);
