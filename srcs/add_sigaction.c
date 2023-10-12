@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_sigaction.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 17:40:55 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 20:12:47 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	sighandler_heredoc(int sig)
 	(void)sig;
 	close(0);
 	g_signal = SIGINT;
-
 }
 
 void	sighandler_child(int sig)

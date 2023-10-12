@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:50 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 17:01:59 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:50:12 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ int	find_next_token(char *line, int i, int flag)
 
 	k = 0;
 	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != '\t' && \
-		line[i + k] != ' ' && line[i + k] != '\0' && (line[i + k] != '$' || flag & HEREDOC)&& \
-		((line[i + k] != '<' && \
-		line[i + k] != '>' && line[i + k] != '|') || (flag & D_QUOTE)))
+		line[i + k] != ' ' && line[i + k] != '\0' && (line[i + k] != '$' || \
+		flag & HEREDOC) && \
+		((line[i + k] != '<' && line[i + k] != '>' && line[i + k] != '|') || \
+		(flag & D_QUOTE)))
 		k++;
 	d_printf("[find_next_token:%d %c]", k, line[i + k]);
 	return (k);
@@ -40,6 +41,7 @@ char	*process_single_double_dollar(t_info *status, \
 	char *line, int *i, char *result)
 {
 	char	*exit_nbr;
+	char	*tmp;
 
 	d_printf("[process_single_double_dollar]");
 	if (line[*i] == '$' && line[*i + 1] == '$')
@@ -49,10 +51,10 @@ char	*process_single_double_dollar(t_info *status, \
 	}
 	else if (line[*i] == '$' && line[*i + 1] == '?')
 	{
-		char *tmp = result;
+		tmp = result;
 		result = ft_strdup(result);
-	 	exit_nbr = ft_itoa(status->exit_status);
-	 	result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
+		exit_nbr = ft_itoa(status->exit_status);
+		result = ft_strjoin_free(result, exit_nbr, BOTH_FREE);
 		*i += 2;
 		free(tmp);
 	}
@@ -61,7 +63,6 @@ char	*process_single_double_dollar(t_info *status, \
 		result = ft_strjoin_free(result, "$", FIRST_FREE);
 		*i += 1;
 	}
-	d_printf("[process_single_double_dollar : end]");
 	return (result);
 	(void)status;
 }

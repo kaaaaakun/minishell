@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 17:38:58 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 20:11:37 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include "pipex.h"
 #include "builtin.h"
 
+void	erro_msg_no_such_file(t_info *status, char *content);
+
 int	g_signal = 0;
 
 void	check_command(t_info *status, t_stack *data);
 void	check_line(char *line, t_info *status);
-
 void	reset_status(t_info *status);
 
 void	reset_status(t_info *status)
@@ -41,7 +42,6 @@ void	execute_main_process(t_info *status)
 	if (status->pipe == 0 && status->error == 0)
 	{
 		check_command(status, status->stack);
-		// free_stack(status);
 	}
 	dup2(status->cpy_stdin, 0);
 	close (status->cpy_stdin);
@@ -73,15 +73,23 @@ void	pre_line_check(t_info *status)
 	d_printf("[post_check_line]", 1);
 }
 
+void	check_signal(t_info *status)
+{
+	if (g_signal == SIGINT)
+		status->exit_status = 1;
+	else if (g_signal == 130)
+		status->exit_status = 130;
+	else if (g_signal == 131)
+		status->exit_status = 131;
+	g_signal = 0;
+}
+
 int	main(int argc, char *argv[], char *env[])
 {
 	t_info	*status;
 
 	if (argc != 1)
-	{
-		ft_printf("minishell: %s: No such file or directory\n", argv[1]);
-		return (127);
-	}
+		erro_msg_no_such_file(NULL, argv[1]);
 	status = (t_info *)ft_calloc(sizeof(t_info), 1);
 	if (!status)
 		exit(1);
@@ -93,26 +101,12 @@ int	main(int argc, char *argv[], char *env[])
 		add_sigaction(status, 0);
 		status->line = readline("minishell$ ");
 		d_printf("[%s]", status->line);
-		if (g_signal == 2)
-		{
-			status->exit_status = 1;
-			g_signal = 0;
-		}
+		if (g_signal == SIGINT)
+			check_signal(status);
 		pre_line_check(status);
 		if (g_signal != 0)
-		{
-			if (g_signal == SIGINT)
-				status->exit_status = 1;
-			else if (g_signal == 130)
-				status->exit_status = 130;
-			else if (g_signal == 131)
-				status->exit_status = 131;
-			g_signal = 0;
-		}
-		d_printf("[post_main]");
+			check_signal(status);
 		reset_status(status);
 	}
-	(void)argv;
-	(void)env;
 	return (0);
 }
