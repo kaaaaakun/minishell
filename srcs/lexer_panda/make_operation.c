@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_operation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:45:05 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:58:58 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 21:05:33 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	make_heredoc_list(int *flag, char *line, int j, t_info *status)
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
 	free_null(str);
-//	push_back(&data->heredoclist, str);
 	*flag -= HEREDOC;
 	(void)data;
 }
@@ -63,7 +62,6 @@ void	make_append_list(int *flag, char *line, int j, t_info *status)
 	str = mini_substr(line, 0, j);
 	str = check_flag(status, str, flag);
 	free_null(str);
-//	push_back(&data->appendlist, str);
 	*flag -= APPENDDOC;
 	(void)data;
 }

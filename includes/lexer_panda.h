@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 18:47:13 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 21:03:51 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		count_input_heredoc(char *line, int i, int flag);
 char	*make_first_space_splited_word(char *result, \
 			char *post_word, int i, int j);
 void	panda(char *line, t_info *status);
-void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i);
+void	some_pipes_exec_panda(t_info *status, char *line, int process_count);
 void	wait_child_process(t_info *status, pid_t pid);
 void	exec_panda(char *line, t_info *status, int flag);
 char	*mini_ft_strchr(const char *s, int c);

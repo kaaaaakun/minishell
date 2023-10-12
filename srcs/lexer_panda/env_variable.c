@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 14:14:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 18:45:49 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:33:44 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ char	*check_dollar(t_info *status, char *line)
 	int		flag;
 	int		j;
 	char	*result;
-	char	*tmp;
 
-	d_printf("[check_dollar]");
 	status->line = line;
 	i = 0;
 	j = 0;
@@ -30,23 +28,18 @@ char	*check_dollar(t_info *status, char *line)
 	result = ft_strdup("");
 	while (line[i] != '\0')
 	{
-		tmp = result;
 		search_env_variable(line, &i, &flag);
 		result = ft_strjoin_free(result, ft_substr(line, j, i - j), \
 			BOTH_FREE);
 		if (line[i] == '$')
 			result = process_dollar(status, result, &i, &flag);
 		j = i;
-		d_printf("\n[途中 dollar :%s/%x]\n", result, flag);
 		if (flag & HEREDOC)
 			flag -= HEREDOC;
 		else if (flag & INPUT_REDIRECT)
 			flag -= INPUT_REDIRECT;
-		d_printf("\n[途中 dollar :%s/%x]\n", result, flag);
 	}
-	d_printf("\n[end dollar :%s]\n", result);
 	return (result);
-	(void)tmp;
 }
 
 void	search_env_variable(char *line, int *i, int *flag)
@@ -62,13 +55,11 @@ void	search_env_variable(char *line, int *i, int *flag)
 		{
 			*flag += INPUT_REDIRECT;
 			*i += count_input_heredoc(line, *i, *flag);
-			//*flag -= INPUT_REDIRECT;
 		}
 		else if (line[*i] == '<' && line[*i + 1] == '<' && !(*flag & IN_QUOTE))
 		{
 			*flag += HEREDOC;
 			*i += count_input_heredoc(line, *i, *flag);
-			//*flag -= HEREDOC;
 		}
 		*i += 1;
 	}

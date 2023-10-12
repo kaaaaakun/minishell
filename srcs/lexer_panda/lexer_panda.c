@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 18:51:57 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 21:04:53 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,13 @@ void	exec_panda(char *line, t_info *status, int flag)
 void	wait_child_process(t_info *status, pid_t pid)
 {
 	int	process_count;
-	int	i;
 	int	exit_status;
 	int	flag;
 
 	flag = 0;
 	process_count = status->pipe + 1;
-	i = 0;
-	while (i < process_count)
+	add_sigaction(status, 3);
+	while (process_count--)
 	{
 		if (pid < 0)
 		{
@@ -68,20 +67,32 @@ void	wait_child_process(t_info *status, pid_t pid)
 			else if (WIFSIGNALED(exit_status))
 				status->exit_status = WTERMSIG(exit_status) + 128;
 		}
-		i++;
 	}
 	if (flag == 1)
 		g_signal = 0;
 }
 
-void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
+void	exec_child_process(int process_count, t_info *status, \
+			char *line, int *pipefd)
+{
+	int	flag;
+
+	flag = 0;
+	if (process_count != 0)
+		dup2_close_pipe(status, pipefd, STDOUT_FILENO);
+	exec_panda(line, status, flag);
+	add_sigaction(status, 2);
+	check_command(status, status->stack);
+}
+
+void	some_pipes_exec_panda(t_info *status, char *line, int process_count)
 {
 	int		stdin_fd;
 	pid_t	pid;
 	int		pipefd[2];
 
 	stdin_fd = dup(STDIN_FILENO);
-	while (++i)
+	while (process_count--)
 	{
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
@@ -89,13 +100,7 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 		if (pid < 0)
 			break ;
 		if (pid == 0)
-		{
-			if (i != status->pipe + 1)
-				dup2_close_pipe(status, pipefd, STDOUT_FILENO);
-			exec_panda(line, status, flag);
-			add_sigaction(status, 2);
-			check_command(status, status->stack);
-		}
+			exec_child_process(process_count, status, line, pipefd);
 		line = mini_ft_strchr(line, '|');
 		if (line == NULL)
 			break ;
@@ -103,7 +108,6 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 		dup2_close_pipe(status, pipefd, STDIN_FILENO);
 	}
 	dup2_ee(status, stdin_fd, STDIN_FILENO);
-	add_sigaction(status, 3);
 	wait_child_process(status, pid);
 }
 
@@ -117,7 +121,6 @@ void	panda(char *line, t_info *status)
 	if (*line == '\0')
 		return ;
 	line = check_dollar(status, line);
-	d_printf("[panda : line %s]", line);
 	check_error(status, line, &flag);
 	if (flag & ERROR)
 	{
@@ -132,7 +135,7 @@ void	panda(char *line, t_info *status)
 	if (status->pipe == 0)
 		exec_panda(line, status, flag);
 	else
-		some_pipes_exec_panda(status, line, flag, i);
+		some_pipes_exec_panda(status, line, status->pipe + 1);
 	free(line);
 	return ;
 }

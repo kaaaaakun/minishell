@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:25:52 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 17:00:27 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:32:19 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int	count_input_heredoc(char *line, int i, int flag)
 		count += 1;
 	while (analysis_char(line[i + count]) == 2)
 		count++;
-	while (ft_isdigit(line[i + count]) == 1 || ft_isalpha(line[i + count]) == 1 || line[i + count] == '_')
+	while (ft_isdigit(line[i + count]) == 1 || \
+		ft_isalpha(line[i + count]) == 1 || line[i + count] == '_')
 		count++;
 	return (count);
 }
