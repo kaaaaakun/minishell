@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:16:19 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 17:47:03 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:22:10 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 #ifndef PRINTF_DEBUG
-#define PRINTF_DEBUG 0
+# define PRINTF_DEBUG 0
 #endif
 
 static ssize_t	check_format(int fd, const char *fmt, va_list ap);
@@ -89,11 +89,10 @@ int	d_printf(const char *format, ...)
 	va_list	ap;
 	ssize_t	count;
 	ssize_t	count_tmp;
-	int		fd;
 
 	if (PRINTF_DEBUG == 0)
 		return (0);
-	fd = 2;
+	error_printf("\x1b[38;5;229m");
 	count = 0;
 	va_start (ap, format);
 	if (!format)
@@ -101,15 +100,16 @@ int	d_printf(const char *format, ...)
 	while (*format != '\0')
 	{
 		if (*format == '%')
-			count_tmp = d_check_format(fd, ++format, ap);
+			count_tmp = d_check_format(2, ++format, ap);
 		else
-			count_tmp = write (fd, format, 1);
+			count_tmp = write (2, format, 1);
 		if (count_tmp < 0 || INT_MAX < count + count_tmp)
 			break ;
 		count += count_tmp;
 		format++;
 	}
 	va_end (ap);
+	error_printf("\x1b[0m");
 	return (count);
 }
 

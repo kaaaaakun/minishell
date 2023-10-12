@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_panda.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 17:45:59 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/11 18:51:57 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ void	wait_child_process(t_info *status, pid_t pid)
 	i = 0;
 	while (i < process_count)
 	{
+		if (pid < 0)
+		{
+			status->exit_status = 1;
+			break ;
+		}
 		if (waitpid(-1, &exit_status, 0) == pid)
 		{
 			flag = 1;
@@ -80,7 +85,9 @@ void	some_pipes_exec_panda(t_info *status, char *line, int flag, int i)
 	{
 		if (pipe(pipefd) < 0)
 			error_exit("pipe");
-		pid = fork_ee();
+		pid = fork_ee(status);
+		if (pid < 0)
+			break ;
 		if (pid == 0)
 		{
 			if (i != status->pipe + 1)

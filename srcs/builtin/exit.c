@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:11:54 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:32:28 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:55:56 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	ex_exit(t_info *status, t_stack *data)
 		exit(255);
 	}
 }
-
+//https://github.com/42minishell-ktomoya-smizuoch/minishell/blob/main/srcs/builtin/builtin_exit.c
+//https://github.com/42minishell-ktomoya-smizuoch/minishell/blob/main/srcs/libft/ft_strtol.c

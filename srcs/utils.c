@@ -6,21 +6,24 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:42:02 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/07 19:30:34 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:08:03 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer_panda.h"
 
-pid_t	fork_ee(void)
+pid_t	fork_ee(t_info *status)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
+	{
 		error_exit("fork");
+	}
 	return (pid);
+	(void)status;
 }
 
 t_stack	*search_last_stack(t_info *status)

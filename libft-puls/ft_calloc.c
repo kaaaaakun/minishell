@@ -12,6 +12,10 @@
 
 #include "libft.h"
 
+#ifndef MALLOC_DEBUG
+# define MALLOC_DEBUG 0
+#endif
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*result;
@@ -35,7 +39,8 @@ void	*malloc_ee(size_t size)
 	void		*result;
 
 	result = malloc(size);
-	// ft_printf("%p:",result);
+	if (MALLOC_DEBUG == 1)
+		ft_printf("%p", result);
 	return (result);
 }
 //19:size or count がゼロの時には1byte分

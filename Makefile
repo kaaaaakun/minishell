@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/08 19:01:13 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/12 19:35:21 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,6 +107,11 @@ $(LIBFT):
 debug:
 	make fclean
 	make debug -C $(LIBFT_DIR)
+	make all
+
+malloc:
+	make fclean
+	make malloc -C $(LIBFT_DIR)
 	make all
 
 clash:

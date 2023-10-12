@@ -62,6 +62,10 @@ ifdef WITH_DEBUG
 	CFLAGS += -D PRINTF_DEBUG=1
 endif
 
+ifdef MALLOC_DEBUG
+	CFLAGS += -D PRINTF_DEBUG=1 -D MALLOC_DEBUG=1
+endif
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -79,5 +83,8 @@ fclean: clean
 
 debug:
 	make WITH_DEBUG=1
+
+malloc:
+	make MALLOC_DEBUG=1
 
 re: fclean all
