@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 20:11:54 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/11 18:55:56 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:03:42 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ex_exit_non_pipe(t_info *status, int exit_flag)
+static void	ex_exit_non_pipe(t_info *status, int exit_flag)
 {
 	if (status->pipe != 0)
 		exit (exit_flag);
@@ -21,23 +21,12 @@ void	ex_exit_non_pipe(t_info *status, int exit_flag)
 	ft_printf("exit\n");
 }
 
-void	ex_exit(t_info *status, t_stack *data)
+static void	ex_exit_with_something(t_info *status, t_stack *data)
 {
 	t_list	*list;
 
-	if (status->line == NULL)
-	{
-		ex_exit_non_pipe(status, 0);
-		exit (0);
-	}
 	list = data->cmdlist;
-	if (list == NULL || status == NULL || list->next == NULL
-		|| ft_memcmp(list->next->content, "--", 3) == 0)
-	{
-		ex_exit_non_pipe(status, 0);
-		exit (0);
-	}
-	else if (list->next->next != NULL)
+	if (list->next->next != NULL)
 	{
 		ex_exit_non_pipe(status, 0);
 		error_printf(" too many arguments\n");
@@ -56,5 +45,22 @@ void	ex_exit(t_info *status, t_stack *data)
 		exit(255);
 	}
 }
-//https://github.com/42minishell-ktomoya-smizuoch/minishell/blob/main/srcs/builtin/builtin_exit.c
-//https://github.com/42minishell-ktomoya-smizuoch/minishell/blob/main/srcs/libft/ft_strtol.c
+
+void	ex_exit(t_info *status, t_stack *data)
+{
+	t_list	*list;
+
+	if (status->line == NULL)
+	{
+		ex_exit_non_pipe(status, 0);
+		exit (0);
+	}
+	list = data->cmdlist;
+	if (list == NULL || status == NULL || list->next == NULL
+		|| ft_memcmp(list->next->content, "--", 3) == 0)
+	{
+		ex_exit_non_pipe(status, 0);
+		exit (0);
+	}
+	ex_exit_with_something(status, data);
+}

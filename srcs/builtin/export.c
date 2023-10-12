@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/12 19:26:57 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:48:13 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static void	append_envlist(t_list *env, char *str)
 	temp = env->content;
 	if (ft_strchr(env->content, '=') != NULL)
 		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1,
-			FIRST_FREE);
+																FIRST_FREE);
 	else
 	{
 		env->content = ft_strjoin_free(env->content, "=", NEITHER_FREE);
 		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1,
-			NEITHER_FREE);
+																NEITHER_FREE);
 	}
 	free(str);
 	(void)temp;
@@ -85,7 +85,7 @@ void	ex_export(t_info *status, t_stack *data)
 						append_envlist(search_envlist_for_export(status, left),
 							ft_strdup(list->content));
 					else
-						overwrite_envlist(search_envlist_for_export(status, \
+						overwrite_envlist(search_envlist_for_export(status,
 								left), ft_strdup(list->content));
 				}
 				else

@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:13:55 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/12 18:56:32 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:48:32 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,38 +127,3 @@ void	ex_unset(t_info *status, t_stack *data)
 	}
 	status->exit_status = 0;
 }
-
-// void	ex_unset(t_info *status, t_stack *data)
-// {
-// 	t_list	*list;
-// 	t_list	*envlist;
-
-// 	list = data->cmdlist->next;
-// 	while (list != NULL)
-// 	{
-// 		if (search_envlist_for_export(status, ft_strdup(list->content)) != NULL)
-// 		{
-// 			envlist = search_envlist_for_export(status,
-// 				ft_strdup(list->content));
-// 			if (unset_the_top_or_not(status, ft_strdup(list->content)) == 1)
-// 			{
-// 				status->env = envlist->next;
-// 				free(envlist);
-// 			}
-// 			else if (envlist->next == NULL)
-// 			{
-// 				envlist = search_envlist_for_unset(status,
-// 					ft_strdup(list->content));
-// 				envlist->next = NULL;
-// 			}
-// 			else if (envlist->next != NULL)
-// 			{
-// 				envlist = search_envlist_for_unset(status,
-// 					ft_strdup(list->content));
-// 				envlist->next = envlist->next->next;
-// 			}
-// 		}
-// 		list = list->next;
-// 	}
-// 	status->exit_status = 0;
-// }
