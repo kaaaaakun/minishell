@@ -6,12 +6,12 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 18:14:07 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/11 14:56:51 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/12 19:26:57 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
+#include "minishell.h"
 
 static void	append_envlist(t_list *env, char *str)
 {
@@ -19,14 +19,15 @@ static void	append_envlist(t_list *env, char *str)
 
 	temp = env->content;
 	if (ft_strchr(env->content, '=') != NULL)
-		env->content = ft_strjoin_free(env->content, \
-			ft_strchr(str, '=') + 1, NEITHER_FREE);
+		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1,
+			FIRST_FREE);
 	else
 	{
 		env->content = ft_strjoin_free(env->content, "=", NEITHER_FREE);
-		env->content = ft_strjoin_free(env->content, \
-			ft_strchr(str, '=') + 1, NEITHER_FREE);
+		env->content = ft_strjoin_free(env->content, ft_strchr(str, '=') + 1,
+			NEITHER_FREE);
 	}
+	free(str);
 	(void)temp;
 }
 
@@ -47,6 +48,7 @@ void	ex_export(t_info *status, t_stack *data)
 	int		flag;
 	int		i;
 	t_list	*list;
+	char	*left;
 
 	flag = 0;
 	list = data->cmdlist;
@@ -76,33 +78,31 @@ void	ex_export(t_info *status, t_stack *data)
 					while (list->content[i] != '=' && list->content[i] != '\0')
 						i++;
 				}
-				if (search_envlist_for_export(status, \
-						ft_substr(list->content, 0, i)) != NULL)
+				left = ft_substr(list->content, 0, i);
+				if (search_envlist_for_export(status, left) != NULL)
 				{
 					if (flag == 1)
-						append_envlist(search_envlist_for_export(status, \
-							ft_substr(list->content, 0, i)), \
-								ft_strdup(list->content));
+						append_envlist(search_envlist_for_export(status, left),
+							ft_strdup(list->content));
 					else
 						overwrite_envlist(search_envlist_for_export(status, \
-							ft_substr(list->content, 0, i)), \
-								ft_strdup(list->content));
+								left), ft_strdup(list->content));
 				}
 				else
 				{
 					if (flag == 1)
-						push_back(&status->env, \
+						push_back(&status->env,
 							no_left_but_plus(ft_strdup(list->content)));
 					else
 						push_back(&status->env, ft_strdup(list->content));
 				}
+				free(left);
 			}
 			list = list->next;
 		}
 	}
 	return ;
 }
-
 
 // bash-3.2$ export aaa=bbb
 // bash-3.2$ export ccc="echo $aaa"

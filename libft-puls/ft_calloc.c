@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 19:30:56 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 19:29:36 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:52:12 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,4 @@ void	*malloc_ee(size_t size)
 //19:size or count がゼロの時には1byte分
 //24:size * count < SIZE_MAX になってしまう場合はNULLを返す
 //29:全てを'\0'で埋めて返す
+

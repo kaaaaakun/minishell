@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/09/28 17:45:21 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:30:46 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ char	*no_left_but_plus(char *str)
 	s1 = ft_substr(str, 0, i);
 	s2 = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
 	ans = ft_strjoin_free(s1, s2, NEITHER_FREE);
-	// free(s1);
-	// free(s2); //strjoinが修正されたら消した方がいい
+	free(s1);
+	free(s2);
+	free(str);
 	return (ans);
 }
 
