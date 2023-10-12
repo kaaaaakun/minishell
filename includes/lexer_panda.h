@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:53:38 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 19:45:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:47:13 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*mini_substr(char const *s, unsigned int start, size_t len);
 
 // utils
 int		analysis_char(char c);
-pid_t	fork_ee(void);
+pid_t	fork_ee(t_info *status);
 void	close_pipe(t_info *status, int *pipefd);
 void	dup2_close_pipe(t_info *status, int *pipefd, int flag);
 

@@ -6,11 +6,15 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 19:30:56 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/09 21:05:05 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:29:36 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+#ifndef MALLOC_DEBUG
+# define MALLOC_DEBUG 0
+#endif
 
 void	*ft_calloc(size_t count, size_t size)
 {
@@ -35,7 +39,8 @@ void	*malloc_ee(size_t size)
 	void		*result;
 
 	result = malloc(size);
-	//ft_printf("%p",result);
+	if (MALLOC_DEBUG == 1)
+		ft_printf("%p", result);
 	return (result);
 }
 //19:size or count がゼロの時には1byte分
