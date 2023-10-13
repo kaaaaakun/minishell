@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/12 19:35:21 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/13 20:16:21 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS = \
 	srcs/builtin/env.c \
 	srcs/builtin/cd.c \
 	srcs/builtin/export_utils.c \
+	srcs/lexer_panda/ex_heredoc.c \
 	srcs/lexer_panda/panda_pre_check.c \
 	srcs/lexer_panda/chck_flag_error.c \
 	srcs/lexer_panda/make_operation.c \
