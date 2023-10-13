@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
+#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/12 19:35:21 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/13 20:17:27 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,11 @@ SRCS = \
 	srcs/builtin/execve_error_check.c \
 	srcs/builtin/exit.c \
 	srcs/builtin/unset.c \
+	srcs/builtin/unset_utils.c \
 	srcs/builtin/env.c \
 	srcs/builtin/cd.c \
-	srcs/builtin/export_utils.c \
+	srcs/builtin/export_utils1.c \
+	srcs/builtin/export_utils2.c \
 	srcs/lexer_panda/panda_pre_check.c \
 	srcs/lexer_panda/chck_flag_error.c \
 	srcs/lexer_panda/make_operation.c \
