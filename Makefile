@@ -39,7 +39,8 @@ SRCS = \
 	srcs/builtin/cd.c \
 	srcs/builtin/export_utils1.c \
 	srcs/builtin/export_utils2.c \
-	srcs/lexer_panda/panda_pre_check.c \
+	srcs/lexer_panda/ex_heredoc.c \
+  srcs/lexer_panda/panda_pre_check.c \
 	srcs/lexer_panda/chck_flag_error.c \
 	srcs/lexer_panda/make_operation.c \
 	srcs/lexer_panda/make_cmdlist.c \
