@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/10 20:02:07 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/13 13:10:32 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ void	search_paht_and_exec(t_info *status)
 		is_directory_error(status, path);
 	if (access(path, X_OK) != 0)
 		is_non_xok(status);
+	d_printf("[search_paht_and_exec:%s]", path);
 	execve(path, cmd, env_list(status));
+	perror(NULL);
+	exit(1);
 	split_free(cmd);
 	d_printf("[search_paht_and_exec]");
 }

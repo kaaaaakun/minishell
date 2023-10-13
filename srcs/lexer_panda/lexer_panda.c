@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 17:48:21 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 21:04:53 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:33:04 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	exec_child_process(int process_count, t_info *status, \
 	exec_panda(line, status, flag);
 	add_sigaction(status, 2);
 	check_command(status, status->stack);
+	(void)process_count;
 }
 
 void	some_pipes_exec_panda(t_info *status, char *line, int process_count)
@@ -106,8 +107,11 @@ void	some_pipes_exec_panda(t_info *status, char *line, int process_count)
 			break ;
 		line++;
 		dup2_close_pipe(status, pipefd, STDIN_FILENO);
+		d_printf("[pipefd:%d]", pipefd[0]);
 	}
 	dup2_ee(status, stdin_fd, STDIN_FILENO);
+	close_pipe(status, pipefd);
+	close (stdin_fd);
 	wait_child_process(status, pid);
 }
 

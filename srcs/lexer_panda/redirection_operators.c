@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_operators.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:24:39 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/10 19:39:19 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/13 13:17:17 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 	if (g_signal == SIGINT)
 		return ;
 	dup2(status->cpy_stdin, 0);
-	// close(status->cpy_stdin);
+	close(status->cpy_stdin);
 	eof_len = ft_strlen(eof_word) + 1;
 	cmd_tmp = status->line;
 	while (1)
@@ -119,7 +119,8 @@ void	ex_heredoc(t_info *status, char *eof_word, int tmp_fd)
 		input_line = check_dollar(status, read_line);
 		while (input_line != NULL && input_line[i] != '\0')
 		{
-			if ((input_line[i] == '\'' || input_line[i] == '\"') && !(flag & IN_QUOTE))
+			if ((input_line[i] == '\'' || input_line[i] == '\"') && \
+				!(flag & IN_QUOTE))
 				plusle_quote(input_line[i], &flag);
 			else if ((input_line[i] == '\'' && flag & S_QUOTE) || \
 				(input_line[i] == '\"' && flag & D_QUOTE))
