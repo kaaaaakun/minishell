@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 20:31:18 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/14 20:00:58 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@ char	*append_non_quote_env(char *result, char *post_word)
 	int		end;
 	char	*space_splited_word;
 
-	d_printf("append_non_quote_env");
+	d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	start = 0;
-	end = 0;
+	end = start;
+	while (post_word[start] != '\0' && (post_word[start] == ' ' || \
+		post_word[start] == '	'))
+		post_word++;
+	d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	while (post_word[start] != '\0')
 	{
 		while (post_word[start] != '\0' && post_word[start] != ' ' && \
@@ -51,6 +55,7 @@ char	*append_non_quote_env(char *result, char *post_word)
 		else
 			result = ft_strjoin_free(result, "\'", FIRST_FREE);
 		end = start;
+		d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	}
 	return (result);
 }

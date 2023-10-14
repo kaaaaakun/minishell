@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
+#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/13 20:17:27 by hhino            ###   ########.fr        #
+#    Updated: 2023/10/14 19:45:03 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,7 +117,7 @@ malloc:
 	make malloc -C $(LIBFT_DIR)
 	make all
 
-clash:
+crash:
 	make WITH_DEBUG=1
 
 clang:

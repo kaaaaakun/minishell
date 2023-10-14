@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:25:09 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/13 19:53:43 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/14 19:40:36 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	main(int argc, char *argv[], char *env[])
 		exit(1);
 	status->exit_status = 0;
 	make_env_list(status, env);
+	rl_outstream = stderr;
 	while (1)
 	{
 		g_signal = 0;
