@@ -78,6 +78,8 @@ void	check_error(t_info *status, char *line, int *e_flag)
 		else if (!(flag & IN_QUOTE))
 		i += count_other_operation(status, line, &flag, value);
 		line += i;
+		if (flag & ERROR)
+			break ;
 	}
 	if ((flag & NEED_FILE || flag & IN_QUOTE) && !(flag & ERROR))
 			flag += ERROR;

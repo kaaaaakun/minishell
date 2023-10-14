@@ -16,6 +16,8 @@
 #include "typedef_struct.h"
 #include <errno.h>
 
+char	**getpath(t_info *status);
+
 void	is_no_file_error(t_info *status);
 void	is_directory_error(t_info *status, char *path);
 void	is_non_xok(t_info *status);
@@ -80,21 +82,35 @@ void	search_paht_and_exec(t_info *status)
 	char	**cmd;
 
 	cmd = generate_cmdstr(status);
-	path = check_access(status->stack->cmdlist->content, status);
+	path = status->stack->cmdlist->content;
+	if (strchr(path, '/') != NULL)
+	{
+		errno = 0;
+		fd_nbr = open(path, O_WRONLY);
+		if (fd_nbr == -1 && errno == EISDIR)
+			is_directory_error(status, path);
+		if (access(path, X_OK) == -1)
+		{
+			if (access(path, F_OK) == 0)
+				erro_msg_permission_denied(status, path);
+			else
+				erro_msg_no_such_file(status, path);
+		}
+	}
+	else
+		path = check_path(ft_strjoin_free("/", path, SECOND_FREE), \
+				getpath(status));
+	if (path == NULL)
+		erro_msg_not_command_found(status, status->stack->cmdlist->content);
 	errno = 0;
 	fd_nbr = open(path, O_WRONLY);
-	if (path == NULL)
-		is_no_file_error(status);
-	else if (fd_nbr == -1 && errno == EISDIR)
-		is_directory_error(status, path);
+	if (fd_nbr == -1 && errno == EISDIR)
+		erro_msg_not_command_found(status, status->stack->cmdlist->content);
 	if (access(path, X_OK) != 0)
-		is_non_xok(status);
+		erro_msg_permission_denied(status, path);
 	d_printf("[search_paht_and_exec:%s]", path);
 	execve(path, cmd, env_list(status));
-	perror(NULL);
-	exit(1);
-	split_free(cmd);
-	d_printf("[search_paht_and_exec]");
+	erro_msg_not_command_found(status, status->stack->cmdlist->content);
 }
 
 void	ex_execve(t_info *status)

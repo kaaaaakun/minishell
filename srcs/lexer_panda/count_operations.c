@@ -79,9 +79,11 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (1 < i || (*flag & NEED_FILE) || *flag & AT_PIPE)
+	if (1 < i || *flag & NEED_FILE || *flag & AT_PIPE)
 	{
 		*flag += ERROR;
+		if (!(*flag & AT_PIPE))
+			*flag += AT_PIPE;
 	}
 	else if (i == 1)
 	{

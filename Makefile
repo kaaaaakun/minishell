@@ -75,7 +75,7 @@ LIBFT_DIR	=	libft-puls
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
 ifdef WITH_DEBUG
-	CFLAGS += -g -O0 -fsanitize=address
+	CFLAGS += -O0 -fsanitize=address
 endif
 
 # Mandatory target ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
@@ -106,20 +106,23 @@ re: fclean all
 $(LIBFT):
 	make  -C $(LIBFT_DIR) all
 
-#debug:
+# for debug
 debug:
 	make fclean
 	make debug -C $(LIBFT_DIR)
 	make all
 
+# for malloc debug
 malloc:
 	make fclean
 	make malloc -C $(LIBFT_DIR)
 	make all
 
+# for -fsanitize=address debug
 crash:
 	make WITH_DEBUG=1
 
+# nonused variables
 clang:
 	clang --analyze $(SRCS) $(INCLUDE)
 

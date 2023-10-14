@@ -83,10 +83,8 @@ int	process_output_redirect_operation(t_info *status, char *line, int *flag)
 int	process_pipe_operation(t_info *status, char *line, int *flag)
 {
 	int		i;
-	t_stack	*data;
 
 	i = 0;
-	data = status->stack;
 	while (line[i] == '|')
 	{
 		d_printf("%c", line[i]);
@@ -102,5 +100,4 @@ int	process_pipe_operation(t_info *status, char *line, int *flag)
 	}
 	return (i);
 	(void)status;
-	(void)data;
 }
