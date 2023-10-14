@@ -36,6 +36,7 @@ static void	ex_cd_error(t_info *status, t_stack *data)
 		else
 			error_printf("%s: No such file or directory\n", list->content);
 	}
+	(void)list;
 }
 
 static void	ex_cd_somewhere(t_info *status, t_stack *data)
@@ -86,6 +87,7 @@ static void	ex_cd_home(t_info *status, t_stack *data)
 		error_printf("cd: HOME not set\n");
 		status->exit_status = 1;
 	}
+	(void)list;
 }
 
 void	ex_cd(t_info *status, t_stack *data)

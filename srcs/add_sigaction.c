@@ -71,6 +71,11 @@ void	add_sigaction(t_info *status, int flag)
 		signal(SIGINT, sighandler_child);
 		signal(SIGQUIT, sighandler_child);
 	}
+	else if (flag == 4)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
 }
 
 //// void	add_sigaction(int flag)

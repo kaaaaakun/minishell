@@ -79,14 +79,14 @@ int	check_pipe_operation(t_info *status, char *line, int *flag)
 		d_printf("%c", line[i]);
 		i++;
 	}
-	if (1 < i || (*flag & NEED_FILE) || !(*flag & COMMAND))
+	if (1 < i || (*flag & NEED_FILE) || *flag & AT_PIPE)
 	{
 		*flag += ERROR;
 	}
 	else if (i == 1)
 	{
 		d_printf(" : pipe");
-		*flag = AT_PIPE;
+		*flag += AT_PIPE;
 	}
 	return (i);
 	(void)status;

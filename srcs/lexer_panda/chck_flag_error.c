@@ -34,7 +34,7 @@ void	lexer_panda_error_check(int *flag, t_info *status)
 	else if (*flag & OUTPUT_REDIRECT)
 		ft_putendl_fd("minishell: syntax error near unexpected token `>'",
 			2);
-	else if (!(*flag & COMMAND))
+	else if (*flag & AT_PIPE)
 		ft_putendl_fd("minishell: syntax error near unexpected token `|'",
 			2);
 }

@@ -15,6 +15,8 @@
 
 void	check_input_operation(t_info *status, char *line, int j, int *flag)
 {
+	if (*flag & AT_PIPE)
+		*flag -= AT_PIPE;
 	if (*flag & INPUT_REDIRECT)
 		*flag -= INPUT_REDIRECT;
 	else if (*flag & OUTPUT_REDIRECT)
@@ -63,7 +65,7 @@ void	check_error(t_info *status, char *line, int *e_flag)
 	flag = INITIAL;
 	while (*line != '\0' && !(flag & ERROR))
 	{
-		d_printf("check_erro line : %s\n", line);
+		d_printf("[check_erro line : %s]\n", line);
 		i = 0;
 		value = analysis_char(*line);
 		if (value == 1 || value == 0)

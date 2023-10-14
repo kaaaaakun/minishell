@@ -51,7 +51,7 @@ void	wait_child_process(t_info *status, pid_t pid)
 
 	flag = 0;
 	process_count = status->pipe + 1;
-	add_sigaction(status, 3);
+	add_sigaction(status, 4);
 	while (process_count--)
 	{
 		if (pid < 0)
@@ -81,6 +81,8 @@ void	exec_child_process(int process_count, t_info *status, \
 	if (process_count != 0)
 		dup2_close_pipe(status, pipefd, STDOUT_FILENO);
 	exec_panda(line, status, flag);
+	if (status->stack->cmdlist == NULL)
+		exit(0);
 	add_sigaction(status, 2);
 	check_command(status, status->stack);
 	(void)process_count;
@@ -118,15 +120,13 @@ void	some_pipes_exec_panda(t_info *status, char *line, int process_count)
 void	panda(char *line, t_info *status)
 {
 	int		flag;
-	int		i;
 
 	d_printf("[panda]");
-	i = 0;
 	if (*line == '\0')
 		return ;
 	line = check_dollar(status, line);
 	check_error(status, line, &flag);
-	if (flag & ERROR)
+	if (flag & ERROR || flag & AT_PIPE)
 	{
 		lexer_panda_error_check(&flag, status);
 		d_printf("syntax error \n");
