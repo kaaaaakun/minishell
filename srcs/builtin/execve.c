@@ -132,7 +132,10 @@ void	ex_execve(t_info *status)
 		}
 		add_sigaction(status, 4);
 		wait(&exit_status);
-		status->exit_status = WEXITSTATUS(exit_status);
+		if (WIFEXITED(exit_status))
+			status->exit_status = WEXITSTATUS(exit_status);
+		else if (WIFSIGNALED(exit_status))
+			status->exit_status = WTERMSIG(exit_status) + 128;
 		d_printf("[check_builtin_execve : %d]", g_signal);
 	}
 	else
