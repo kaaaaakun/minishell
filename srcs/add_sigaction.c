@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/16 15:22:10 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/16 16:57:51 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ void	add_sigaction(t_info *status, int flag)
 {
 	struct sigaction	sa;
 
-	if (g_signal == SIGINT)
-		status->exit_status += 0;
-	sigemptyset(&sa.sa_mask);
 	(void)status;
+	sigemptyset(&sa.sa_mask);
 	if (flag == 0)
 	{
 		signal(SIGINT, sighandler_sigint);

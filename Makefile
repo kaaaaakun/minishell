@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
+#    By: hhino <hhino@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/16 16:27:56 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/16 16:58:57 by hhino            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS_DIR = objs
 RL_DIR = $(shell brew --prefix readline)
 
 SRCS = \
-   srcs/debug.c \
+	srcs/debug.c \
 	srcs/panda_to_builtin.c \
 	srcs/pipex_utils2.c \
 	srcs/utils.c \
@@ -106,34 +106,34 @@ re: fclean all
 $(LIBFT):
 	make  -C $(LIBFT_DIR) all
 
-# for debug
-debug:
-	make fclean
-	make debug -C $(LIBFT_DIR)
-	make all
+# # for debug
+# debug:
+# 	make fclean
+# 	make debug -C $(LIBFT_DIR)
+# 	make all
 
-# for malloc debug
-malloc:
-	make fclean
-	make malloc -C $(LIBFT_DIR)
-	make all
+# # for malloc debug
+# malloc:
+# 	make fclean
+# 	make malloc -C $(LIBFT_DIR)
+# 	make all
 
-# for -fsanitize=address debug
-crash:
-	make WITH_CRASH=1
+# # for -fsanitize=address debug
+# crash:
+# 	make WITH_CRASH=1
 
-# nonused variables
-clang:
-	clang --analyze $(SRCS) $(INCLUDE)
+# # nonused variables
+# clang:
+# 	clang --analyze $(SRCS) $(INCLUDE)
 
-del:
-	rm -rf .tmp*
-	rm -rf out*
-	rm -rf *.plist
-	find . -name "*.o" -exec rm {} +
-	find . -name "*.un~" -exec rm {} +
-	find . -name "*.back" -exec rm {} +
+# del:
+# 	rm -rf .tmp*
+# 	rm -rf out*
+# 	rm -rf *.plist
+# 	find . -name "*.o" -exec rm {} +
+# 	find . -name "*.un~" -exec rm {} +
+# 	find . -name "*.back" -exec rm {} +
 
-leaks:
-	while [ 1 ]; do leaks -q minishell; sleep 2; done
+# leaks:
+# 	while [ 1 ]; do leaks -q minishell; sleep 2; done
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
