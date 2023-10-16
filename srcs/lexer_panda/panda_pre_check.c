@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 13:49:24 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 14:46:36 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:37:29 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,27 @@ void	check_error(t_info *status, char *line, int *e_flag)
 {
 	int	i;
 	int	j;
-	int	flag;
 	int	value;
 
-	flag = INITIAL;
-	while (*line != '\0' && !(flag & ERROR))
+	*e_flag = INITIAL;
+	while (*line != '\0' && !(*e_flag & ERROR))
 	{
 		d_printf("[check_erro line : %s]\n", line);
 		i = 0;
 		value = analysis_char(*line);
 		if (value == 1 || value == 0)
 		{
-			j = skip_count_quotes(line, &value, &i, &flag);
-			check_input_operation(status, line, j, &flag);
+			j = skip_count_quotes(line, &value, &i, e_flag);
+			check_input_operation(status, line, j, e_flag);
 		}
 		else if (value == 2)
 			i++;
-		else if (!(flag & IN_QUOTE))
-		i += count_other_operation(status, line, &flag, value);
+		else if (!(*e_flag & IN_QUOTE))
+		i += count_other_operation(status, line, e_flag, value);
 		line += i;
-		if (flag & ERROR)
+		if (*e_flag & ERROR)
 			break ;
 	}
-	if ((flag & NEED_FILE || flag & IN_QUOTE) && !(flag & ERROR))
-			flag += ERROR;
-	*e_flag = flag;
+	if ((*e_flag & NEED_FILE || *e_flag & IN_QUOTE) && !(*e_flag & ERROR))
+			*e_flag += ERROR;
 }

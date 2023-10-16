@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:33:47 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/14 20:00:58 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:30:33 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ char	*append_non_quote_env(char *result, char *post_word)
 	int		end;
 	char	*space_splited_word;
 
-	d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	start = 0;
 	end = start;
 	while (post_word[start] != '\0' && (post_word[start] == ' ' || \
 		post_word[start] == '	'))
 		post_word++;
-	d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	while (post_word[start] != '\0')
 	{
 		while (post_word[start] != '\0' && post_word[start] != ' ' && \
@@ -55,7 +53,6 @@ char	*append_non_quote_env(char *result, char *post_word)
 		else
 			result = ft_strjoin_free(result, "\'", FIRST_FREE);
 		end = start;
-		d_printf("[append_non_quote_env : result%s/ %s]", result, post_word);
 	}
 	return (result);
 }
@@ -63,6 +60,9 @@ char	*append_non_quote_env(char *result, char *post_word)
 char	*search_and_append_env(t_info *status, \
 			char *result, char *post_word, int *flag)
 {
+	char	*tmp;
+
+	tmp = post_word;
 	d_printf("[s_a_ap_env]\n");
 	post_word = search_env(status, post_word);
 	if (post_word != NULL)
@@ -74,6 +74,7 @@ char	*search_and_append_env(t_info *status, \
 			result = append_non_quote_env(result, post_word);
 		}
 	}
+	free_null(tmp);
 	d_printf("[result:%s]\n", result);
 	return (result);
 }

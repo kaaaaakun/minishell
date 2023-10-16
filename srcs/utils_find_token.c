@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:32:50 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 19:50:12 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:31:09 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	find_next_token(char *line, int i, int flag)
 	int	k;
 
 	k = 0;
-	while (line[i + k] != '\'' && line[i + k] != '\"' && line[i + k] != '\t' && \
+	while (line[i + k] != '\'' && line[i + k] != ':' && line[i + k] != '\"' \
+			&& line[i + k] != '\t' && \
 		line[i + k] != ' ' && line[i + k] != '\0' && (line[i + k] != '$' || \
 		flag & HEREDOC) && \
 		((line[i + k] != '<' && line[i + k] != '>' && line[i + k] != '|') || \

@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 14:04:34 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/12 20:12:47 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:39:00 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,6 @@ void	add_sigaction(t_info *status, int flag)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (flag == 3)
-	{
-		signal(SIGINT, sighandler_child);
-		signal(SIGQUIT, sighandler_child);
 	}
 	else if (flag == 4)
 	{

@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/13 13:10:32 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:55:31 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,23 @@ char	**env_list(t_info *status)
 	return (result);
 }
 
+void	path_check(t_info *status, char *path)
+{
+	int		fd_nbr;
+
+	errno = 0;
+	fd_nbr = open(path, O_WRONLY);
+	if (fd_nbr == -1 && errno == EISDIR)
+		is_directory_error(status, path);
+	if (access(path, X_OK) == -1)
+	{
+		if (access(path, F_OK) == 0)
+			erro_msg_permission_denied(status, path);
+		else
+			erro_msg_no_such_file(status, path);
+	}
+}
+
 void	search_paht_and_exec(t_info *status)
 {
 	int		fd_nbr;
@@ -84,19 +101,7 @@ void	search_paht_and_exec(t_info *status)
 	cmd = generate_cmdstr(status);
 	path = status->stack->cmdlist->content;
 	if (strchr(path, '/') != NULL)
-	{
-		errno = 0;
-		fd_nbr = open(path, O_WRONLY);
-		if (fd_nbr == -1 && errno == EISDIR)
-			is_directory_error(status, path);
-		if (access(path, X_OK) == -1)
-		{
-			if (access(path, F_OK) == 0)
-				erro_msg_permission_denied(status, path);
-			else
-				erro_msg_no_such_file(status, path);
-		}
-	}
+		path_check(status, path);
 	else
 		path = check_path(ft_strjoin_free("/", path, SECOND_FREE), \
 				getpath(status));
@@ -136,10 +141,8 @@ void	ex_execve(t_info *status)
 			status->exit_status = WEXITSTATUS(exit_status);
 		else if (WIFSIGNALED(exit_status))
 			status->exit_status = WTERMSIG(exit_status) + 128;
-		d_printf("[check_builtin_execve : %d]", g_signal);
 	}
 	else
 		search_paht_and_exec(status);
 	(void)pid;
-	d_printf("[check_builtin_execve : %d]", g_signal);
 }
