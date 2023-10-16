@@ -6,7 +6,7 @@
 #    By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/07 16:08:51 by tokazaki          #+#    #+#              #
-#    Updated: 2023/10/14 19:45:03 by tokazaki         ###   ########.fr        #
+#    Updated: 2023/10/16 16:27:56 by tokazaki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS_DIR = objs
 RL_DIR = $(shell brew --prefix readline)
 
 SRCS = \
-	   srcs/debug.c \
+   srcs/debug.c \
 	srcs/panda_to_builtin.c \
 	srcs/pipex_utils2.c \
 	srcs/utils.c \
@@ -40,7 +40,7 @@ SRCS = \
 	srcs/builtin/export_utils1.c \
 	srcs/builtin/export_utils2.c \
 	srcs/lexer_panda/ex_heredoc.c \
-  srcs/lexer_panda/panda_pre_check.c \
+	srcs/lexer_panda/panda_pre_check.c \
 	srcs/lexer_panda/chck_flag_error.c \
 	srcs/lexer_panda/make_operation.c \
 	srcs/lexer_panda/make_cmdlist.c \
@@ -74,7 +74,7 @@ RM		= rm -f
 LIBFT_DIR	=	libft-puls
 LIBFT		=	$(LIBFT_DIR)/libft.a
 
-ifdef WITH_DEBUG
+ifdef WITH_CRASH
 	CFLAGS += -O0 -fsanitize=address
 endif
 
@@ -120,7 +120,7 @@ malloc:
 
 # for -fsanitize=address debug
 crash:
-	make WITH_DEBUG=1
+	make WITH_CRASH=1
 
 # nonused variables
 clang:

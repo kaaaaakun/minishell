@@ -6,7 +6,7 @@
 /*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:55:23 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/15 19:55:31 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:33:51 by tokazaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	search_paht_and_exec(t_info *status)
 	char	**cmd;
 
 	cmd = generate_cmdstr(status);
-	path = status->stack->cmdlist->content;
+	path = ft_strdup(status->stack->cmdlist->content);
 	if (strchr(path, '/') != NULL)
 		path_check(status, path);
 	else
