@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   export_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:06:49 by hhino             #+#    #+#             */
-/*   Updated: 2023/10/12 19:46:15 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/16 15:06:22 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*no_left_but_plus(char *str)
 	return (ans);
 }
 
-void	print_export_env(t_list *env)
+void	print_export_env(t_info *status, t_list *env)
 {
 	while (env != NULL)
 	{
@@ -109,4 +109,5 @@ void	print_export_env(t_list *env)
 		ft_putchar_fd('\n', 1);
 		env = env->next;
 	}
+	status->exit_status = 0;
 }

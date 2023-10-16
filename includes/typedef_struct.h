@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef_struct.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tokazaki <tokazaki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 14:40:57 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/07 13:42:07 by tokazaki         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:19:39 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_stack
 {
 	struct s_list		*outputlist;
 	struct s_list		*appendlist;
-	struct s_list		*inputlist;	
+	struct s_list		*inputlist;
 	struct s_list		*heredoclist;
 	struct s_list		*cmdlist;
 	int					fork;
