@@ -6,7 +6,7 @@
 /*   By: hhino <hhino@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 19:54:32 by tokazaki          #+#    #+#             */
-/*   Updated: 2023/10/13 20:47:18 by hhino            ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:52 by hhino            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_with_doublequotes(char *str);
 int		valid_left(char *str, int flag);
 int		plus_equal_or_not(char *str);
 char	*no_left_but_plus(char *str);
-void	print_export_env(t_list *env);
+void	print_export_env(t_info *status, t_list *env);
 void	overwrite_envlist(t_list *env, char *str);
 int		count_left_str(int flag, t_list *list, int i);
 void	push_back_export(int flag, t_info *status, t_list *list);
