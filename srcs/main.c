@@ -95,7 +95,6 @@ int	main(int argc, char *argv[], char *env[])
 		exit(1);
 	status->exit_status = 0;
 	make_env_list(status, env);
-	rl_outstream = stderr;
 	while (1)
 	{
 		g_signal = 0;
