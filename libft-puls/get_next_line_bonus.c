@@ -84,12 +84,12 @@ static char	*line_make(char *line)
 	return (content);
 }
 
-size_t	ft_strlen(const char *src)
-{
-	size_t	i;
+// size_t	ft_strlen(const char *src)
+// {
+// 	size_t	i;
 
-	i = 0;
-	while (src[i])
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	while (src[i])
+// 		i++;
+// 	return (i);
+// }
